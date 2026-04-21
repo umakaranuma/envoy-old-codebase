@@ -1,0 +1,170 @@
+
+INSERT INTO core_modules (`name`, `key`)
+VALUES 
+    ('CRM', 'CRM'),
+    ('Policy', 'POLICY'),
+    ('Core', 'CORE');
+
+----------------------------
+
+INSERT INTO core_actions (`module_id`, `entity`, `action`, `can_be_permission`)
+VALUES
+    (1, 'TASK', 'VIEW_ALL', TRUE),
+    (1, 'TASK', 'VIEW', TRUE),
+    (1, 'TASK', 'UPDATE', TRUE),
+    (1, 'TASK', 'ADD', TRUE),
+    (1, 'TASK', 'DELETE', TRUE),
+
+    (3, 'USER', 'VIEW_ALL', TRUE),
+    (3, 'USER', 'VIEW', TRUE),
+    (3, 'USER', 'UPDATE', TRUE),
+    (3, 'USER', 'ADD', TRUE),
+    (3, 'USER', 'DELETE', TRUE),
+
+    (3, 'ROLE', 'VIEW_ALL', TRUE),
+    (3, 'ROLE', 'VIEW', TRUE),
+    (3, 'ROLE', 'UPDATE', TRUE),
+    (3, 'ROLE', 'ADD', TRUE),
+    (3, 'ROLE', 'DELETE', TRUE);
+
+
+-------------------------------
+
+INSERT INTO core_status (NAME, DESCRIPTION, TYPE, module, color, sort_index) VALUES
+-- Quotation Module
+('quotation_draft', 'Quotation is being prepared', 'quotation', 'quotation', '#eeeeef', 1),
+('quotation_sent', 'Quotation has been sent to the client', 'quotation', 'quotation', '#5bc0de', 2),
+('quotation_accepted', 'Client has accepted the quotation', 'quotation', 'quotation', '#5cb85c', 3),
+('quotation_rejected', 'Client has rejected the quotation', 'quotation', 'quotation', '#d9534f', 4),
+('quotation_pending', 'Pending quotation', 'quotation', 'quotation', '#f0ad4e', 5),
+ 
+('policy_requested', 'policyStatus', 'policy', 'policy', '#f0ad4e', 1),
+('policy_received', 'policyStatus', 'policy', 'policy', '#5bc0de', 2),
+('policy_issued', 'policyStatus', 'policy', 'policy', '#5cb85c', 3),
+('endorsement_settled', 'EndorsementStatus', 'endorsement-status', 'policy', '#5cb85c', 1),
+('endorsement_pending', 'EndorsementStatus', 'endorsement-status', 'policy', '#f0ad4e', 2);
+
+------------------------------------
+insert into core_task_status (id, name, description, type, color, sort_index) values('1','Todo','Todo','Todo','#0B90C3','1');
+insert into core_task_status (id, name, description, type, color, sort_index) values('2','In Progress','In Progress','Inprogress','#F79009','2');
+insert into core_task_status (id, name, description, type, color, sort_index) values('3','Done','Done','Done','#17B26A','3');
+
+-----------------------------------------
+
+insert into crm_opportunity_statuses (id, name, description, type, color, sort_index) values('1','LEAD','initial stage','LEAD','#175CD3','1');
+insert into crm_opportunity_statuses (id, name, description, type, color, sort_index) values('2','PROSPECT','initial stage','PROSPECT','#5925DC','2');
+insert into crm_opportunity_statuses (id, name, description, type, color, sort_index) values('3','QUALIFIED',NULL,'QUALIFIED','#B54708','3');
+insert into crm_opportunity_statuses (id, name, description, type, color, sort_index) values('4','WON',NULL,'WON','#067647','4');
+insert into crm_opportunity_statuses (id, name, description, type, color, sort_index) values('5','LOSS',NULL,'LOSS','#363F72','5');
+
+----------------------------------------------
+
+INSERT INTO core_currencies (symbol, name, decimal_digits, rounding, code) VALUES
+('$', 'US Dollar', 2, 0, 'USD'),
+('₨', 'Sri Lankan Rupee', 2, 0, 'LKR'),
+('€', 'Euro', 2, 0, 'EUR'),
+('£', 'British Pound Sterling', 2, 0, 'GBP'),
+('¥', 'Japanese Yen', 0, 0, 'JPY'),
+('₹', 'Indian Rupee', 2, 0, 'INR'),
+('₽', 'Russian Ruble', 2, 0, 'RUB'),
+('A$', 'Australian Dollar', 2, 0, 'AUD'),
+('C$', 'Canadian Dollar', 2, 0, 'CAD'),
+('CHF', 'Swiss Franc', 2, 0, 'CHF'),
+('CN¥', 'Chinese Yuan Renminbi', 2, 0, 'CNY'),
+('HK$', 'Hong Kong Dollar', 2, 0, 'HKD'),
+('NZ$', 'New Zealand Dollar', 2, 0, 'NZD'),
+('₩', 'South Korean Won', 0, 0, 'KRW'),
+('R$', 'Brazilian Real', 2, 0, 'BRL'),
+('₫', 'Vietnamese Dong', 0, 0, 'VND'),
+('₺', 'Turkish Lira', 2, 0, 'TRY'),
+('₱', 'Philippine Peso', 2, 0, 'PHP'),
+('₦', 'Nigerian Naira', 2, 0, 'NGN'),
+('฿', 'Thai Baht', 2, 0, 'THB'),
+('د.إ', 'United Arab Emirates Dirham', 2, 0, 'AED'),
+('﷼', 'Saudi Riyal', 2, 0, 'SAR'),
+('₴', 'Ukrainian Hryvnia', 2, 0, 'UAH'),
+('₪', 'Israeli New Shekel', 2, 0, 'ILS'),
+('₡', 'Costa Rican Colón', 2, 0, 'CRC'),
+('₲', 'Paraguayan Guarani', 0, 0, 'PYG'),
+('₵', 'Ghanaian Cedi', 2, 0, 'GHS'),
+('₭', 'Lao Kip', 2, 0, 'LAK'),
+('₮', 'Mongolian Tögrög', 2, 0, 'MNT'),
+('₸', 'Kazakhstani Tenge', 2, 0, 'KZT'),
+('₼', 'Azerbaijani Manat', 2, 0, 'AZN'),
+('₾', 'Georgian Lari', 2, 0, 'GEL'),
+('₨', 'Pakistani Rupee', 2, 0, 'PKR'),
+('₨', 'Nepalese Rupee', 2, 0, 'NPR'),
+('₨', 'Mauritian Rupee', 2, 0, 'MUR'),
+('₨', 'Maldivian Rufiyaa', 2, 0, 'MVR'),
+('₨', 'Seychellois Rupee', 2, 0, 'SCR'),
+('₭', 'Cambodian Riel', 2, 0, 'KHR'),
+('₱', 'Cuban Peso', 2, 0, 'CUP'),
+('₡', 'Nicaraguan Córdoba', 2, 0, 'NIO'),
+('₩', 'North Korean Won', 0, 0, 'KPW');
+
+
+----------------------------------
+
+INSERT INTO core_flex_fields (entity_type, field_code, field_label, data_type, default_value, is_mandatory, is_enabled, is_fixed)
+VALUES
+('CUSTOMER', 'number_of_employees', 'Number of Employees', 'TEXT', NULL, FALSE, TRUE, TRUE),
+('CUSTOMER', 'br_no', 'BR NUMBER', 'TEXT', NULL, FALSE, TRUE, TRUE);
+
+--------------------------------------
+
+INSERT INTO core_setting_keys (name, DESCRIPTION)
+VALUES
+('SALES_AGENT_ROLES', NULL),
+('OPPORTUNITY_CUSTOMER_REQUIRED_STAGE', NULL),
+('BASE_CURRENCY', NULL);
+
+---------------------------
+
+INSERT INTO `crmp_endorsement_types` (`name`) VALUES
+('Additions'),
+('Refund'),
+('Cancellations'),
+('Non-Financials'); 
+
+--------------------------------
+
+INSERT INTO core_forms (title, DESCRIPTION, TYPE) VALUES
+('Quotation Form', 'test form', 'crm');
+
+-------------------------------------------------
+
+INSERT INTO crmq_service_providers ( name, description, status) VALUES
+('Celinco', NULL, 'active'),
+('Union Acurence', NULL, 'active'),
+('Insurance kvp', NULL, 'active'),
+('Insurance kvp 2', NULL, 'active'),
+('Insurance kvp 3', NULL, 'active'),
+('Insurance kvp 12', NULL, 'active'),
+('Insurance kvp 123', 'test.........!', 'deactive'),
+('Insurance kvp 1234', 'test.........!', 'active');
+
+-------------------------------------------------
+
+INSERT INTO core_form_attributes ( title, TYPE, form_id, attribute_name) VALUES
+('Code', 'quotation', 1, 'code'),
+('Coverage Details', 'quotation', 1, 'coverage_details'),
+('Quotation Value', 'quotation', 1, 'quotation_value'),
+('Review', 'quotation', 1, 'review'),
+('Version', 'quotation', 1, 'version'),
+('Received Date', 'quotation', 1, 'received_date'),
+('Expiry Date', 'quotation', 1, 'expiry_date'),
+('Total Amount', 'quotation', 1, 'total_amount'),
+( 'Status', 'quotation', 1, 'status'),
+( 'Uploaded Quotation', 'quotation', 1, 'uploaded_quotation'),
+('Quotation Request Link', 'quotation', 1, 'quotation_request_link'),
+( 'Premium', 'quotation', 1, 'premium'),
+( 'Sum Insured', 'quotation', 1, 'sum_insured'),
+( 'Deductible', 'quotation', 1, 'deductible'),
+( 'Exclusions', 'quotation', 1, 'exclusions'),
+('Extra Benefits', 'quotation', 1, 'extra_benefits'),
+( 'Claim Processing', 'quotation', 1, 'claim_processing'),
+( 'Policy Year', 'quotation', 1, 'policy_year'),
+( 'Payment Flexible', 'quotation', 1, 'payment_flexible'),
+( 'Re Request', 'quotation', 1, 're_request'),
+( 'Coverage Details Type', 'quotation', 1, 'coverage_details_type'),
+( 'Coverage Details Name', 'quotation', 1, 'coverage_details_name');

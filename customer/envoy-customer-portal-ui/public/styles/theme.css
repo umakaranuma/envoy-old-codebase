@@ -1,0 +1,195 @@
+@font-face {
+  font-family: 'Poppins';
+  src: url('../fonts/poppins/Poppins-Thin.woff') format('woff');
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: url('../fonts/poppins/Poppins-Light.woff') format('woff');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: url('../fonts/poppins/Poppins-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: url('../fonts/poppins/Poppins-Medium.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: url('../fonts/poppins/Poppins-SemiBold.woff') format('woff');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: url('../fonts/poppins/Poppins-Bold.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: url('../fonts/poppins/Poppins-ExtraBold.woff') format('woff');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: url('../fonts/poppins/Poppins-Black.woff') format('woff');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --body-bg-rgb: 250, 250, 250;
+  --primary-rgb: 8 138 178;
+  --secondary-rgb: 23, 92, 211;
+  --warning-rgb: 217, 45, 32, 1;
+  --info-rgb: 73, 182, 245;
+  --success-rgb: 6, 118, 71;
+  --danger-rgb: 244, 41, 111;
+  --light-rgb: 238, 238, 239;
+  --dark-rgb: 35, 35, 35;
+  --default-rgb: 150, 150, 150;
+  --orange-rgb: 255, 165, 5;
+  --pink-rgb: 231, 145, 188;
+  --teal-rgb: 18, 194, 194;
+  --purple-rgb: 137, 32, 173;
+  --default-body-bg-color: rgb(var(--body-bg-rgb));
+  --primary-color: rgb(var(--primary-rgb));
+  --primary-border: rgb(var(--primary-rgb));
+  --default-font-weight: 400;
+  --default-text-color: #101828;
+  --default-border: #f3f3f3;
+  --default-background: #f7f8f9;
+  --custom-white: #ffffff;
+  --custom-black: #000;
+  --text-muted: #667085;
+  --input-border: #d0d5dd;
+  --form-control-bg: #ffffff;
+  --custom-gray: #eeeeef;
+  --table-border: #eaecf0;
+  --radius-xl: 12px;
+  --radius-md: 8px;
+
+  --primary01: rgba(var(--primary-rgb), 0.1);
+  --primary02: rgba(var(--primary-rgb), 0.2);
+  --primary03: rgba(var(--primary-rgb), 0.3);
+  --primary04: rgba(var(--primary-rgb), 0.4);
+  --primary05: rgba(var(--primary-rgb), 0.5);
+  --primary06: rgba(var(--primary-rgb), 0.6);
+  --primary07: rgba(var(--primary-rgb), 0.7);
+  --primary08: rgba(var(--primary-rgb), 0.8);
+  --primary09: rgba(var(--primary-rgb), 0.9);
+  --primary005: rgba(var(--primary-rgb), 0.05);
+  --menu-bg: #fff;
+  --menu-prime-color: #536485;
+  --menu-border-color: #f3f3f3;
+  --header-bg: #fff;
+  --header-prime-color: #536485;
+  --header-border-color: #f3f3f3;
+  --bootstrap-card-border: #f3f3f3;
+  --list-hover-focus-bg: #f5f6f7;
+  --gray-1: #f9fafb;
+  --gray-2: #f2f4f5;
+  --gray-3: #e6eaeb;
+  --gray-4: #dbdfe1;
+  --gray-5: #949eb7;
+  --gray-6: #7987a1;
+  --gray-7: #4d5875;
+  --gray-8: #383853;
+  --gray-9: #323251;
+  --white-1: rgba(255, 255, 255, 0.1);
+  --white-2: rgba(255, 255, 255, 0.2);
+  --white-3: rgba(255, 255, 255, 0.3);
+  --white-4: rgba(255, 255, 255, 0.4);
+  --white-5: rgba(255, 255, 255, 0.5);
+  --white-6: rgba(255, 255, 255, 0.6);
+  --white-7: rgba(255, 255, 255, 0.7);
+  --white-8: rgba(255, 255, 255, 0.8);
+  --white-9: rgba(255, 255, 255, 0.9);
+  --black-1: rgba(0, 0, 0, 0.1);
+  --black-2: rgba(0, 0, 0, 0.2);
+  --black-3: rgba(0, 0, 0, 0.3);
+  --black-4: rgba(0, 0, 0, 0.4);
+  --black-5: rgba(0, 0, 0, 0.5);
+  --black-6: rgba(0, 0, 0, 0.6);
+  --black-7: rgba(0, 0, 0, 0.7);
+  --black-8: rgba(0, 0, 0, 0.8);
+  --black-9: rgba(0, 0, 0, 0.9);
+}
+
+[data-theme-mode='dark'] {
+  --body-bg-rgb: 0, 16, 39;
+  --custom-white: rgb(var(--body-bg-rgb));
+  --custom-black: #fff;
+  --default-border: rgba(255, 255, 255, 0.1);
+  --default-text-color: rgba(255, 255, 255, 0.7);
+  --light-rgb: 43, 46, 49;
+  --dark-rgb: 240, 245, 248;
+  --default-background: rgba(255, 255, 255, 0.1);
+  --default-body-bg-color: rgb(var(--body-bg-rgb), 0.95);
+  --text-muted: rgba(255, 255, 255, 0.3);
+  --input-border: #313335;
+  --form-control-bg: #232628;
+  --custom-gray: #2b2e31;
+  --table-border: #283f60;
+
+  --menu-bg: rgb(var(--body-bg-rgb));
+  --menu-border-color: rgba(255, 255, 255, 0.1);
+  --menu-prime-color: rgba(255, 255, 255, 0.6);
+  --header-bg: rgb(var(--body-bg-rgb));
+  --header-prime-color: rgba(255, 255, 255, 0.6);
+  --header-border-color: rgba(255, 255, 255, 0.1);
+  --bootstrap-card-border: rgba(255, 255, 255, 0.1);
+  --list-hover-focus-bg: rgba(255, 255, 255, 0.1);
+  --gray-100: #110f0f;
+  --gray-200: #17171c;
+  --gray-300: #393946;
+  --gray-400: #505062;
+  --gray-500: #73738c;
+  --gray-600: #8f8fa3;
+  --gray-700: #ababba;
+  --gray-800: #c7c7d1;
+  --gray-900: #e3e3e8;
+  --white-1: rgba(0, 0, 0, 0.1);
+  --white-2: rgba(0, 0, 0, 0.2);
+  --white-3: rgba(0, 0, 0, 0.3);
+  --white-4: rgba(0, 0, 0, 0.4);
+  --white-5: rgba(0, 0, 0, 0.5);
+  --white-6: rgba(0, 0, 0, 0.6);
+  --white-7: rgba(0, 0, 0, 0.7);
+  --white-8: rgba(0, 0, 0, 0.8);
+  --white-9: rgba(0, 0, 0, 0.9);
+  --black-1: rgba(255, 255, 255, 0.05);
+  --black-2: rgba(255, 255, 255, 0.2);
+  --black-3: rgba(255, 255, 255, 0.3);
+  --black-4: rgba(255, 255, 255, 0.4);
+  --black-5: rgba(255, 255, 255, 0.5);
+  --black-6: rgba(255, 255, 255, 0.6);
+  --black-7: rgba(255, 255, 255, 0.7);
+  --black-8: rgba(255, 255, 255, 0.8);
+  --black-9: rgba(255, 255, 255, 0.9);
+}

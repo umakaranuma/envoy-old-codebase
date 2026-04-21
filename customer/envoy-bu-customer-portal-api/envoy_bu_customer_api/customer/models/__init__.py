@@ -1,0 +1,12 @@
+from .customer_request import CustomerRequest, CustomerRequestVendorProduct, CustomerRequestRiskType
+from .coverage_submission import CustomerRequestCoverage
+from .document_submission import CustomerRequestDocument
+from .policy_holder import PolicyHolder
+from .payment_details import CustomerRequestPaymentDetails
+from .coverage_details import CustomerRequestCoverageDetails
+# from .customer_bank_detail import CustomerBankDetail
+from .customer_bank_details import CustomersBankDetail
+from .customer_payment import CustomerPayment
+from.customer_setting import CustomerSettings
+from .customer_risk_details import CustomerRequestRiskDetails
+

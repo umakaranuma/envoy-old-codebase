@@ -1,0 +1,1547 @@
+{
+  "core": {
+    "backend": {
+      "envoy-bu-core-api\\envoy\\controllers\\services\\NotificationService.py": {
+        "functions": [
+          "generate_notification"
+        ],
+        "classes": [
+          "NotificationService"
+        ]
+      },
+      "envoy-bu-core-api\\envoy\\services\\email_service.py": {
+        "functions": [
+          "build_auth_url",
+          "exchange_code_for_tokens",
+          "fetch_userinfo",
+          "upsert_credential",
+          "is_expired",
+          "refresh_access_token",
+          "ensure_fresh_token",
+          "list_messages",
+          "_add_attachments_to_message",
+          "thread_id_exists_in_gmail",
+          "_add_attachments_to_message",
+          "send_email",
+          "create_draft",
+          "get_thread_messages",
+          "get_history",
+          "enable_gmail_watch",
+          "get_message_details",
+          "get_attachment",
+          "search_messages_by_conversation",
+          "get_thread_replies_by_conversation_code",
+          "_send"
+        ],
+        "classes": []
+      },
+      "envoy-bu-core-api\\envoy\\services\\entity_validator_service.py": {
+        "functions": [
+          "store",
+          "update",
+          "store_flex_field_value",
+          "update_flex_field_value"
+        ],
+        "classes": [
+          "EntityService"
+        ]
+      },
+      "envoy-bu-core-api\\envoy\\services\\s3_presigned_service.py": {
+        "functions": [
+          "_get_client",
+          "generate_presigned_post",
+          "generate_presigned_download_url",
+          "upload_file_to_s3",
+          "upload_stream_from_url",
+          "get_presigned_upload_url"
+        ],
+        "classes": [
+          "S3PresignedService"
+        ]
+      },
+      "envoy-bu-core-api\\services\\ActionService.py": {
+        "functions": [
+          "getAction"
+        ],
+        "classes": [
+          "ActionService"
+        ]
+      },
+      "envoy-bu-core-api\\services\\AuthService.py": {
+        "functions": [
+          "hasAuthority"
+        ],
+        "classes": [
+          "AuthService"
+        ]
+      },
+      "envoy-bu-core-api\\services\\CodeService.py": {
+        "functions": [
+          "createOpporunityCode",
+          "createTaskCode"
+        ],
+        "classes": [
+          "CodeService"
+        ]
+      },
+      "envoy-bu-core-api\\services\\TaskService.py": {
+        "functions": [
+          "saveOppourinityTask"
+        ],
+        "classes": [
+          "TaskService"
+        ]
+      }
+    },
+    "frontend": {
+      "envoy-bu-core-ui\\src\\helpers\\handlers\\cookiesHandler.ts": {
+        "functions": [
+          "encryptedValue",
+          "decryptedValue",
+          "cookieStore",
+          "cookieValue"
+        ]
+      },
+      "envoy-bu-core-ui\\src\\helpers\\handlers\\localStorageHandler.ts": {
+        "functions": [
+          "clearLocalStorage",
+          "storedValues",
+          "decryptedValue",
+          "encryptedValue"
+        ]
+      },
+      "envoy-bu-core-ui\\src\\helpers\\handlers\\validationErrorHandler.ts": {
+        "functions": [
+          "formControls",
+          "errorElements",
+          "elements",
+          "errorElement"
+        ]
+      },
+      "envoy-bu-core-ui\\src\\helpers\\services\\commonService.ts": {
+        "functions": [
+          "diffMinutes",
+          "id",
+          "cleanedNumber",
+          "b",
+          "secretKey",
+          "randomString",
+          "removeCountryCode",
+          "capitalizeFirstLetter",
+          "handleFilterInputChange",
+          "base64DecodedValue",
+          "date",
+          "formatDate",
+          "base64EncryptedValue",
+          "convertToString",
+          "diffHours",
+          "now",
+          "ucFirst",
+          "uniqueServiceProviderIds",
+          "searchParams",
+          "handleFileUpload",
+          "serviceProviderIds",
+          "bigint",
+          "key",
+          "formatPhoneNumber",
+          "isEmptyObj",
+          "g",
+          "numStr",
+          "decryptedValue",
+          "diffSeconds",
+          "capitalizeAllLetters",
+          "isEmpty",
+          "fileExtension",
+          "r",
+          "formData",
+          "fileName",
+          "timestamp",
+          "convertToMap",
+          "formattedInteger",
+          "encryptedValue",
+          "bytes"
+        ]
+      },
+      "envoy-bu-core-ui\\src\\helpers\\services\\dataReducer.ts": {
+        "functions": [
+          "filterReducer",
+          "dataReducer"
+        ]
+      },
+      "envoy-bu-core-ui\\src\\helpers\\services\\helper.ts": {
+        "functions": [
+          "image",
+          "canvas",
+          "ctx"
+        ]
+      },
+      "envoy-bu-core-ui\\src\\helpers\\services\\serverSideServices.ts": {
+        "functions": [
+          "getBottomMenu",
+          "storedThemeMode",
+          "getThemeMode",
+          "getAppMenu"
+        ]
+      },
+      "envoy-bu-core-ui\\src\\helpers\\services\\storageService.ts": {
+        "functions": [
+          "url",
+          "file",
+          "reader",
+          "link",
+          "s3",
+          "key",
+          "blob",
+          "command",
+          "response",
+          "s3formData"
+        ]
+      },
+      "envoy-bu-core-ui\\src\\helpers\\services\\toaster.tsx": {
+        "functions": [
+          "toaster"
+        ]
+      },
+      "envoy-bu-core-ui\\src\\helpers\\services\\lang\\langServerService.ts": {
+        "functions": [
+          "locale",
+          "dictionary",
+          "trans",
+          "importPromises",
+          "modulesArray"
+        ]
+      },
+      "envoy-bu-core-ui\\src\\helpers\\services\\lang\\langService.ts": {
+        "functions": [
+          "modulesArray",
+          "userLocale",
+          "trans"
+        ]
+      }
+    }
+  },
+  "crm": {
+    "backend": {
+      "envoy-bu-crm-api\\envoy_bu_crm_api\\quotation\\services\\data_expoter.py": {
+        "functions": [
+          "response",
+          "__init__",
+          "export_html_to_pdf",
+          "sanitize"
+        ],
+        "classes": [
+          "ResponseService",
+          "ExportToPdf",
+          "HtmlSanitizer"
+        ]
+      },
+      "envoy-bu-crm-api\\envoy_bu_crm_api\\quotation\\services\\document_cdn_service.py": {
+        "functions": [
+          "process_documents_for_email",
+          "_process_single_document",
+          "upload_document_to_s3_and_get_cdn"
+        ],
+        "classes": [
+          "DocumentCDNService"
+        ]
+      },
+      "envoy-bu-crm-api\\envoy_bu_crm_api\\quotation\\services\\excell_exporter.py": {
+        "functions": [
+          "__init__",
+          "export"
+        ],
+        "classes": [
+          "SQLToExcelExporter"
+        ]
+      },
+      "envoy-bu-crm-api\\envoy_bu_crm_api\\quotation\\services\\mail_servise.py": {
+        "functions": [
+          "build_auth_url",
+          "exchange_code_for_tokens",
+          "fetch_userinfo",
+          "upsert_credential",
+          "is_expired",
+          "refresh_access_token",
+          "ensure_fresh_token",
+          "list_messages",
+          "_add_attachments_to_message",
+          "send_email",
+          "create_draft",
+          "get_thread_messages",
+          "get_message_details",
+          "get_attachment",
+          "search_messages_by_conversation"
+        ],
+        "classes": []
+      },
+      "envoy-bu-crm-api\\envoy_bu_crm_api\\quotation\\services\\NotificationService.py": {
+        "functions": [
+          "generate_notification",
+          "send_approval_notification"
+        ],
+        "classes": [
+          "NotificationService"
+        ]
+      },
+      "envoy-bu-crm-api\\envoy_bu_crm_api\\quotation\\services\\s3_presigned_service.py": {
+        "functions": [
+          "_get_client",
+          "generate_presigned_post",
+          "generate_presigned_download_url",
+          "upload_file_to_s3",
+          "upload_stream_from_url",
+          "get_presigned_upload_url"
+        ],
+        "classes": [
+          "S3PresignedService"
+        ]
+      },
+      "envoy-bu-crm-api\\envoy_bu_crm_api\\quotation\\services\\s3_uploader.py": {
+        "functions": [
+          "_get_session",
+          "_client",
+          "upload_file",
+          "upload_stream_from_url"
+        ],
+        "classes": [
+          "S3UploadService"
+        ]
+      },
+      "envoy-bu-crm-api\\envoy_bu_crm_api\\quotation\\services\\send_mail_service.py": {
+        "functions": [
+          "response",
+          "__init__",
+          "send_email"
+        ],
+        "classes": [
+          "EmailItem",
+          "ResponseService",
+          "SendMail"
+        ]
+      },
+      "envoy-bu-crm-api\\services\\ActionService.py": {
+        "functions": [
+          "getAction"
+        ],
+        "classes": [
+          "ActionService"
+        ]
+      },
+      "envoy-bu-crm-api\\services\\ActivityService.py": {
+        "functions": [
+          "store_activity"
+        ],
+        "classes": [
+          "ActivityService"
+        ]
+      },
+      "envoy-bu-crm-api\\services\\AuthService.py": {
+        "functions": [
+          "hasAuthority"
+        ],
+        "classes": [
+          "AuthService"
+        ]
+      },
+      "envoy-bu-crm-api\\services\\CodeService.py": {
+        "functions": [
+          "createOpporunityCode",
+          "createTaskCode"
+        ],
+        "classes": [
+          "CodeService"
+        ]
+      },
+      "envoy-bu-crm-api\\services\\EntityService.py": {
+        "functions": [
+          "store",
+          "get_entity_with_notes_and_docs"
+        ],
+        "classes": [
+          "EntityService"
+        ]
+      },
+      "envoy-bu-crm-api\\services\\NullableService.py": {
+        "functions": [
+          "clean_nullable_fields"
+        ],
+        "classes": [
+          "RequestPreprocessor"
+        ]
+      },
+      "envoy-bu-crm-api\\services\\SettingService.py": {
+        "functions": [
+          "getSettingKeyValue"
+        ],
+        "classes": [
+          "SettingService"
+        ]
+      },
+      "envoy-bu-crm-api\\services\\TaskService.py": {
+        "functions": [
+          "saveOppourinityTask"
+        ],
+        "classes": [
+          "TaskService"
+        ]
+      },
+      "envoy-bu-crm-api\\services\\TemplateService.py": {
+        "functions": [
+          "get_template_detail"
+        ],
+        "classes": []
+      }
+    },
+    "frontend": {
+      "envoy-crm-ui\\src\\helpers\\handlers\\cookiesHandler.ts": {
+        "functions": [
+          "encryptedValue",
+          "decryptedValue",
+          "cookieStore",
+          "cookieValue"
+        ]
+      },
+      "envoy-crm-ui\\src\\helpers\\handlers\\localStorageHandler.ts": {
+        "functions": [
+          "clearLocalStorage",
+          "storedValues",
+          "decryptedValue",
+          "encryptedValue"
+        ]
+      },
+      "envoy-crm-ui\\src\\helpers\\handlers\\validationErrorHandler.ts": {
+        "functions": [
+          "formControls",
+          "errorElements",
+          "elements",
+          "errorElement"
+        ]
+      },
+      "envoy-crm-ui\\src\\helpers\\services\\commonService.ts": {
+        "functions": [
+          "id",
+          "b",
+          "secretKey",
+          "randomString",
+          "handleFilterInputChange",
+          "base64DecodedValue",
+          "date",
+          "formatDate",
+          "base64EncryptedValue",
+          "convertToString",
+          "day",
+          "now",
+          "ucFirst",
+          "uniqueServiceProviderIds",
+          "searchParams",
+          "handleFileUpload",
+          "serviceProviderIds",
+          "bigint",
+          "ampm",
+          "key",
+          "getCurrentDate",
+          "isEmptyObj",
+          "month",
+          "fixedIso",
+          "year",
+          "g",
+          "numStr",
+          "decryptedValue",
+          "capitalizeAllLetters",
+          "isEmpty",
+          "fileExtension",
+          "r",
+          "formData",
+          "fileName",
+          "minutes",
+          "timestamp",
+          "convertToMap",
+          "formattedInteger",
+          "encryptedValue",
+          "bytes"
+        ]
+      },
+      "envoy-crm-ui\\src\\helpers\\services\\dataReducer.ts": {
+        "functions": [
+          "filterReducer",
+          "dataReducer"
+        ]
+      },
+      "envoy-crm-ui\\src\\helpers\\services\\serverSideServices.ts": {
+        "functions": [
+          "formattedString",
+          "storedThemeMode",
+          "withoutTemplateLiterals",
+          "getThemeMode"
+        ]
+      },
+      "envoy-crm-ui\\src\\helpers\\services\\storageService.ts": {
+        "functions": [
+          "url",
+          "file",
+          "s3",
+          "key",
+          "command",
+          "response",
+          "s3formData"
+        ]
+      },
+      "envoy-crm-ui\\src\\helpers\\services\\toaster.tsx": {
+        "functions": [
+          "toaster"
+        ]
+      },
+      "envoy-crm-ui\\src\\helpers\\services\\userService.ts": {
+        "functions": [
+          "userPermissions",
+          "user",
+          "getCurrentUserName",
+          "getUserProperty",
+          "getCurrentUserRole",
+          "getCurrentUser",
+          "nameParts",
+          "getCurrentUserEntityId",
+          "isLoggedIn",
+          "permissions",
+          "hasAnyPermission",
+          "hasAllPermissions",
+          "getUserInitials",
+          "hasPermission",
+          "isUserActive",
+          "getCurrentUserPermissions",
+          "userData",
+          "getCurrentUserEmail",
+          "getDisplayName",
+          "getCurrentUserId",
+          "getCurrentUserAvatar"
+        ]
+      },
+      "envoy-crm-ui\\src\\helpers\\services\\lang\\langServerService.ts": {
+        "functions": [
+          "locale",
+          "dictionary",
+          "trans",
+          "importPromises",
+          "modulesArray"
+        ]
+      },
+      "envoy-crm-ui\\src\\helpers\\services\\lang\\langService.ts": {
+        "functions": [
+          "modulesArray",
+          "userLocale",
+          "trans"
+        ]
+      }
+    }
+  },
+  "customer": {
+    "backend": {
+      "envoy-bu-customer-portal-api\\services\\ActionService.py": {
+        "functions": [
+          "getAction"
+        ],
+        "classes": [
+          "ActionService"
+        ]
+      },
+      "envoy-bu-customer-portal-api\\services\\ActivityService.py": {
+        "functions": [
+          "store_activity"
+        ],
+        "classes": [
+          "ActivityService"
+        ]
+      },
+      "envoy-bu-customer-portal-api\\services\\AuthService.py": {
+        "functions": [
+          "hasAuthority"
+        ],
+        "classes": [
+          "AuthService"
+        ]
+      },
+      "envoy-bu-customer-portal-api\\services\\CodeService.py": {
+        "functions": [
+          "createOpporunityCode",
+          "createTaskCode"
+        ],
+        "classes": [
+          "CodeService"
+        ]
+      },
+      "envoy-bu-customer-portal-api\\services\\EntityService.py": {
+        "functions": [
+          "store",
+          "get_entity_with_notes_and_docs"
+        ],
+        "classes": [
+          "EntityService"
+        ]
+      },
+      "envoy-bu-customer-portal-api\\services\\exporter.py": {
+        "functions": [
+          "__init__",
+          "export"
+        ],
+        "classes": [
+          "SQLToExcelExporter"
+        ]
+      },
+      "envoy-bu-customer-portal-api\\services\\NotificationService.py": {
+        "functions": [
+          "generate_notification"
+        ],
+        "classes": [
+          "NotificationService"
+        ]
+      },
+      "envoy-bu-customer-portal-api\\services\\send_mail_services.py": {
+        "functions": [
+          "response",
+          "__init__",
+          "send_email"
+        ],
+        "classes": [
+          "EmailItem",
+          "ResponseService",
+          "SendMail"
+        ]
+      },
+      "envoy-bu-customer-portal-api\\services\\SettingService.py": {
+        "functions": [
+          "getSettingKeyValue"
+        ],
+        "classes": [
+          "SettingService"
+        ]
+      },
+      "envoy-bu-customer-portal-api\\services\\TaskService.py": {
+        "functions": [
+          "saveOppourinityTask"
+        ],
+        "classes": [
+          "TaskService"
+        ]
+      }
+    },
+    "frontend": {
+      "envoy-customer-portal-ui\\src\\helpers\\handlers\\cookiesHandler.ts": {
+        "functions": [
+          "encryptedValue",
+          "decryptedValue",
+          "cookieStore",
+          "cookieValue"
+        ]
+      },
+      "envoy-customer-portal-ui\\src\\helpers\\handlers\\localStorageHandler.ts": {
+        "functions": [
+          "clearLocalStorage",
+          "storedValues",
+          "decryptedValue",
+          "encryptedValue"
+        ]
+      },
+      "envoy-customer-portal-ui\\src\\helpers\\handlers\\validationErrorHandler.ts": {
+        "functions": [
+          "formControls",
+          "errorElements",
+          "elements",
+          "errorElement"
+        ]
+      },
+      "envoy-customer-portal-ui\\src\\helpers\\services\\commonService.ts": {
+        "functions": [
+          "diffMinutes",
+          "id",
+          "b",
+          "secretKey",
+          "handleFilterInputChange",
+          "base64DecodedValue",
+          "date",
+          "formatDate",
+          "base64EncryptedValue",
+          "convertToString",
+          "diffHours",
+          "now",
+          "ucFirst",
+          "uniqueServiceProviderIds",
+          "searchParams",
+          "getTimeFromTimestamps",
+          "serviceProviderIds",
+          "bigint",
+          "isEmptyObj",
+          "g",
+          "numStr",
+          "decryptedValue",
+          "diffSeconds",
+          "capitalizeAllLetters",
+          "hours",
+          "r",
+          "minutes",
+          "convertToMap",
+          "formattedInteger",
+          "encryptedValue",
+          "bytes",
+          "formatSnakeCaseToTitle"
+        ]
+      },
+      "envoy-customer-portal-ui\\src\\helpers\\services\\dataReducer.ts": {
+        "functions": [
+          "filterReducer",
+          "dataReducer"
+        ]
+      },
+      "envoy-customer-portal-ui\\src\\helpers\\services\\serverSideServices.ts": {
+        "functions": [
+          "storedThemeMode",
+          "getThemeMode"
+        ]
+      },
+      "envoy-customer-portal-ui\\src\\helpers\\services\\storageService.ts": {
+        "functions": [
+          "url",
+          "file",
+          "s3",
+          "key",
+          "command",
+          "response",
+          "s3formData"
+        ]
+      },
+      "envoy-customer-portal-ui\\src\\helpers\\services\\toaster.tsx": {
+        "functions": [
+          "toaster"
+        ]
+      },
+      "envoy-customer-portal-ui\\src\\helpers\\services\\lang\\langServerService.ts": {
+        "functions": [
+          "locale",
+          "dictionary",
+          "trans",
+          "importPromises",
+          "modulesArray"
+        ]
+      },
+      "envoy-customer-portal-ui\\src\\helpers\\services\\lang\\langService.ts": {
+        "functions": [
+          "modulesArray",
+          "userLocale",
+          "trans"
+        ]
+      }
+    }
+  },
+  "finance": {
+    "backend": {
+      "envoy-bu-report-api\\envoy_bu_report_api\\reports\\services\\data_expoter.py": {
+        "functions": [
+          "response",
+          "__init__",
+          "export_html_to_pdf",
+          "__init__",
+          "export_html_to_csv",
+          "_html_to_json",
+          "__init__",
+          "export_html_to_excel",
+          "_html_to_json",
+          "sanitize",
+          "__init__",
+          "export"
+        ],
+        "classes": [
+          "ResponseService",
+          "ExportToPdf",
+          "ExportToCsv",
+          "ExportToExcel",
+          "HtmlSanitizer",
+          "SQLToExcelExporter"
+        ]
+      },
+      "envoy-bu-report-api\\envoy_bu_report_api\\reports\\services\\EntityService.py": {
+        "functions": [
+          "store_entity",
+          "get_entity_with_notes_and_docs"
+        ],
+        "classes": [
+          "EntityService"
+        ]
+      },
+      "envoy-bu-report-api\\envoy_bu_report_api\\reports\\services\\response_service.py": {
+        "functions": [
+          "response"
+        ],
+        "classes": [
+          "ResponseService"
+        ]
+      },
+      "envoy-bu-report-api\\envoy_bu_report_api\\reports\\services\\s3_service.py": {
+        "functions": [
+          "_get_client",
+          "generate_presigned_post",
+          "generate_presigned_download_url",
+          "upload_file_to_s3",
+          "upload_stream_from_url",
+          "get_presigned_upload_url"
+        ],
+        "classes": [
+          "S3PresignedService"
+        ]
+      },
+      "envoy-bu-report-api\\envoy_bu_report_api\\reports\\services\\sql_generator_service.py": {
+        "functions": [
+          "generate_from_input"
+        ],
+        "classes": [
+          "SQLGeneratorService"
+        ]
+      },
+      "envoy-bu-report-api\\envoy_bu_report_api\\reports\\services\\sql_helper_service.py": {
+        "functions": [
+          "remove_skipped_columns_from_sql",
+          "apply_sort",
+          "build_chart_where_clause",
+          "add_where_condition",
+          "sanitize_json_data",
+          "replace_select"
+        ],
+        "classes": [
+          "SqlHelperService"
+        ]
+      },
+      "envoy-bu-report-api\\services\\ActionService.py": {
+        "functions": [
+          "getAction"
+        ],
+        "classes": [
+          "ActionService"
+        ]
+      },
+      "envoy-bu-report-api\\services\\ActivityService.py": {
+        "functions": [
+          "store_activity"
+        ],
+        "classes": [
+          "ActivityService"
+        ]
+      },
+      "envoy-bu-report-api\\services\\AuthService.py": {
+        "functions": [
+          "hasAuthority"
+        ],
+        "classes": [
+          "AuthService"
+        ]
+      },
+      "envoy-bu-report-api\\services\\CodeService.py": {
+        "functions": [
+          "createOpporunityCode",
+          "createTaskCode"
+        ],
+        "classes": [
+          "CodeService"
+        ]
+      },
+      "envoy-bu-report-api\\services\\EntityService.py": {
+        "functions": [
+          "store_entity",
+          "get_entity_with_notes_and_docs"
+        ],
+        "classes": [
+          "EntityService"
+        ]
+      },
+      "envoy-bu-report-api\\services\\send_mail_services.py": {
+        "functions": [
+          "response",
+          "__init__",
+          "send_email"
+        ],
+        "classes": [
+          "EmailItem",
+          "ResponseService",
+          "SendMail"
+        ]
+      },
+      "envoy-bu-report-api\\services\\SettingService.py": {
+        "functions": [
+          "getSettingKeyValue"
+        ],
+        "classes": [
+          "SettingService"
+        ]
+      },
+      "envoy-bu-report-api\\services\\TaskService.py": {
+        "functions": [
+          "saveOppourinityTask"
+        ],
+        "classes": [
+          "TaskService"
+        ]
+      }
+    },
+    "frontend": {
+      "envoy-finance-ui\\src\\helpers\\handlers\\cookiesHandler.ts": {
+        "functions": [
+          "encryptedValue",
+          "decryptedValue",
+          "cookieStore",
+          "cookieValue"
+        ]
+      },
+      "envoy-finance-ui\\src\\helpers\\handlers\\indexWiseErrorHandler.ts": {
+        "functions": [
+          "numericKeys",
+          "handleIndexWiseValidationErrors",
+          "groupedEntries",
+          "handle417IndexWiseErrors",
+          "handleDuplicateErrorsWithGroups",
+          "fieldErrors",
+          "index",
+          "fieldName",
+          "errorData"
+        ]
+      },
+      "envoy-finance-ui\\src\\helpers\\handlers\\localStorageHandler.ts": {
+        "functions": [
+          "clearLocalStorage",
+          "storedValues",
+          "decryptedValue",
+          "encryptedValue"
+        ]
+      },
+      "envoy-finance-ui\\src\\helpers\\handlers\\validationErrorHandler.ts": {
+        "functions": [
+          "formControls",
+          "errorElements",
+          "elements",
+          "errorElement"
+        ]
+      },
+      "envoy-finance-ui\\src\\helpers\\services\\commonService.ts": {
+        "functions": [
+          "id",
+          "b",
+          "secretKey",
+          "randomString",
+          "handleFilterInputChange",
+          "bodyRows",
+          "base64DecodedValue",
+          "date",
+          "formatDate",
+          "base64EncryptedValue",
+          "convertToString",
+          "day",
+          "now",
+          "ucFirst",
+          "uniqueServiceProviderIds",
+          "searchParams",
+          "getTimeFromTimestamps",
+          "handleFileUpload",
+          "serviceProviderIds",
+          "bigint",
+          "key",
+          "getCurrentDate",
+          "isEmptyObj",
+          "month",
+          "year",
+          "g",
+          "numStr",
+          "decryptedValue",
+          "capitalizeAllLetters",
+          "isEmpty",
+          "hours",
+          "headers",
+          "fileExtension",
+          "r",
+          "headerRow",
+          "formData",
+          "fileName",
+          "minutes",
+          "timestamp",
+          "convertToMap",
+          "formattedInteger",
+          "encryptedValue",
+          "bytes"
+        ]
+      },
+      "envoy-finance-ui\\src\\helpers\\services\\dataReducer.ts": {
+        "functions": [
+          "filterReducer",
+          "dataReducer"
+        ]
+      },
+      "envoy-finance-ui\\src\\helpers\\services\\excelUploadCommonService.ts": {
+        "functions": [
+          "formData",
+          "getMappingPreview",
+          "uploadExcelToJson",
+          "result",
+          "submitMapping",
+          "response"
+        ]
+      },
+      "envoy-finance-ui\\src\\helpers\\services\\formatToTitleCase.ts": {
+        "functions": [
+          "formatToTitleCase"
+        ]
+      },
+      "envoy-finance-ui\\src\\helpers\\services\\serverSideServices.ts": {
+        "functions": [
+          "storedThemeMode",
+          "getThemeMode"
+        ]
+      },
+      "envoy-finance-ui\\src\\helpers\\services\\storageService.ts": {
+        "functions": [
+          "url",
+          "file",
+          "s3",
+          "key",
+          "command",
+          "response",
+          "s3formData"
+        ]
+      },
+      "envoy-finance-ui\\src\\helpers\\services\\toaster.tsx": {
+        "functions": [
+          "toaster"
+        ]
+      },
+      "envoy-finance-ui\\src\\helpers\\services\\lang\\langServerService.ts": {
+        "functions": [
+          "locale",
+          "dictionary",
+          "trans",
+          "importPromises",
+          "modulesArray"
+        ]
+      },
+      "envoy-finance-ui\\src\\helpers\\services\\lang\\langService.ts": {
+        "functions": [
+          "modulesArray",
+          "userLocale",
+          "trans"
+        ]
+      }
+    }
+  },
+  "policy": {
+    "backend": {
+      "envoy-bu-policy-api\\envoy_bu_policy_api\\finance\\controllers\\utils\\accounting_utils.py": {
+        "functions": [
+          "generate_chart_of_account",
+          "generate_journal_entry",
+          "generate_general_ledger_entry",
+          "create_accounting_entries_for_payment"
+        ],
+        "classes": []
+      },
+      "envoy-bu-policy-api\\envoy_bu_policy_api\\finance\\controllers\\utils\\agent_commission_payment_journal_utils.py": {
+        "functions": [
+          "create_agent_commission_payment_journal_entries"
+        ],
+        "classes": []
+      },
+      "envoy-bu-policy-api\\envoy_bu_policy_api\\finance\\controllers\\utils\\brokerage_commission_settlement_journal_utils.py": {
+        "functions": [
+          "create_brokerage_commission_settlement_journal_entries"
+        ],
+        "classes": []
+      },
+      "envoy-bu-policy-api\\envoy_bu_policy_api\\finance\\controllers\\utils\\commission_status_utils.py": {
+        "functions": [
+          "ensure_commission_statuses_exist",
+          "calculate_brokerage_commission_status",
+          "calculate_agent_commission_status",
+          "update_brokerage_commission_status",
+          "update_agent_commission_status",
+          "format_commission_status_with_metadata"
+        ],
+        "classes": []
+      },
+      "envoy-bu-policy-api\\envoy_bu_policy_api\\finance\\controllers\\utils\\evaluate_incentive_logic.py": {
+        "functions": [
+          "evaluate_conditions",
+          "evaluate_single_condition",
+          "evaluate_filter_field",
+          "_detect_product_filter",
+          "evaluate_operator"
+        ],
+        "classes": []
+      },
+      "envoy-bu-policy-api\\envoy_bu_policy_api\\finance\\controllers\\utils\\general_ledger_utils.py": {
+        "functions": [
+          "create_general_ledger_entry",
+          "create_invoice_general_ledger",
+          "create_payment_general_ledger",
+          "create_service_render_general_ledger",
+          "create_commission_general_ledger"
+        ],
+        "classes": []
+      },
+      "envoy-bu-policy-api\\envoy_bu_policy_api\\finance\\controllers\\utils\\incentive_utils.py": {
+        "functions": [
+          "evaluate_condition",
+          "get_periods_for_setup",
+          "convert_decimal_to_float",
+          "find_agents_for_period",
+          "extract_fields_from_conditions",
+          "extract_role_condition_from_conditions",
+          "extract_all_role_conditions_from_conditions",
+          "extract_all_team_role_conditions_from_conditions",
+          "is_field_reference",
+          "is_team_based_incentive",
+          "get_team_members_for_agent",
+          "check_all_team_members_achieved_target",
+          "get_sales_agents_for_account_manager",
+          "calculate_collective_commission_for_team",
+          "aggregate_performance_data",
+          "aggregate_performance_data_bulk",
+          "evaluate_single_condition",
+          "calculate_incentive_reward",
+          "generate_incentive_setup_code",
+          "generate_incentive_code",
+          "save_incentive_record",
+          "incentive_record_exists",
+          "_check_column_exists",
+          "incentive_record_exists_for_agent_period",
+          "query_policies",
+          "check_incentive_table_structure",
+          "test_database_connection",
+          "create_incentive_table_simple",
+          "cleanup_duplicate_incentives",
+          "incentive_record_exists_for_period",
+          "get_registry_for_field",
+          "check_for_achievement_percentage",
+          "check_for_achievement_percentage"
+        ],
+        "classes": []
+      },
+      "envoy-bu-policy-api\\envoy_bu_policy_api\\finance\\controllers\\utils\\invoice_product_fix_utils.py": {
+        "functions": [
+          "fix_invoice_product_mappings",
+          "get_invoices_with_invalid_product_ids",
+          "fix_single_invoice_product_mapping",
+          "validate_invoice_product_mappings",
+          "get_product_mapping_statistics"
+        ],
+        "classes": []
+      },
+      "envoy-bu-policy-api\\envoy_bu_policy_api\\finance\\controllers\\utils\\invoice_utils.py": {
+        "functions": [
+          "ensure_finance_invoice_statuses_exist",
+          "get_finance_invoice_status_id",
+          "get_or_create_finance_invoice_status",
+          "update_existing_finance_invoices_with_status",
+          "update_invoice_status_after_payment",
+          "cleanup_complex_status_names",
+          "safe_decimal",
+          "safe_int",
+          "generate_invoice_id",
+          "generate_invoice_for_issued_policy",
+          "generate_invoice_for_endorsement",
+          "update_invoice_payment_details"
+        ],
+        "classes": []
+      },
+      "envoy-bu-policy-api\\envoy_bu_policy_api\\finance\\controllers\\utils\\journal_entry_utils.py": {
+        "functions": [
+          "create_journal_entries",
+          "get_account_number_by_type",
+          "create_commission_journal_entries_for_commissions",
+          "create_commission_deduction_journal_entries"
+        ],
+        "classes": []
+      },
+      "envoy-bu-policy-api\\envoy_bu_policy_api\\finance\\controllers\\utils\\mapping_service.py": {
+        "functions": [
+          "mapping_attributes_service"
+        ],
+        "classes": []
+      },
+      "envoy-bu-policy-api\\envoy_bu_policy_api\\finance\\controllers\\utils\\NotificationService.py": {
+        "functions": [
+          "generate_notification",
+          "generate_detailed_notification",
+          "format_policy_issued_message",
+          "format_payment_due_message",
+          "format_payment_reminder_message",
+          "format_renewal_reminder_message",
+          "format_payment_confirmation_message",
+          "format_claim_submitted_message",
+          "format_claim_status_change_message",
+          "format_claim_settled_message",
+          "format_endorsement_message",
+          "format_policy_expiration_warning_message"
+        ],
+        "classes": [
+          "NotificationService"
+        ]
+      },
+      "envoy-bu-policy-api\\envoy_bu_policy_api\\finance\\controllers\\utils\\overdue_invoice_utils.py": {
+        "functions": [
+          "get_overdue_status_id",
+          "bulk_update_overdue_invoices",
+          "get_overdue_invoices_sql_queries",
+          "run_overdue_check"
+        ],
+        "classes": []
+      },
+      "envoy-bu-policy-api\\envoy_bu_policy_api\\finance\\controllers\\utils\\product_mapping_utils.py": {
+        "functions": [
+          "resolve_native_product_id",
+          "find_commission_matched_product",
+          "find_fallback_commission_product",
+          "validate_commission_setup_exists",
+          "get_product_mapping_summary"
+        ],
+        "classes": []
+      },
+      "envoy-bu-policy-api\\envoy_bu_policy_api\\finance\\controllers\\utils\\service.py": {
+        "functions": [
+          "get_commission_setup_service",
+          "status_update_service",
+          "set_invoice_status",
+          "initialize_invoice_statuses"
+        ],
+        "classes": []
+      },
+      "envoy-bu-policy-api\\envoy_bu_policy_api\\finance\\controllers\\utils\\service_render_journal_utils.py": {
+        "functions": [
+          "create_service_render_journal_entries",
+          "create_service_render_payment_journal_entries"
+        ],
+        "classes": []
+      },
+      "envoy-bu-policy-api\\envoy_bu_policy_api\\finance\\controllers\\utils\\commission\\base_calculator.py": {
+        "functions": [
+          "_get_agent_commission_config",
+          "get_commission_calculation_mode",
+          "calculate_commission_base_amount"
+        ],
+        "classes": []
+      },
+      "envoy-bu-policy-api\\envoy_bu_policy_api\\finance\\controllers\\utils\\commission\\commission_journal_utils.py": {
+        "functions": [
+          "create_brokerage_commission_journal_entry",
+          "create_agent_commission_journal_entry"
+        ],
+        "classes": []
+      },
+      "envoy-bu-policy-api\\envoy_bu_policy_api\\finance\\controllers\\utils\\commission\\commission_pay_utils.py": {
+        "functions": [
+          "update_revenue_realized",
+          "update_agent_commission_revenue_realized_for_brokerage_payment"
+        ],
+        "classes": []
+      },
+      "envoy-bu-policy-api\\envoy_bu_policy_api\\finance\\controllers\\utils\\commission\\deduction_utils.py": {
+        "functions": [
+          "safe_decimal",
+          "get_invoices_for_policy_ordered",
+          "get_commission_records_for_invoice",
+          "calculate_commission_outstanding",
+          "find_original_new_business_commission",
+          "calculate_commission_deduction",
+          "apply_commission_deduction",
+          "store_commission_deductible_only",
+          "handle_commission_deduction",
+          "update_premium_commission_deductible_for_payment"
+        ],
+        "classes": []
+      },
+      "envoy-bu-policy-api\\envoy_bu_policy_api\\finance\\controllers\\utils\\commission\\main.py": {
+        "functions": [
+          "calculate_commission_amounts"
+        ],
+        "classes": []
+      },
+      "envoy-bu-policy-api\\envoy_bu_policy_api\\finance\\controllers\\utils\\commission\\payment_handler.py": {
+        "functions": [
+          "update_commission_for_payment"
+        ],
+        "classes": []
+      },
+      "envoy-bu-policy-api\\services\\ActionService.py": {
+        "functions": [
+          "getAction"
+        ],
+        "classes": [
+          "ActionService"
+        ]
+      },
+      "envoy-bu-policy-api\\services\\ActivityService.py": {
+        "functions": [
+          "store_activity"
+        ],
+        "classes": [
+          "ActivityService"
+        ]
+      },
+      "envoy-bu-policy-api\\services\\AuthService.py": {
+        "functions": [
+          "hasAuthority"
+        ],
+        "classes": [
+          "AuthService"
+        ]
+      },
+      "envoy-bu-policy-api\\services\\CodeService.py": {
+        "functions": [
+          "createOpporunityCode",
+          "createTaskCode"
+        ],
+        "classes": [
+          "CodeService"
+        ]
+      },
+      "envoy-bu-policy-api\\services\\EntityService.py": {
+        "functions": [
+          "store",
+          "get_entity_with_notes_and_docs"
+        ],
+        "classes": [
+          "EntityService"
+        ]
+      },
+      "envoy-bu-policy-api\\services\\excel_exporter.py": {
+        "functions": [
+          "__init__",
+          "export"
+        ],
+        "classes": [
+          "SQLToExcelExporter"
+        ]
+      },
+      "envoy-bu-policy-api\\services\\pdf_download_service.py": {
+        "functions": [
+          "__init__",
+          "generate_pdf",
+          "_format_value",
+          "_generate_fallback_pdf",
+          "_generate_error_response"
+        ],
+        "classes": [
+          "PDFDownloadService"
+        ]
+      },
+      "envoy-bu-policy-api\\services\\Querybuilderservice.py": {
+        "functions": [
+          "__init__",
+          "select",
+          "leftJoin",
+          "where",
+          "where_group",
+          "orWhere",
+          "whereIn",
+          "whereNotIn",
+          "whereBetween",
+          "whereLike",
+          "whereNull",
+          "whereNotNull",
+          "where_raw",
+          "count",
+          "max",
+          "min",
+          "avg",
+          "aggregate",
+          "pluck",
+          "orderBy",
+          "get",
+          "first",
+          "groupBy",
+          "apply_conditions",
+          "_apply_filter_condition",
+          "paginate",
+          "build_query",
+          "execute",
+          "insert",
+          "insertGetId",
+          "update",
+          "delete",
+          "get_table_columns",
+          "validate_table_exists",
+          "validate_column_exists",
+          "validate_table_and_columns"
+        ],
+        "classes": [
+          "QueryBuilderService"
+        ]
+      },
+      "envoy-bu-policy-api\\services\\s3_presigned_service.py": {
+        "functions": [
+          "_get_client",
+          "generate_presigned_post",
+          "generate_presigned_download_url",
+          "upload_file_to_s3",
+          "upload_stream_from_url",
+          "get_presigned_upload_url"
+        ],
+        "classes": [
+          "S3PresignedService"
+        ]
+      },
+      "envoy-bu-policy-api\\services\\send_mail_services.py": {
+        "functions": [
+          "response",
+          "__init__",
+          "send_email"
+        ],
+        "classes": [
+          "EmailItem",
+          "ResponseService",
+          "SendMail"
+        ]
+      },
+      "envoy-bu-policy-api\\services\\SettingService.py": {
+        "functions": [
+          "getSettingKeyValue"
+        ],
+        "classes": [
+          "SettingService"
+        ]
+      },
+      "envoy-bu-policy-api\\services\\TaskService.py": {
+        "functions": [
+          "saveOppourinityTask"
+        ],
+        "classes": [
+          "TaskService"
+        ]
+      },
+      "envoy-bu-policy-api\\services\\ValidatorService.py": {
+        "functions": [
+          "validate",
+          "_should_skip_field",
+          "_is_empty",
+          "_add_error",
+          "get_model_class",
+          "table_exists",
+          "record_exists",
+          "_get_item_rules",
+          "validate_item",
+          "_is_valid_email"
+        ],
+        "classes": [
+          "ValidatorService"
+        ]
+      }
+    },
+    "frontend": {
+      "envoy-bu-policy-ui\\src\\helpers\\handlers\\cookiesHandler.ts": {
+        "functions": [
+          "encryptedValue",
+          "decryptedValue",
+          "cookieStore",
+          "cookieValue"
+        ]
+      },
+      "envoy-bu-policy-ui\\src\\helpers\\handlers\\localStorageHandler.ts": {
+        "functions": [
+          "clearLocalStorage",
+          "storedValues",
+          "decryptedValue",
+          "encryptedValue"
+        ]
+      },
+      "envoy-bu-policy-ui\\src\\helpers\\handlers\\validationErrorHandler.ts": {
+        "functions": [
+          "formControls",
+          "errorElements",
+          "elements",
+          "errorElement"
+        ]
+      },
+      "envoy-bu-policy-ui\\src\\helpers\\services\\commonService.ts": {
+        "functions": [
+          "id",
+          "b",
+          "secretKey",
+          "randomString",
+          "capitalizeFirstLetter",
+          "handleFilterInputChange",
+          "base64DecodedValue",
+          "date",
+          "formatDate",
+          "base64EncryptedValue",
+          "convertToString",
+          "day",
+          "ucFirst",
+          "uniqueServiceProviderIds",
+          "searchParams",
+          "handleFileUpload",
+          "serviceProviderIds",
+          "bigint",
+          "ampm",
+          "key",
+          "isEmptyObj",
+          "month",
+          "fixedIso",
+          "year",
+          "g",
+          "numStr",
+          "decryptedValue",
+          "capitalizeAllLetters",
+          "isEmpty",
+          "fileExtension",
+          "r",
+          "formData",
+          "fileName",
+          "minutes",
+          "timestamp",
+          "convertToMap",
+          "formattedInteger",
+          "encryptedValue",
+          "bytes"
+        ]
+      },
+      "envoy-bu-policy-ui\\src\\helpers\\services\\dataReducer.ts": {
+        "functions": [
+          "filterReducer",
+          "dataReducer"
+        ]
+      },
+      "envoy-bu-policy-ui\\src\\helpers\\services\\serverSideServices.ts": {
+        "functions": [
+          "storedThemeMode",
+          "getThemeMode"
+        ]
+      },
+      "envoy-bu-policy-ui\\src\\helpers\\services\\storageService.ts": {
+        "functions": [
+          "url",
+          "file",
+          "reader",
+          "link",
+          "s3",
+          "key",
+          "blob",
+          "command",
+          "response",
+          "s3formData"
+        ]
+      },
+      "envoy-bu-policy-ui\\src\\helpers\\services\\toaster.tsx": {
+        "functions": [
+          "toaster"
+        ]
+      },
+      "envoy-bu-policy-ui\\src\\helpers\\services\\lang\\langServerService.ts": {
+        "functions": [
+          "locale",
+          "dictionary",
+          "trans",
+          "importPromises",
+          "modulesArray"
+        ]
+      },
+      "envoy-bu-policy-ui\\src\\helpers\\services\\lang\\langService.ts": {
+        "functions": [
+          "modulesArray",
+          "userLocale",
+          "trans"
+        ]
+      }
+    }
+  }
+}

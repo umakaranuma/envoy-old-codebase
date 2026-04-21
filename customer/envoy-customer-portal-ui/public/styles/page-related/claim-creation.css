@@ -1,0 +1,29 @@
+.step-wrapper {
+  position: relative;
+  display: inline-block;
+  left: 5%;
+  bottom: 10rem;
+}
+
+.step-wrapper::before {
+  content: '';
+  position: absolute;
+  left: -120px; /* adjust for line length */
+  top: 50%;
+  width: 120px; /* line length */
+  border-top: 3px dashed #d0d5dd; /* dashed line */
+}
+
+.step-circle {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  border: 3px dashed #d0d5dd; /* outer dashed border */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #243f49; /* text color */
+  font-size: 24px;
+  font-weight: bold;
+  position: relative;
+}

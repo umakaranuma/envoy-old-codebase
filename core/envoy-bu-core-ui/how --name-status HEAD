@@ -1,0 +1,154 @@
+[33mcommit 225e16a8a8aa138acd340321e945e3165f210a1d[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mfeature/COR-6/products[m[33m, [m[1;31morigin/develop[m[33m)[m
+Author: Abiramy Alageswaran <abiramy.alageswaran@apptimus.io>
+Date:   Wed Aug 13 05:47:44 2025 +0000
+
+    patch: remove sonar config
+
+ bitbucket-pipelines.yml | 12 [32m++++++[m[31m------[m
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+[33mcommit 7c2716479dd380ebd07fa7708bdb88a8ab3001ce[m
+Merge: 3a7f78c e21c6ab
+Author: sutharsanselvakulasingam <sutharsan.selvakulasingam@apptimus.io>
+Date:   Wed Aug 13 05:19:16 2025 +0000
+
+    Merged in feature/COR-7/sales-target (pull request #294)
+    
+    product grp bug fixed
+
+[33mcommit e21c6ab5a6fd624124c02045b473075f7a7d0f88[m[33m ([m[1;31morigin/feature/COR-7/sales-target[m[33m)[m
+Merge: 9e5a34f 3a7f78c
+Author: SutharsanSL <sutharsansuthu4@gmail.com>
+Date:   Wed Aug 13 10:44:19 2025 +0530
+
+    Merge branch 'develop' of https://bitbucket.org/order-based-projects/envoy-bu-core-ui into feature/COR-7/sales-target
+
+[33mcommit 9e5a34f410d3f8042a9f252f568dc7f80f9fb91c[m
+Author: SutharsanSL <sutharsansuthu4@gmail.com>
+Date:   Wed Aug 13 10:44:05 2025 +0530
+
+    product grp bug fixed
+
+ public/styles/custom.css                           |  7 [32m++[m[31m-[m
+ src/app/a/nodes/_utils/components/Nodes.tsx        |  2 [32m+[m[31m-[m
+ .../_utils/components/tabs/ContactDetails.tsx      |  6 [32m+[m[31m--[m
+ .../_utils/components/tabs/PartnerContactList.tsx  |  2 [32m+[m[31m-[m
+ .../_utils/components/tabs/ProductsList.tsx        |  2 [32m+[m[31m-[m
+ .../_utils/components/tabs/QuotationList.tsx       |  2 [32m+[m[31m-[m
+ .../_utils/components/group/ProductGroupForm.tsx   | 54 [32m++++++++[m[31m--------------[m
+ src/app/a/products/_utils/modal.ts                 | 14 [32m+++++[m[31m-[m
+ .../_utils/components/GeneralSettings.tsx          | 12 [32m+++[m[31m--[m
+ .../commission-config/CommissionConfig.tsx         |  2 [32m+[m[31m-[m
+ .../components/customer-portal/CustomerPortal.tsx  |  2 [32m+[m[31m-[m
+ .../_utils/components/tasks-config/TaskConfig.tsx  |  2 [32m+[m[31m-[m
+ src/components/others/page-related/GoBack.tsx      |  2 [32m+[m[31m-[m
+ 13 files changed, 57 insertions(+), 52 deletions(-)
+
+[33mcommit 3a7f78ce94a75953d46f9a8dd4ddcaf30a8c5056[m
+Merge: 3e1d6ee 183ad7f
+Author: sutharsanselvakulasingam <sutharsan.selvakulasingam@apptimus.io>
+Date:   Mon Aug 11 09:02:32 2025 +0000
+
+    Merged in feature/COR-7/sales-target (pull request #290)
+    
+    Feature/COR-7/sales target
+
+[33mcommit 183ad7fc8c81aab76664657e59e3f1746476b673[m
+Author: SutharsanSL <sutharsansuthu4@gmail.com>
+Date:   Fri Aug 8 17:30:19 2025 +0530
+
+    chore: bug fixed
+
+ public/styles/custom.css                           | 23 [32m+++++++[m[31m--------[m
+ public/styles/theme.css                            |  7 [32m++[m[31m---[m
+ .../a/accounts/_utils/components/AccountsView.tsx  |  6 [32m++[m[31m--[m
+ src/app/a/contacts/_utils/components/Contacts.tsx  | 33 [32m++++++++++[m[31m------------[m
+ .../_utils/components/contact/ContactView.tsx      |  5 [32m++[m[31m--[m
+ .../a/partners/_utils/components/ViewPartner.tsx   |  9 [32m+++[m[31m---[m
+ src/app/a/products/_utils/api-service.ts           | 26 [32m+++++[m[31m------------[m
+ src/app/a/products/_utils/components/Products.tsx  |  9 [32m+++[m[31m---[m
+ .../native-product/ViewNativeProduct.tsx           |  2 [32m+[m[31m-[m
+ src/components/table-properties/RecordNotFound.tsx |  4 [32m+[m[31m--[m
+ 10 files changed, 53 insertions(+), 71 deletions(-)
+
+[33mcommit a3379a62d7d16078367f555889bdbf8b815ef81c[m
+Merge: 4599bc6 3e1d6ee
+Author: SutharsanSL <sutharsansuthu4@gmail.com>
+Date:   Wed Aug 6 15:17:28 2025 +0530
+
+    Merge branch 'develop' of https://bitbucket.org/order-based-projects/envoy-bu-core-ui into feature/COR-7/sales-target
+
+[33mcommit 4599bc66ebf91961cede1cd1ae53e4f53cb510d9[m
+Author: SutharsanSL <sutharsansuthu4@gmail.com>
+Date:   Wed Aug 6 15:17:14 2025 +0530
+
+    chore:bug fixed
+
+ src/app/a/templates/_utils/components/ElementCreate.tsx | 15 [32m++++++++[m[31m-------[m
+ src/app/a/templates/_utils/components/ElementEdit.tsx   | 10 [32m+++++[m[31m-----[m
+ src/app/a/templates/_utils/model.ts                     |  1 [32m+[m
+ src/app/a/templates/page.tsx                            |  1 [31m-[m
+ 4 files changed, 14 insertions(+), 13 deletions(-)
+
+[33mcommit 3e1d6ee95c17f67e68fe0af4b1f1ade91afe3d01[m
+Merge: 3bda2e2 834cdaa
+Author: sutharsanselvakulasingam <sutharsan.selvakulasingam@apptimus.io>
+Date:   Wed Aug 6 06:30:04 2025 +0000
+
+    Merged in feature/COR-7/sales-target (pull request #286)
+    
+    Feature/COR-7/sales target
+
+[33mcommit 834cdaad103333d2a58db4665ed971a4f06b502d[m
+Merge: a725052 3bda2e2
+Author: SutharsanSL <sutharsansuthu4@gmail.com>
+Date:   Wed Aug 6 11:50:22 2025 +0530
+
+    Merge branch 'develop' of https://bitbucket.org/order-based-projects/envoy-bu-core-ui into feature/COR-7/sales-target
+
+[33mcommit a725052ca982dec4efaa5a2b7316e9f3fa3eaa9f[m
+Author: SutharsanSL <sutharsansuthu4@gmail.com>
+Date:   Wed Aug 6 11:50:10 2025 +0530
+
+    chore: product ui changed
+
+ public/styles/custom.css                           |   4 [32m+[m[31m-[m
+ .../a/job-titles/_utils/components/JobTitles.tsx   |   5 [32m+[m[31m-[m
+ src/app/a/products/_utils/api-service.ts           | 308 [32m+++++++++[m[31m-------[m
+ src/app/a/products/_utils/components/Products.tsx  |   9 [32m+[m[31m-[m
+ .../_utils/components/group/ProductGroupForm.tsx   |  47 [32m+[m[31m--[m
+ .../insurer-product/AsyncSelectField.tsx           |  45 [31m---[m
+ .../insurer-product/CreatInsurerProduct.tsx        | 165 [32m+++++++++[m
+ .../components/insurer-product/CustomSelect.tsx    |  46 [31m---[m
+ .../insurer-product/EditInsurerProduct.tsx         | 261 [32m++++++++++++++[m
+ .../components/insurer-product/InsurerProduct.tsx  |  15 [32m+[m[31m-[m
+ .../insurer-product/InsurerProductForm.tsx         | 377 [31m-------------------[m
+ .../insurer-product/InsurerProductWizard.tsx       | 397 [31m---------------------[m
+ .../insurer-product/ViewInsurerProduct.tsx         | 177 [32m++[m[31m-------[m
+ .../viewtap/coverage/CoverageCreate.tsx            |  86 [32m+++++[m
+ .../viewtap/coverage/CoverageDetails.tsx           |  72 [32m++++[m
+ .../viewtap/coverage/CoverageEdit.tsx              |  95 [32m+++++[m
+ .../viewtap/coverage/CoverageList.tsx              | 127 [32m+++++++[m
+ .../viewtap/document/DocumentCreate.tsx            |  77 [32m++++[m
+ .../viewtap/document/DocumentDeatils.tsx           |  83 [32m+++++[m
+ .../viewtap/document/DocumentEdit.tsx              |  83 [32m+++++[m
+ .../viewtap/document/DocumentList.tsx              |  98 [32m+++++[m
+ .../native-product/CreateNativeProduct.tsx         |  43 [32m+[m[31m--[m
+ .../components/native-product/NativeProducts.tsx   |  29 [32m+[m[31m-[m
+ .../native-product/NativeProductsEdit.tsx          | 346 [31m------------------[m
+ .../native-product/ViewNativeProduct.tsx           |  61 [32m++[m[31m--[m
+ .../native-product/viewtap/CoverageDetails.tsx     |  18 [32m+[m[31m-[m
+ .../native-product/viewtap/CoverageList.tsx        |  25 [32m+[m[31m-[m
+ .../native-product/viewtap/DocumentDeatils.tsx     |  28 [32m+[m[31m-[m
+ .../components/native-product/viewtap/Insurers.tsx |  21 [32m+[m[31m-[m
+ .../components/native-product/viewtap/Teams.tsx    |  29 [32m+[m[31m-[m
+ .../native-product/viewtap/TeamsList.tsx           |  13 [32m+[m[31m-[m
+ src/app/a/products/_utils/modal.ts                 |  45 [32m+++[m
+ src/app/a/products/_utils/services.ts              |  80 [32m++++[m[31m-[m
+ .../insurer-product/[productId]/edit/page.tsx      |  13 [32m+[m
+ .../insurer-product/[productId]/view/page.tsx      |  13 [32m+[m
+ .../_utils/InsurerProductFormPage.tsx              |  85 [31m-----[m
+ src/app/a/products/insurer-product/create/page.tsx |  13 [31m-[m
+ src/app/a/products/insurer-product/edit/page.tsx   |  13 [31m-[m
+ .../[nativeProductId]/{ => edit}/page.tsx          | 138 [32m++++[m[31m---[m
+ .../native-product/

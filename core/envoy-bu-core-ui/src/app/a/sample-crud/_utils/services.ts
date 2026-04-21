@@ -1,0 +1,75 @@
+import { getAllSample } from './api-service';
+
+export async function fetchSampleTableData({ searchValue, currentPage, itemsPerPage, sortBy, sortDir, tableState }: any) {
+  return {
+    data: [
+      {
+        id: '1',
+        name: 'Test',
+        description: 'Test description',
+      },
+      {
+        id: '2',
+        name: 'Test 2',
+        description: 'Test description 2',
+      },
+      {
+        id: '3',
+        name: 'Test 3',
+        description: 'Test description 3',
+      },
+      {
+        id: '4',
+        name: 'Test 4',
+        description: 'Test description 4',
+      },
+      {
+        id: '5',
+        name: 'Test 5',
+        description: 'Test description 5',
+      },
+      {
+        id: '6',
+        name: 'Test 6',
+        description: 'Test description 6',
+      },
+      {
+        id: '7',
+        name: 'Test 7',
+        description: 'Test description 7',
+      },
+      {
+        id: '8',
+        name: 'Test 8',
+        description: 'Test description 8',
+      },
+      {
+        id: '9',
+        name: 'Test 9',
+        description: 'Test description 9',
+      },
+      {
+        id: '10',
+        name: 'Test 10',
+        description: 'Test description 10',
+      },
+    ],
+    dataLength: 120,
+  };
+
+  const response = await getAllSample(
+    {
+      search: searchValue.toLowerCase(),
+      page: currentPage,
+      limit: itemsPerPage,
+      sort_by: sortBy,
+      sort_dir: sortDir,
+      filters: tableState.filters,
+    },
+    true,
+  );
+
+  if (response.is_success) {
+    return { data: response.result.data || [], dataLength: response.result.total_records || 0 };
+  }
+}

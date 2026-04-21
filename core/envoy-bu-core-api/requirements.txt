@@ -1,0 +1,18 @@
+Django>=4.0
+djangorestframework
+gunicorn
+python-dotenv==1.0.1
+djangorestframework
+djangorestframework-simplejwt
+requests
+mServices
+ably
+# PyMySQL    
+mysqlclient>=2.2.1
+cryptography
+djmigrator
+pydantic
+pydantic[email]
+boto3>=1.26.0
+nanoid>=2.0.0
+openpyxl>=3.1.0

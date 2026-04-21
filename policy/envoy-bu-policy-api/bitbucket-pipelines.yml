@@ -1,0 +1,131 @@
+image: atlassian/default-image:4
+
+options:
+  docker: true
+  size: 2x
+
+clone:
+  depth: full
+
+definitions:
+  services:
+    docker:
+      memory: 4096
+
+  steps:
+    - step: &sonar-analyse
+        name: Sonar code analysis
+        script:
+          - pipe: sonarsource/sonarqube-scan:3.1.0
+            variables:
+              SONAR_HOST_URL: ${SONAR_HOST_URL}
+              SONAR_TOKEN: ${SONAR_TOKEN}
+              EXTRA_ARGS: "-D sonar.projectKey=${SONAR_PROJECT_TOKEN} -D sonar.projectName=${SONAR_PROJECT_NAME} -D sonar.eslint.reportPaths=report.json"
+
+    - step: &sonar-quality-check
+        name: Sonar quality check
+        max-time: 5
+        script:
+          - pipe: sonarsource/sonarqube-quality-gate:1.2.1
+            variables:
+              SONAR_TOKEN: ${SONAR_TOKEN}
+
+    - step: &pre-build
+        name: pre-build
+        script:
+          - TIME_STAMP=$(date +"%Y%m%d_%H%M%S")
+          - VERSION=${VERSION_PREFIX}.${BITBUCKET_BUILD_NUMBER}
+          - echo "${BITBUCKET_DEPLOYMENT_ENVIRONMENT}_${VERSION}_${TIME_STAMP}" > round-table.txt
+        artifacts:
+          - round-table.txt
+
+    - step: &build
+        name: build
+        script:
+          - IMAGE_TAG=$(< round-table.txt)
+          - echo "${DOCR_PASSWORD}" | docker login ${DOCR_HOST} --username "oauth" --password-stdin
+          - docker build . --file Dockerfile --tag ${BITBUCKET_REPO_SLUG} --tag ${DOCR_IMAGE}/${BITBUCKET_REPO_SLUG}:${IMAGE_TAG}
+          - docker save ${BITBUCKET_REPO_SLUG} --output "${BITBUCKET_REPO_SLUG}-${BITBUCKET_BUILD_NUMBER}.tar"
+          - docker push "${DOCR_IMAGE}/${BITBUCKET_REPO_SLUG}:${IMAGE_TAG}"
+        caches:
+          - docker
+        artifacts:
+          - '*.tar'
+
+    - step: &deploy
+        name: deploy
+        script:
+          - IMAGE_TAG=$(< round-table.txt)
+          - pipe: atlassian/kubectl-run:3.12.0
+            variables:
+              KUBE_CONFIG: ${KUBE_CONFIG}
+              KUBECTL_COMMAND: "set image deployment/${DEPLOYMENT_NAME} ${DEPLOYMENT_NAME}=${DOCR_IMAGE}/${BITBUCKET_REPO_SLUG}:${IMAGE_TAG} -n ${NAMESPACE}"
+
+pipelines:
+  branches:
+     #'{develop}':
+      #- stage:
+          #name: Code
+          #steps:
+            #- step: *sonar-analyse
+            #- step: *sonar-quality-check
+
+     '{release/dev}':
+      - stage:
+          name: build
+          deployment: dev
+          steps:
+            - step: *pre-build
+            - step: *build
+
+      - stage:
+          name: deploy
+          deployment: k8s-dev
+          trigger: manual
+          steps:
+            - step: *deploy
+
+     '{release/qa}':
+      - stage:
+          name: build
+          deployment: qa
+          steps:
+            - step: *pre-build
+            - step: *build
+
+      - stage:
+          name: deploy
+          deployment: k8s-qa
+          trigger: manual
+          steps:
+            - step: *deploy
+
+     '{release/demo}':
+      - stage:
+          name: build
+          deployment: demo
+          steps:
+            - step: *pre-build
+            - step: *build
+
+      - stage:
+          name: deploy
+          deployment: k8s-demo
+          trigger: manual
+          steps:
+            - step: *deploy
+
+     '{release/uat}':
+      - stage:
+          name: build
+          deployment: uat
+          steps:
+            - step: *pre-build
+            - step: *build
+
+      - stage:
+          name: deploy
+          deployment: k8s-uat
+          trigger: manual
+          steps:
+            - step: *deploy

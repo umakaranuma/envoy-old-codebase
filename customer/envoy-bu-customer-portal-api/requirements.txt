@@ -1,0 +1,19 @@
+Django>=4.0
+djangorestframework
+gunicorn
+python-dotenv==1.0.1
+djangorestframework
+djangorestframework-simplejwt
+requests
+mServices==1.0.15
+# psycopg2-binary  # If using PostgreSQL
+bs4
+djmigrator
+honcho==1.0.1
+ably
+# PyMySQL    
+mysqlclient>=2.2.1
+cryptography
+pydantic
+pydantic[email]
+dotenv
