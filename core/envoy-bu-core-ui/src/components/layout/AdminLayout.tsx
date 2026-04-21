@@ -19,12 +19,14 @@ function AdminLayout({
   locale,
   appMenu,
   bottomMenus,
+  token,
 }: {
   children: React.ReactNode;
   themeMode: 'light' | 'dark';
   locale: string;
   appMenu: MenuCategory[];
   bottomMenus: MenuCategory[];
+  token: string;
 }) {
   const [reachedBreakpoint, setReachedBreakpoint] = useState(false); // State to keep track if the screen width is less than 992px
   const [sbClosed, setSbClosed] = useState(false); // State to keep track if the sidebar is closed on desktop
@@ -115,7 +117,7 @@ function AdminLayout({
     <UserLocale value={locale}>
       <CurrencyProvider>
         <BreadcrumbProvider>
-          <NotificationProvider>
+          <NotificationProvider token={token}>
             <body
               style={{ fontFamily: 'var(--font-inter, Inter, sans-serif)' } as React.CSSProperties}
               data-layout-style="style-2"

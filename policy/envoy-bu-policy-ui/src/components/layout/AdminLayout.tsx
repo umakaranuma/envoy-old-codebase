@@ -7,7 +7,7 @@ import { Header } from './admin-layout-properties/Header';
 import { Sidebar, SidebarMenu } from './admin-layout-properties/Sidebar';
 import { Toaster } from 'react-hot-toast';
 import { MenuCategory } from '@/interface/IAdminLayout';
-import { getAllNotification } from '@/api-services/common';
+import { getUnreadNotificationCount } from '@/api-services/common';
 import { BreadcrumbProvider } from '@/contexts/BreadcrumbContext';
 import { CurrencyProvider } from '@/contexts/CurrencyContext';
 
@@ -115,17 +115,26 @@ function AdminLayout({
   }, []);
 
   useEffect(() => {
+    let interval: NodeJS.Timeout;
+
     const fetchNotificationData = async () => {
-      const responseData = await getAllNotification({ read_status: 'unread', filter: '' });
+      const responseData = await getUnreadNotificationCount();
       if (responseData?.is_success) {
-        if (responseData.result?.data.length > 0) {
+        if (responseData.result?.unread_count > 0) {
           setHasNotifications(true);
         } else {
           setHasNotifications(false);
         }
       }
     };
+
     fetchNotificationData();
+
+    interval = setInterval(() => {
+      fetchNotificationData();
+    }, 20000);
+
+    return () => clearInterval(interval);
   }, []);
 
   return (

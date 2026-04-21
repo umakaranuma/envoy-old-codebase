@@ -45,10 +45,11 @@ export default async function AppLayout({ children }: Readonly<{ children: React
   const locale = await getCookies(cookie.locale);
   const appMenu: MenuCategory[] = await getAppMenu();
   const bottomMenus: MenuCategory[] = await getBottomMenu();
+  const token = await getCookies(cookie.token);
 
   return (
     <html lang={locale || 'en'} className={inter.variable}>
-      <AdminLayout locale={locale || 'en'} themeMode={themeMode} appMenu={appMenu} bottomMenus={bottomMenus}>
+      <AdminLayout locale={locale || 'en'} themeMode={themeMode} appMenu={appMenu} bottomMenus={bottomMenus} token={token || ''}>
         {children}
       </AdminLayout>
     </html>

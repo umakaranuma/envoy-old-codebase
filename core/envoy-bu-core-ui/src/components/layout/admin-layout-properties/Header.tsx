@@ -222,7 +222,7 @@ const HeaderContentLeft = ({ handleMenuToggleClick, sbClosed, appMenu }: { handl
 
 const HeaderContentRight = ({ themeMode }: { themeMode: 'light' | 'dark' }) => {
   const userLocale = useContext(UserLocale);
-  const { notifications } = useNotification();
+  const { notifications, unreadCount } = useNotification();
   // const [notifications, setNotifications] = useState<any[]>([]);
   const router = useRouter();
 
@@ -269,7 +269,7 @@ const HeaderContentRight = ({ themeMode }: { themeMode: 'light' | 'dark' }) => {
       <div className="header-element mx-2">
         <div className="notification-icon position-relative d-flex align-items-center justify-content-center pointer p-2 rounded-3 border-0" onClick={() => router.push(`/a/notifications`)}>
           <Flexicon icon="bell-02" variant="line" />
-          {notifications.length > 0 && (
+          {unreadCount > 0 && (
             <div className={`notification-badge position-absolute d-flex align-items-center justify-content-center ${themeMode === 'dark' ? 'notification-badge-dark' : 'notification-badge-light'}`}>
               <div className="notification-badge-dot" />
             </div>

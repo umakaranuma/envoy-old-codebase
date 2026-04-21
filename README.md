@@ -28,6 +28,14 @@ Managing an insurance brokerage involves juggling multiple workflows — leads, 
 
 ---
 
+## Dev Environment Credentials
+
+Use the following credentials to access the development environment UI panels:
+- **Email:** `relepor245@binafex.com`
+- **Password:** `12345678@`
+
+---
+
 ## Platform Modules
 
 The Envoy platform is made up of the following key modules:

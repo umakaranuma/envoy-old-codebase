@@ -16,12 +16,16 @@ const Chat = ({
   createMsgFn,
   getSyncChatMsg,
   handleDocExtraction,
+  pollingInterval = 15000,
+  onNewMessage,
 }: {
   id: string;
   getAllChatMsg: Function;
   createMsgFn: Function;
   getSyncChatMsg: Function;
   handleDocExtraction?: (file: any) => void;
+  pollingInterval?: number;
+  onNewMessage?: (count: number) => void;
 }) => {
   const t = useTrans('label.chat,otr.common');
   const tBe = useTrans('be.msg,be.error,be.attri');
@@ -38,6 +42,7 @@ const Chat = ({
   const [isFormProcessing, setIsFormProcessing] = useState<boolean>(false);
   const [isAtBottom, setIsAtBottom] = useState(true);
   const [totalRecords, setTotalRecords] = useState(0);
+  const [newMessagesCount, setNewMessagesCount] = useState(0);
 
   // Configuration
   const SCROLL_THRESHOLD = 150;
@@ -186,6 +191,46 @@ const Chat = ({
     return () => inbox.removeEventListener('scroll', debouncedScrollHandler);
   }, [loadMoreEmails, paginationLoading, hasMore, initialLoading]);
 
+  // Real-time polling
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+
+    if (pollingInterval > 0 && !initialLoading) {
+      interval = setInterval(async () => {
+        const response = await fetchAllMsg(1, false);
+        if (response.emails.length > 0) {
+          setMsgs((prev) => {
+            const existingIds = new Set(prev.map((m) => m.id));
+            const newMsgsResult = response.emails.filter((m: any) => !existingIds.has(m.id));
+
+            if (newMsgsResult.length > 0) {
+              const updatedMsgs = [...prev, ...newMsgsResult];
+              
+              if (onNewMessage) onNewMessage(newMsgsResult.length);
+              
+              setNewMessagesCount((prevCount) => prevCount + newMsgsResult.length);
+              
+              return updatedMsgs;
+            }
+            return prev;
+          });
+        }
+      }, pollingInterval);
+    }
+
+    return () => clearInterval(interval);
+  }, [pollingInterval, initialLoading, fetchAllMsg, onNewMessage]);
+
+  // Auto-scroll on new messages if at bottom
+  useEffect(() => {
+    if (newMessagesCount > 0 && isAtBottom) {
+      if (inboxRef.current) {
+        inboxRef.current.scrollTop = inboxRef.current.scrollHeight;
+      }
+      setNewMessagesCount(0);
+    }
+  }, [msgs, isAtBottom, newMessagesCount]);
+
   const debounce = (func: Function, wait: number) => {
     let timeout: NodeJS.Timeout;
     return (...args: any[]) => {
@@ -301,7 +346,25 @@ const Chat = ({
               </div>
             </div>
 
-            <div ref={inboxRef} className="card-body p-2" style={{ overflowY: 'auto', scrollBehavior: 'smooth' }}>
+            <div ref={inboxRef} className="card-body p-2 position-relative" style={{ overflowY: 'auto', scrollBehavior: 'smooth' }}>
+              {newMessagesCount > 0 && !isAtBottom && (
+                <div className="position-sticky top-0 start-50 translate-middle-x mt-2 z-3" style={{ width: 'fit-content' }}>
+                  <Button
+                    variant="primary"
+                    className="rounded-pill shadow py-1 px-3 d-flex align-items-center gap-2"
+                    onClick={() => {
+                      if (inboxRef.current) {
+                        inboxRef.current.scrollTop = inboxRef.current.scrollHeight;
+                      }
+                      setNewMessagesCount(0);
+                    }}
+                  >
+                    <Flexicon icon="arrow-down-circle" variant="line" />
+                    {newMessagesCount} {t('new message(s)')}
+                  </Button>
+                </div>
+              )}
+
               {paginationLoading && (
                 <div className="text-center p-3 bg-light bg-opacity-50">
                   <div className="spinner-border spinner-border-sm text-primary" role="status"></div>

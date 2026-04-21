@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { Dropdown, DropdownItem } from '@apptimus-ui/dropdown';
 import { useRouter } from 'next/navigation';
 import '../../../../public/styles/page-related/profile.css';
@@ -8,7 +9,14 @@ import S3Avatar from './S3Avatar';
 
 function Profile() {
   const router = useRouter();
-  const authUser = getLocalStorage(local_storage.auth_user_info);
+  const [authUser, setAuthUser] = useState<any>(null);
+
+  useEffect(() => {
+    const user = getLocalStorage(local_storage.auth_user_info);
+    if (user) {
+      setAuthUser(user);
+    }
+  }, []);
 
   // const handleOptionClick = (onClose: any) => {
   //   onClose();

@@ -34,14 +34,10 @@ function S3Avatar({
       clearTimeout(handler);
     };
   }, []);
-  return (
-    <div>
-      {!loading || !waiting ? (
-        <Image src={`${process.env.S3CDN}/${imageKey}`} height={height} width={width} loading="lazy" className={`${className}`} alt="Image" style={style} layout={layout} />
-      ) : (
-        <Skeleton height={`${height}px`} width={`${width}px`} className={className} />
-      )}
-    </div>
+  return !loading || !waiting ? (
+    <Image src={`${process.env.S3CDN}/${imageKey}`} height={height} width={width} loading="lazy" className={`${className}`} alt="Image" style={style} layout={layout} />
+  ) : (
+    <Skeleton height={`${height}px`} width={`${width}px`} className={className} />
   );
 }
 

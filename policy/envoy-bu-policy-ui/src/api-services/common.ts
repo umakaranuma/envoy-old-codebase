@@ -74,3 +74,12 @@ export async function getAllNotification(params: GAParams, abortDuplicate: boole
     }),
   );
 }
+
+export async function getUnreadNotificationCount() {
+  return responseHandling(
+    await sendRequest({
+      url: `${process.env.CORE_PROXY_PREFIX}/api/notifications-unread-count`,
+      method: 'GET',
+    }),
+  );
+}
