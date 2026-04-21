@@ -1,0 +1,1271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Template Builder — Design System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --teal-50: #EDF8F7; --teal-100: #C9EDEA; --teal-200: #93DAD5;
+  --teal-400: #3ABAB3; --teal-500: #1A9E96; --teal-600: #0F8078;
+  --teal-700: #0A6560; --teal-900: #062F2C;
+  --n-0: #FFFFFF; --n-50: #F4F6F8; --n-100: #EDF0F3;
+  --n-150: #E2E6EB; --n-200: #CDD3DB; --n-300: #B0BAC5;
+  --n-400: #8A96A3; --n-500: #636F7C; --n-600: #4A5563;
+  --n-700: #323D4A; --n-800: #1E2630; --n-900: #0F1520;
+  --danger-500: #EF4444; --danger-600: #DC2626;
+  --warning-500: #F59E0B; --success-500: #10B981;
+  --shadow-xs: 0 1px 2px rgba(15,21,32,.05);
+  --shadow-sm: 0 1px 3px rgba(15,21,32,.08), 0 1px 2px rgba(15,21,32,.04);
+  --shadow-md: 0 4px 8px rgba(15,21,32,.08), 0 2px 4px rgba(15,21,32,.04);
+  --shadow-lg: 0 8px 24px rgba(15,21,32,.1), 0 4px 8px rgba(15,21,32,.05);
+  --shadow-panel: 0 0 0 2px var(--teal-400), 0 4px 16px rgba(26,158,150,.12);
+  --r-sm: 6px; --r-md: 8px; --r-lg: 12px; --r-xl: 16px;
+  --font: 'Geist', -apple-system, sans-serif;
+  --mono: 'Geist Mono', monospace;
+  --ease: cubic-bezier(.16,1,.3,1);
+}
+
+*,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; }
+body { font-family: var(--font); background: var(--n-50); color: var(--n-800); -webkit-font-smoothing: antialiased; height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
+
+/* ── TOPBAR ── */
+.topbar {
+  height: 52px; background: var(--n-0); border-bottom: 1px solid var(--n-150);
+  display: flex; align-items: center; padding: 0 20px; gap: 12px;
+  flex-shrink: 0; box-shadow: var(--shadow-xs); z-index: 20;
+}
+.back-btn {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--teal-500); color: white; border: none;
+  display: flex; align-items: center; justify-content: center; cursor: pointer;
+  transition: background 120ms; flex-shrink: 0;
+}
+.back-btn:hover { background: var(--teal-600); }
+.back-btn svg { width: 14px; height: 14px; stroke: white; fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+.topbar-title {
+  font-size: 15px; font-weight: 600; color: var(--n-800); letter-spacing: -.02em;
+  flex: 1; text-align: center;
+}
+.topbar-actions { display: flex; gap: 8px; }
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--font); font-size: 12px; font-weight: 500;
+  border-radius: var(--r-md); border: 1px solid transparent;
+  cursor: pointer; padding: 0 12px; height: 30px; transition: all 120ms;
+}
+.btn svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.btn-primary { background: var(--teal-500); color: white; border-color: var(--teal-600); }
+.btn-primary:hover { background: var(--teal-600); }
+.btn-secondary { background: var(--n-0); color: var(--n-700); border-color: var(--n-200); box-shadow: var(--shadow-xs); }
+.btn-secondary:hover { background: var(--n-50); border-color: var(--n-300); }
+.btn-ghost { background: transparent; color: var(--n-500); border-color: transparent; }
+.btn-ghost:hover { background: var(--n-100); color: var(--n-700); }
+
+/* ── MAIN LAYOUT ── */
+.builder { display: flex; flex: 1; overflow: hidden; }
+
+/* ── LEFT PANEL ── */
+.left-panel {
+  width: 260px; flex-shrink: 0;
+  background: var(--n-0); border-right: 1px solid var(--n-150);
+  display: flex; flex-direction: column; overflow: hidden;
+}
+.palette-search {
+  padding: 12px 14px 8px;
+  border-bottom: 1px solid var(--n-100);
+  flex-shrink: 0;
+}
+.search-input-wrap {
+  display: flex; align-items: center; gap: 0;
+  border: 1px solid var(--n-200); border-radius: var(--r-lg);
+  background: var(--n-50); overflow: hidden;
+  transition: border-color 120ms, box-shadow 120ms;
+}
+.search-input-wrap:focus-within { border-color: var(--teal-400); box-shadow: 0 0 0 3px var(--teal-50); }
+.search-input-icon { width: 32px; display: flex; align-items: center; justify-content: center; color: var(--n-400); flex-shrink: 0; }
+.search-input-icon svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; }
+.search-input {
+  flex: 1; height: 32px; border: none; outline: none;
+  background: transparent; font-family: var(--font); font-size: 12px;
+  color: var(--n-700); padding-right: 10px;
+}
+.search-input::placeholder { color: var(--n-400); }
+
+.palette-scroll { flex: 1; overflow-y: auto; padding: 8px 0 20px; }
+.palette-scroll::-webkit-scrollbar { width: 4px; }
+.palette-scroll::-webkit-scrollbar-thumb { background: var(--n-200); border-radius: 10px; }
+
+.palette-group { margin-bottom: 4px; }
+.palette-group-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 6px 14px 4px; cursor: pointer; user-select: none;
+}
+.palette-group-title { font-size: 11px; font-weight: 600; color: var(--n-600); letter-spacing: .04em; text-transform: uppercase; }
+.palette-group-chevron { color: var(--n-400); transition: transform 200ms; }
+.palette-group-chevron svg { width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.palette-group.collapsed .palette-group-chevron { transform: rotate(-90deg); }
+.palette-group.collapsed .palette-items { display: none; }
+
+.palette-items { display: flex; flex-wrap: wrap; gap: 8px; padding: 6px 14px 10px; }
+
+.palette-item {
+  display: flex; flex-direction: column; align-items: center; gap: 5px;
+  width: 60px; cursor: grab; user-select: none;
+  transition: transform 150ms var(--ease);
+}
+.palette-item:hover { transform: translateY(-2px); }
+.palette-item:active { cursor: grabbing; transform: scale(.95); }
+.palette-item-icon {
+  width: 44px; height: 44px; border-radius: var(--r-lg);
+  background: var(--teal-500); color: white;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 2px 8px rgba(26,158,150,.3);
+  transition: box-shadow 150ms, background 150ms;
+}
+.palette-item:hover .palette-item-icon { background: var(--teal-600); box-shadow: 0 4px 12px rgba(26,158,150,.4); }
+.palette-item-icon svg { width: 20px; height: 20px; stroke: white; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.palette-item-label { font-size: 10px; font-weight: 500; color: var(--n-600); text-align: center; line-height: 1.3; }
+
+/* display category items — slightly different shade */
+.palette-item.is-display .palette-item-icon { background: var(--teal-700); }
+
+/* ── CENTER CANVAS ── */
+.center-canvas {
+  flex: 1; overflow-y: auto; padding: 24px;
+  display: flex; flex-direction: column; align-items: center;
+  background: var(--n-50);
+}
+.center-canvas::-webkit-scrollbar { width: 5px; }
+.center-canvas::-webkit-scrollbar-thumb { background: var(--n-200); border-radius: 10px; }
+
+.canvas-inner { width: 100%; max-width: 900px; display: flex; flex-direction: column; gap: 14px; }
+
+/* Steps row (multi_step) */
+.steps-bar {
+  display: flex; align-items: center; gap: 4px; flex-wrap: wrap;
+  margin-bottom: 4px;
+}
+.step-tab {
+  height: 32px; padding: 0 14px;
+  font-family: var(--font); font-size: 12px; font-weight: 500;
+  border: 1px solid var(--n-200); border-radius: var(--r-md);
+  background: var(--n-0); color: var(--n-600); cursor: pointer;
+  transition: all 120ms; display: flex; align-items: center; gap: 6px;
+}
+.step-tab:hover { border-color: var(--teal-300, var(--teal-200)); color: var(--teal-600); }
+.step-tab.active { background: var(--teal-500); color: white; border-color: var(--teal-600); }
+.step-tab-add {
+  width: 32px; height: 32px; border: 1.5px dashed var(--n-300); border-radius: var(--r-md);
+  background: transparent; color: var(--n-400); cursor: pointer; font-size: 18px; line-height: 1;
+  display: flex; align-items: center; justify-content: center; transition: all 120ms;
+}
+.step-tab-add:hover { border-color: var(--teal-400); color: var(--teal-500); background: var(--teal-50); }
+
+/* Panel */
+.panel-card {
+  background: var(--n-0); border: 1.5px solid var(--n-150);
+  border-radius: var(--r-xl); overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: border-color 200ms, box-shadow 200ms;
+}
+.panel-card.drag-over { border-color: var(--teal-400); box-shadow: var(--shadow-panel); }
+.panel-card.is-selected { border-color: var(--teal-400); }
+
+.panel-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 14px; border-bottom: 1px solid var(--n-100);
+  background: var(--n-50);
+}
+.panel-header-left { display: flex; align-items: center; gap: 8px; }
+.panel-drag-handle {
+  color: var(--n-300); cursor: grab; display: flex; align-items: center;
+  padding: 2px; border-radius: 4px; transition: color 120ms;
+}
+.panel-drag-handle:hover { color: var(--n-500); }
+.panel-drag-handle svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; }
+.panel-title {
+  font-size: 13px; font-weight: 600; color: var(--n-700); letter-spacing: -.01em;
+  cursor: pointer; border: 1px solid transparent; border-radius: 4px; padding: 1px 4px;
+  transition: border-color 120ms, background 120ms;
+}
+.panel-title:hover { border-color: var(--n-200); background: var(--n-0); }
+
+.panel-header-right { display: flex; align-items: center; gap: 6px; }
+.col-selector { display:flex;align-items:center;gap:3px;background:var(--n-100);border-radius:var(--r-sm);padding:2px; }
+.col-btn {
+  width: 22px; height: 22px; border-radius: 4px; border: none;
+  font-family: var(--font); font-size: 11px; font-weight: 600;
+  cursor: pointer; color: var(--n-500); background: transparent; transition: all 120ms;
+}
+.col-btn.active { background: var(--teal-500); color: white; }
+.col-btn:hover:not(.active) { background: var(--n-200); color: var(--n-700); }
+.panel-action-btn {
+  width: 28px; height: 28px; border-radius: var(--r-md); border: 1px solid var(--n-200);
+  background: var(--n-0); cursor: pointer; display: flex; align-items: center; justify-content: center;
+  color: var(--n-400); transition: all 120ms; box-shadow: var(--shadow-xs);
+}
+.panel-action-btn:hover { color: var(--n-700); border-color: var(--n-300); background: var(--n-50); }
+.panel-action-btn svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.panel-action-btn.settings { color: var(--teal-500); border-color: var(--teal-200); background: var(--teal-50); }
+.panel-action-btn.settings:hover { background: var(--teal-100); }
+
+.panel-body { padding: 14px; min-height: 100px; display: flex; flex-direction: column; gap: 0; }
+
+/* ── ROW ── */
+.element-row {
+  border: 1px solid var(--n-150); border-radius: var(--r-lg);
+  margin-bottom: 8px; overflow: hidden; background: var(--n-0);
+  transition: border-color 150ms, box-shadow 150ms;
+}
+.element-row:last-child { margin-bottom: 0; }
+.element-row.row-drag-over { border-color: var(--teal-400); box-shadow: 0 0 0 2px var(--teal-50); }
+
+.row-header {
+  display: flex; align-items: center; gap: 8px;
+  padding: 5px 10px; background: var(--n-50);
+  border-bottom: 1px solid var(--n-100);
+}
+.row-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; color: var(--n-400); }
+.row-col-selector { display: flex; align-items: center; gap: 4px; margin-left: auto; }
+.row-col-label { font-size: 10px; color: var(--n-400); font-weight: 500; }
+.row-delete-btn {
+  width: 20px; height: 20px; border: none; background: transparent; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; color: var(--n-300);
+  border-radius: 3px; transition: all 120ms; flex-shrink: 0;
+}
+.row-delete-btn:hover { color: var(--danger-500); background: var(--danger-50,#FEF2F2); }
+.row-delete-btn svg { width: 10px; height: 10px; }
+
+.row-elements {
+  display: grid; gap: 8px; padding: 8px;
+  min-height: 48px;
+}
+
+/* Drop gap between rows */
+.row-drop-gap {
+  height: 6px; border-radius: 3px; margin: 3px 0;
+  transition: height 150ms var(--ease), background 150ms;
+  position: relative;
+}
+.row-drop-gap::after {
+  content: '+ New row'; position: absolute; left: 50%; top: 50%;
+  transform: translate(-50%,-50%); font-size: 10px; font-weight: 600;
+  color: var(--teal-600); opacity: 0; transition: opacity 150ms;
+  white-space: nowrap;
+}
+.row-drop-gap.active { height: 28px; background: var(--teal-50); border: 1.5px dashed var(--teal-400); border-radius: var(--r-md); }
+.row-drop-gap.active::after { opacity: 1; }
+
+/* Empty slot in row */
+.row-el-empty {
+  border: 1.5px dashed var(--n-200); border-radius: var(--r-md);
+  min-height: 48px; display: flex; align-items: center; justify-content: center;
+  font-size: 11px; color: var(--n-400); background: var(--n-50);
+}
+
+/* Element drag grip */
+.el-drag-grip {
+  cursor: grab; color: var(--n-300); display: inline-flex; align-items: center;
+  margin-right: 4px; border-radius: 3px; transition: color 120ms;
+}
+.el-drag-grip:hover { color: var(--n-500); }
+.form-element.dragging { opacity: .4; }
+
+.form-element {
+  flex: 1; border: 1px solid var(--n-150); border-radius: var(--r-lg);
+  padding: 10px 12px; background: var(--n-0); cursor: pointer;
+  transition: all 150ms; position: relative;
+  box-shadow: var(--shadow-xs);
+}
+.form-element:hover { border-color: var(--teal-300, var(--teal-200)); box-shadow: 0 0 0 2px var(--teal-50), var(--shadow-sm); }
+.form-element.selected { border-color: var(--teal-400); box-shadow: 0 0 0 3px var(--teal-50), var(--shadow-sm); }
+.form-element-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+.form-element-label { font-size: 11px; font-weight: 600; color: var(--n-600); display: flex; align-items: center; gap: 5px; }
+.required-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--danger-500); flex-shrink: 0; }
+.form-element-actions { display: flex; gap: 3px; opacity: 0; transition: opacity 120ms; }
+.form-element:hover .form-element-actions { opacity: 1; }
+.el-action-btn {
+  width: 22px; height: 22px; border-radius: 4px; border: none;
+  background: var(--n-100); cursor: pointer; display: flex; align-items: center; justify-content: center;
+  color: var(--n-500); transition: all 120ms;
+}
+.el-action-btn:hover { background: var(--n-200); color: var(--n-700); }
+.el-action-btn.del:hover { background: #FEF2F2; color: var(--danger-600); }
+.el-action-btn svg { width: 11px; height: 11px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* Fake input widgets */
+.fake-input {
+  height: 32px; border: 1px solid var(--n-200); border-radius: var(--r-md);
+  background: var(--n-50); display: flex; align-items: center; padding: 0 10px;
+  font-size: 12px; color: var(--n-400);
+}
+.fake-textarea {
+  height: 56px; border: 1px solid var(--n-200); border-radius: var(--r-md);
+  background: var(--n-50); padding: 8px 10px; font-size: 12px; color: var(--n-400); line-height: 1.5;
+}
+.fake-select {
+  height: 32px; border: 1px solid var(--n-200); border-radius: var(--r-md);
+  background: var(--n-50); display: flex; align-items: center; justify-content: space-between; padding: 0 10px;
+  font-size: 12px; color: var(--n-400);
+}
+.fake-radio-group { display: flex; flex-direction: column; gap: 6px; }
+.fake-radio { display: flex; align-items: center; gap: 7px; font-size: 12px; color: var(--n-600); }
+.fake-radio-dot { width: 14px; height: 14px; border-radius: 50%; border: 1.5px solid var(--n-300); background: var(--n-0); flex-shrink: 0; }
+.fake-radio-dot.checked { border-color: var(--teal-500); background: var(--teal-500); }
+.fake-radio-dot.checked::after { content: ''; display: block; width: 5px; height: 5px; border-radius: 50%; background: white; margin: 3.5px auto; }
+.fake-stars { display: flex; gap: 3px; }
+.fake-star { width: 18px; height: 18px; color: var(--warning-500); font-size: 18px; }
+.fake-check-group { display: flex; flex-direction: column; gap: 6px; }
+.fake-check { display: flex; align-items: center; gap: 7px; font-size: 12px; color: var(--n-600); }
+.fake-checkbox { width: 14px; height: 14px; border-radius: 3px; border: 1.5px solid var(--n-300); background: var(--n-0); flex-shrink: 0; }
+.fake-checkbox.checked { border-color: var(--teal-500); background: var(--teal-500); }
+.fake-divider { height: 1px; background: var(--n-200); margin: 4px 0; }
+.fake-heading { font-size: 15px; font-weight: 600; color: var(--n-700); padding: 4px 0; }
+.fake-file {
+  height: 64px; border: 1.5px dashed var(--n-250, var(--n-300)); border-radius: var(--r-lg);
+  background: var(--n-50); display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 4px; font-size: 11px; color: var(--n-400);
+}
+.fake-file svg { width: 18px; height: 18px; stroke: var(--n-300); fill: none; stroke-width: 2; stroke-linecap: round; }
+
+/* Drop zone */
+.drop-zone {
+  border: 1.5px dashed var(--n-250, var(--n-200));
+  border-radius: var(--r-lg); min-height: 80px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+  color: var(--n-400); font-size: 12px; transition: all 200ms;
+  background: transparent;
+}
+.drop-zone.active { border-color: var(--teal-400); background: var(--teal-50); color: var(--teal-600); }
+.drop-zone svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+
+/* Add panel button */
+.add-panel-btn {
+  width: 100%; height: 44px; border: none;
+  background: var(--teal-500); color: white;
+  border-radius: var(--r-xl); cursor: pointer;
+  font-family: var(--font); font-size: 13px; font-weight: 500;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  transition: background 150ms, box-shadow 150ms;
+  box-shadow: 0 2px 8px rgba(26,158,150,.25);
+}
+.add-panel-btn:hover { background: var(--teal-600); box-shadow: 0 4px 14px rgba(26,158,150,.35); }
+.add-panel-btn svg { width: 15px; height: 15px; stroke: white; fill: none; stroke-width: 2.5; stroke-linecap: round; }
+
+/* ── RIGHT PANEL ── */
+.right-panel {
+  width: 280px; flex-shrink: 0;
+  background: var(--n-0); border-left: 1px solid var(--n-150);
+  display: flex; flex-direction: column; overflow: hidden;
+  transition: width 200ms var(--ease);
+}
+.right-panel.empty { background: var(--n-50); }
+
+.config-header {
+  padding: 14px 16px 10px; border-bottom: 1px solid var(--n-150);
+  display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;
+}
+.config-title { font-size: 13px; font-weight: 600; color: var(--n-700); letter-spacing: -.01em; }
+.config-subtitle { font-size: 11px; color: var(--n-400); margin-top: 2px; }
+.config-close { width: 24px; height: 24px; border-radius: 4px; border: none; background: var(--n-100); cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--n-500); }
+.config-close:hover { background: var(--n-200); }
+.config-close svg { width: 11px; height: 11px; stroke: currentColor; fill: none; stroke-width: 2.5; stroke-linecap: round; }
+
+.config-body { flex: 1; overflow-y: auto; padding: 14px 16px; display: flex; flex-direction: column; gap: 14px; }
+.config-body::-webkit-scrollbar { width: 3px; }
+.config-body::-webkit-scrollbar-thumb { background: var(--n-200); border-radius: 10px; }
+
+.config-field { display: flex; flex-direction: column; gap: 5px; }
+.config-label { font-size: 11px; font-weight: 600; color: var(--n-600); letter-spacing: .02em; display: flex; align-items: center; gap: 5px; }
+.config-input {
+  height: 32px; padding: 0 10px; border: 1px solid var(--n-200); border-radius: var(--r-md);
+  font-family: var(--font); font-size: 12px; color: var(--n-700); background: var(--n-0);
+  outline: none; transition: border-color 120ms, box-shadow 120ms;
+}
+.config-input:focus { border-color: var(--teal-400); box-shadow: 0 0 0 3px var(--teal-50); }
+.config-input::placeholder { color: var(--n-400); }
+
+/* Toggle */
+.toggle-row { display: flex; align-items: center; justify-content: space-between; }
+.toggle-label { font-size: 12px; color: var(--n-700); }
+.toggle { position: relative; width: 34px; height: 18px; }
+.toggle input { opacity: 0; width: 0; height: 0; }
+.toggle-slider { position: absolute; inset: 0; background: var(--n-200); border-radius: 9px; cursor: pointer; transition: background 150ms; }
+.toggle-slider::before { content: ''; position: absolute; width: 13px; height: 13px; left: 2.5px; top: 2.5px; background: white; border-radius: 50%; box-shadow: 0 1px 3px rgba(0,0,0,.2); transition: transform 150ms var(--ease); }
+.toggle input:checked + .toggle-slider { background: var(--teal-500); }
+.toggle input:checked + .toggle-slider::before { transform: translateX(16px); }
+
+/* Options list */
+.options-list { display: flex; flex-direction: column; gap: 5px; }
+.option-item {
+  display: flex; align-items: center; gap: 6px;
+  border: 1px solid var(--n-150); border-radius: var(--r-md); padding: 5px 8px;
+  background: var(--n-50);
+}
+.option-drag { color: var(--n-300); cursor: grab; display: flex; }
+.option-drag svg { width: 10px; height: 10px; stroke: currentColor; fill: none; stroke-width: 2; }
+.option-input { flex: 1; border: none; background: transparent; font-family: var(--font); font-size: 12px; color: var(--n-700); outline: none; }
+.option-remove { width: 18px; height: 18px; border-radius: 3px; border: none; background: transparent; cursor: pointer; color: var(--n-400); display: flex; align-items: center; justify-content: center; }
+.option-remove:hover { background: #FEF2F2; color: var(--danger-600); }
+.option-remove svg { width: 10px; height: 10px; stroke: currentColor; fill: none; stroke-width: 2.5; stroke-linecap: round; }
+.add-option-btn {
+  height: 28px; border: 1.5px dashed var(--n-200); border-radius: var(--r-md);
+  background: transparent; cursor: pointer; font-family: var(--font); font-size: 11px;
+  color: var(--n-400); display: flex; align-items: center; justify-content: center; gap: 5px;
+  transition: all 120ms;
+}
+.add-option-btn:hover { border-color: var(--teal-400); color: var(--teal-600); background: var(--teal-50); }
+.add-option-btn svg { width: 11px; height: 11px; stroke: currentColor; fill: none; stroke-width: 2.5; stroke-linecap: round; }
+
+/* Col size stepper */
+.col-stepper { display: flex; align-items: center; gap: 8px; }
+.stepper-btn {
+  width: 26px; height: 26px; border-radius: var(--r-sm); border: 1px solid var(--n-200);
+  background: var(--n-0); cursor: pointer; display: flex; align-items: center; justify-content: center;
+  font-size: 14px; color: var(--n-600); transition: all 120ms;
+}
+.stepper-btn:hover { background: var(--n-100); }
+.stepper-value { font-size: 13px; font-weight: 600; color: var(--n-700); min-width: 24px; text-align: center; }
+.stepper-of { font-size: 11px; color: var(--n-400); }
+
+/* Config section divider */
+.config-divider { height: 1px; background: var(--n-100); margin: 2px 0; }
+
+/* Element type badge */
+.el-type-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 2px 7px; border-radius: var(--r-full, 999px);
+  font-size: 10px; font-weight: 600;
+}
+.et-input { background: var(--teal-50); color: var(--teal-700); }
+.et-display { background: var(--n-100); color: var(--n-600); }
+.et-group { background: #EDE9FE; color: #5B21B6; }
+
+/* Empty config state */
+.config-empty { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 24px; text-align: center; }
+.config-empty-icon { width: 44px; height: 44px; border-radius: var(--r-xl); background: var(--n-100); display: flex; align-items: center; justify-content: center; }
+.config-empty-icon svg { width: 20px; height: 20px; stroke: var(--n-400); fill: none; stroke-width: 1.5; stroke-linecap: round; }
+.config-empty-title { font-size: 13px; font-weight: 600; color: var(--n-600); }
+.config-empty-desc { font-size: 11px; color: var(--n-400); line-height: 1.6; }
+
+/* config footer */
+.config-footer { padding: 12px 16px; border-top: 1px solid var(--n-100); display: flex; gap: 8px; flex-shrink: 0; }
+.config-footer .btn { flex: 1; justify-content: center; }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <button class="back-btn" title="Back to Templates">
+    <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+  </button>
+  <div class="topbar-title" id="template-title" contenteditable="true" spellcheck="false">New Template</div>
+  <div class="topbar-actions">
+    <button class="btn btn-ghost btn-secondary" onclick="togglePreview()">
+      <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+      Preview
+    </button>
+    <button class="btn btn-primary" onclick="saveTemplate()">
+      <svg viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+      Save Template
+    </button>
+  </div>
+</div>
+
+<div class="builder">
+
+  <!-- LEFT PANEL -->
+  <div class="left-panel">
+    <div class="palette-search">
+      <div class="search-input-wrap">
+        <span class="search-input-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+        <input class="search-input" type="text" placeholder="Search elements…" oninput="filterPalette(this.value)" id="palette-search">
+      </div>
+    </div>
+    <div class="palette-scroll" id="palette-scroll"></div>
+  </div>
+
+  <!-- CENTER CANVAS -->
+  <div class="center-canvas" id="center-canvas">
+    <div class="canvas-inner" id="canvas-inner">
+
+      <!-- Steps bar (multi_step shown here) -->
+      <div class="steps-bar" id="steps-bar" style="display:none">
+        <button class="step-tab active" data-step="1">Step 1</button>
+        <button class="step-tab" data-step="2">Step 2</button>
+        <button class="step-tab-add" title="Add Step" onclick="addStep()">+</button>
+      </div>
+
+      <!-- Panels container -->
+      <div id="panels-container"></div>
+
+      <!-- Add Panel button -->
+      <button class="add-panel-btn" onclick="addPanel()">
+        <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Add Panel
+      </button>
+
+    </div>
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div class="right-panel" id="right-panel">
+    <div class="config-empty" id="config-empty">
+      <div class="config-empty-icon">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      </div>
+      <div class="config-empty-title">No element selected</div>
+      <div class="config-empty-desc">Click any element on the canvas to configure its label, options, and settings.</div>
+    </div>
+    <div id="config-panel" style="display:none; flex-direction:column; flex:1; overflow:hidden;"></div>
+  </div>
+
+</div>
+
+<script>
+/* ═══════════════════════════ PALETTE DATA ═══════════════════════════ */
+const PALETTE_GROUPS = [
+  {
+    name: "Frequently Used", open: true,
+    items: [
+      { id: 1, title: "Short Answer", code: "SORT_ANSWER", category: "input_individual", icon: "short-answer" },
+      { id: 2, title: "Multiple Choice", code: "MULTI_CHOICE", category: "input_individual", icon: "multi-choice" },
+      { id: 3, title: "Email Input", code: "EMAIL_INPUT", category: "input_individual", icon: "email" },
+    ]
+  },
+  {
+    name: "Text", open: false,
+    items: [
+      { id: 23, title: "Short Answer", code: "SORT_ANSWER", category: "input_individual", icon: "short-answer" },
+      { id: 24, title: "Long Answer", code: "LONG_ANSWER", category: "input_individual", icon: "long-answer" },
+    ]
+  },
+  {
+    name: "Choices", open: false,
+    items: [
+      { id: 7, title: "Dropdown", code: "DROPDOWN", category: "input_individual", icon: "dropdown" },
+      { id: 12, title: "Radio Box", code: "RADIO_BOX", category: "input_individual", icon: "radio" },
+      { id: 11, title: "Check Box", code: "MULTI_CHOICE", category: "input_individual", icon: "checkbox" },
+      { id: 9, title: "Multiple Select", code: "MULTI_SELECT", category: "input_individual", icon: "multi-select" },
+      { id: 10, title: "Switch", code: "SWITCH", category: "input_individual", icon: "switch" },
+    ]
+  },
+  {
+    name: "Date & Time", open: false,
+    items: [
+      { id: 13, title: "Date Picker", code: "DATE_PICKER", category: "input_individual", icon: "date" },
+      { id: 14, title: "Time Picker", code: "TIME_PICKER", category: "input_individual", icon: "time" },
+      { id: 16, title: "Date Range", code: "DATE_RANGE", category: "input_group", icon: "date-range" },
+    ]
+  },
+  {
+    name: "Rating & Ranking", open: false,
+    items: [
+      { id: 19, title: "Ranking", code: "RANKING", category: "input_individual", icon: "ranking" },
+      { id: 20, title: "Star Rating", code: "STAR_RATING", category: "input_individual", icon: "star" },
+      { id: 21, title: "Slider", code: "SLIDER", category: "input_individual", icon: "slider" },
+      { id: 22, title: "Option Scale", code: "OPTION_SCALE", category: "input_individual", icon: "scale" },
+    ]
+  },
+  {
+    name: "Numbers", open: false,
+    items: [
+      { id: 29, title: "Currency", code: "CURRENCY", category: "input_individual", icon: "currency" },
+      { id: 28, title: "Numbers", code: "NUMBERS", category: "input_individual", icon: "numbers" },
+    ]
+  },
+  {
+    name: "Contact Info", open: false,
+    items: [
+      { id: 25, title: "Phone", code: "PHONE_INPUT", category: "input_individual", icon: "phone" },
+      { id: 26, title: "Email", code: "EMAIL_INPUT", category: "input_individual", icon: "email" },
+      { id: 27, title: "Address", code: "ADDRESS", category: "input_individual", icon: "address" },
+    ]
+  },
+  {
+    name: "Navigation & Layout", open: false,
+    items: [
+      { id: 43, title: "Divider", code: "DIVIDER", category: "display", icon: "divider" },
+      { id: 42, title: "Section Collapse", code: "SECTION_COLLAPSE", category: "display", icon: "collapse" },
+      { id: 44, title: "Panel", code: "PANEL", category: "display", icon: "panel-icon" },
+      { id: 45, title: "HTML", code: "HTML", category: "display", icon: "html" },
+    ]
+  },
+  {
+    name: "Display Text", open: false,
+    items: [
+      { id: 4, title: "Heading", code: "HEADING", category: "display", icon: "heading" },
+      { id: 5, title: "Paragraph", code: "PARAGRAPH", category: "display", icon: "paragraph" },
+      { id: 6, title: "Banner", code: "BANNER", category: "display", icon: "banner" },
+    ]
+  },
+  {
+    name: "Miscellaneous", open: false,
+    items: [
+      { id: 37, title: "Location", code: "LOCATION", category: "input_group", icon: "location" },
+      { id: 33, title: "File Upload", code: "FILE_UPLOAD", category: "input_individual", icon: "file" },
+      { id: 34, title: "Signature", code: "SIGNATURE", category: "input_individual", icon: "signature" },
+      { id: 30, title: "URL Input", code: "URL_INPUT", category: "input_individual", icon: "url" },
+      { id: 32, title: "Password", code: "PASSWORD", category: "input_individual", icon: "password" },
+      { id: 40, title: "Captcha", code: "CAPTCHA", category: "display", icon: "captcha" },
+    ]
+  },
+  {
+    name: "Media", open: false,
+    items: [
+      { id: 46, title: "Image", code: "IMAGE_VIEWER", category: "display", icon: "image" },
+      { id: 47, title: "Video", code: "VIDEO_VIEWER", category: "display", icon: "video" },
+      { id: 48, title: "PDF Viewer", code: "PDF_VIEWER", category: "display", icon: "pdf" },
+    ]
+  }
+];
+
+/* ═══════════════════════════ ICON SVG PATHS ═══════════════════════════ */
+const ICONS = {
+  "short-answer": `<line x1="17" y1="10" x2="3" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="17" y1="18" x2="3" y2="18"/>`,
+  "long-answer": `<line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="10" x2="3" y2="10"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="21" y1="18" x2="3" y2="18"/>`,
+  "email": `<path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>`,
+  "dropdown": `<polyline points="6 9 12 15 18 9"/>`,
+  "radio": `<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/>`,
+  "checkbox": `<polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>`,
+  "multi-select": `<rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>`,
+  "switch": `<rect x="1" y="8" width="22" height="8" rx="4" ry="4"/><circle cx="7" cy="12" r="3"/>`,
+  "date": `<rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>`,
+  "time": `<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>`,
+  "date-range": `<rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><polyline points="8 14 10 16 14 12"/>`,
+  "ranking": `<line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>`,
+  "star": `<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>`,
+  "slider": `<line x1="4" y1="12" x2="20" y2="12"/><circle cx="9" cy="12" r="3"/>`,
+  "scale": `<circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/>`,
+  "currency": `<line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>`,
+  "numbers": `<line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/><line x1="10" y1="3" x2="8" y2="21"/><line x1="16" y1="3" x2="14" y2="21"/>`,
+  "phone": `<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>`,
+  "address": `<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>`,
+  "divider": `<line x1="3" y1="12" x2="21" y2="12"/>`,
+  "collapse": `<polyline points="4 14 10 14 10 20"/><polyline points="20 10 14 10 14 4"/><line x1="14" y1="10" x2="21" y2="3"/><line x1="3" y1="21" x2="10" y2="14"/>`,
+  "panel-icon": `<rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/>`,
+  "html": `<polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>`,
+  "heading": `<path d="M4 12h16M4 6h16M4 18h7"/>`,
+  "paragraph": `<line x1="17" y1="10" x2="3" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="17" y1="18" x2="3" y2="18"/>`,
+  "banner": `<rect x="3" y="8" width="18" height="8" rx="2"/>`,
+  "location": `<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>`,
+  "file": `<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>`,
+  "signature": `<path d="M3 17l4-4 4 4 4-8 4 4"/>`,
+  "url": `<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>`,
+  "password": `<rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>`,
+  "captcha": `<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>`,
+  "image": `<rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>`,
+  "video": `<polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>`,
+  "pdf": `<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>`,
+  "multi-choice": `<circle cx="12" cy="12" r="10"/><circle cx="12" cy="10" r="3"/><path d="M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662"/>`,
+};
+
+function getIcon(code) {
+  return ICONS[code] || `<rect x="3" y="3" width="18" height="18" rx="2"/>`;
+}
+
+/* ═══════════════════════════ STATE ═══════════════════════════ */
+/*
+  Panel structure:
+  {
+    id, title,
+    rows: [
+      { id, cols: 1|2|3|4, elements: [ {id, panelId, rowId, ...} ] }
+    ]
+  }
+  Each row is independent. cols on the row sets how wide each element is.
+  Elements can be dragged between rows or reordered within a row.
+*/
+let panels = [];
+let selectedElementId = null;
+let panelCounter = 0;
+let rowCounter = 0;
+let elementCounter = 0;
+let dragItem = null;  // { type: 'palette'|'element', ...data }
+let dragOver = null;  // { panelId, rowId, position: 'before'|'after'|'into', elementId? }
+
+/* ═══════════════════════════ RENDER PALETTE ═══════════════════════════ */
+function renderPalette(filter = '') {
+  const container = document.getElementById('palette-scroll');
+  const lf = filter.toLowerCase();
+  container.innerHTML = PALETTE_GROUPS.map(group => {
+    const items = filter ? group.items.filter(i => i.title.toLowerCase().includes(lf)) : group.items;
+    if (!items.length) return '';
+    const isOpen = filter ? true : group.open;
+    return `<div class="palette-group ${isOpen ? '' : 'collapsed'}" data-group="${group.name}">
+      <div class="palette-group-header" onclick="toggleGroup('${group.name}')">
+        <span class="palette-group-title">${group.name}</span>
+        <span class="palette-group-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+      </div>
+      <div class="palette-items">
+        ${items.map(item => `
+          <div class="palette-item ${item.category === 'display' ? 'is-display' : ''}"
+            draggable="true" ondragstart="onPaletteDragStart(event, ${JSON.stringify(item).replace(/"/g,"'")})">
+            <div class="palette-item-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${getIcon(item.icon)}</svg>
+            </div>
+            <span class="palette-item-label">${item.title}</span>
+          </div>`).join('')}
+      </div>
+    </div>`;
+  }).join('');
+}
+function toggleGroup(name) {
+  const g = PALETTE_GROUPS.find(x => x.name === name);
+  if (g) g.open = !g.open;
+  renderPalette(document.getElementById('palette-search').value);
+}
+function filterPalette(val) { renderPalette(val); }
+
+/* ═══════════════════════════ PANELS ═══════════════════════════ */
+function makeRow(panelId) {
+  rowCounter++;
+  return { id: rowCounter, panelId, cols: 1, elements: [] };
+}
+
+function addPanel() {
+  panelCounter++;
+  const row = makeRow(panelCounter);
+  row.cols = 1;
+  panels.push({ id: panelCounter, title: 'Untitled Panel', rows: [] });
+  renderPanels();
+}
+
+function renderPanels() {
+  const container = document.getElementById('panels-container');
+  container.innerHTML = panels.map(p => renderPanel(p)).join('');
+  attachDragListeners();
+}
+
+function renderPanel(panel) {
+  const bodyContent = panel.rows.length === 0
+    ? `<div class="drop-zone" id="drop-empty-${panel.id}" ondragover="event.preventDefault();this.classList.add('active')" ondragleave="this.classList.remove('active')" ondrop="onDropEmptyPanel(event,${panel.id})">
+         <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+         Drop elements here
+       </div>`
+    : panel.rows.map((row, ri) => renderRow(panel, row, ri)).join('') +
+      `<div class="row-drop-gap" data-panel="${panel.id}" data-after-row="${panel.rows[panel.rows.length-1].id}"
+         ondragover="onRowGapOver(event,this)" ondragleave="this.classList.remove('active')"
+         ondrop="onDropRowGap(event,${panel.id},${panel.rows[panel.rows.length-1].id},'after')"></div>`;
+
+  return `<div class="panel-card" id="panel-${panel.id}">
+    <div class="panel-header">
+      <div class="panel-header-left">
+        <span class="panel-drag-handle"><svg viewBox="0 0 24 24"><circle cx="9" cy="5" r="1" fill="currentColor"/><circle cx="9" cy="12" r="1" fill="currentColor"/><circle cx="9" cy="19" r="1" fill="currentColor"/><circle cx="15" cy="5" r="1" fill="currentColor"/><circle cx="15" cy="12" r="1" fill="currentColor"/><circle cx="15" cy="19" r="1" fill="currentColor"/></svg></span>
+        <span class="panel-title" contenteditable="true" spellcheck="false" onblur="updatePanelTitle(${panel.id}, this.innerText)">${panel.title}</span>
+      </div>
+      <div class="panel-header-right">
+        <button class="panel-action-btn" title="Duplicate" onclick="duplicatePanel(${panel.id})"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+        <button class="panel-action-btn" title="Delete" onclick="deletePanel(${panel.id})" style="color:var(--danger-500)"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>
+      </div>
+    </div>
+    <div class="panel-body" id="panel-body-${panel.id}">${bodyContent}</div>
+  </div>`;
+}
+
+function renderRow(panel, row, rowIndex) {
+  const gapBefore = rowIndex === 0
+    ? `<div class="row-drop-gap" data-panel="${panel.id}" data-before-row="${row.id}"
+         ondragover="onRowGapOver(event,this)" ondragleave="this.classList.remove('active')"
+         ondrop="onDropRowGap(event,${panel.id},${row.id},'before')"></div>` : '';
+
+  const isRowOver = dragOver && dragOver.rowId === row.id && dragOver.type === 'into-row';
+
+  const elemHtml = row.elements.length > 0
+    ? row.elements.map((el, ei) => renderElement(el, row, ei)).join('')
+    : `<div class="row-element-slot row-el-empty" data-panel="${panel.id}" data-row="${row.id}">Drop here</div>`;
+
+  return `${gapBefore}
+  <div class="element-row ${isRowOver ? 'row-drag-over' : ''}" id="row-${row.id}" data-panel="${panel.id}" data-row="${row.id}">
+    <div class="row-header">
+      <span class="row-label">Row</span>
+      <div class="row-col-selector">
+        <span class="row-col-label">Columns:</span>
+        ${[1,2,3,4].map(n => `<button class="col-btn ${row.cols === n ? 'active' : ''}" onclick="setRowCols(${panel.id},${row.id},${n})">${n}</button>`).join('')}
+      </div>
+      <button class="row-delete-btn" title="Delete row" onclick="deleteRow(${panel.id},${row.id})">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="row-elements" id="row-els-${row.id}" style="grid-template-columns: repeat(${row.cols}, 1fr)"
+      ondragover="onRowElsOver(event,${panel.id},${row.id})"
+      ondragleave="onRowElsLeave(event,${row.id})"
+      ondrop="onDropIntoRow(event,${panel.id},${row.id})">
+      ${elemHtml}
+    </div>
+  </div>`;
+}
+
+function renderElement(el, row, elIndex) {
+  const isSelected = selectedElementId === el.id;
+  const isDragging = dragItem && dragItem.type === 'element' && dragItem.el.id === el.id;
+  return `
+    <div class="form-element ${isSelected ? 'selected' : ''} ${isDragging ? 'dragging' : ''}"
+      id="el-${el.id}"
+      draggable="true"
+      ondragstart="onElementDragStart(event,${el.panelId},${row.id},${el.id})"
+      ondragend="onElementDragEnd()"
+      onclick="selectElement(${el.id})">
+      <div class="form-element-header">
+        <div class="form-element-label">
+          <span class="el-drag-grip" title="Drag to move">
+            <svg width="10" height="14" viewBox="0 0 10 14" fill="none"><circle cx="3" cy="2" r="1.2" fill="currentColor"/><circle cx="7" cy="2" r="1.2" fill="currentColor"/><circle cx="3" cy="7" r="1.2" fill="currentColor"/><circle cx="7" cy="7" r="1.2" fill="currentColor"/><circle cx="3" cy="12" r="1.2" fill="currentColor"/><circle cx="7" cy="12" r="1.2" fill="currentColor"/></svg>
+          </span>
+          ${el.label || el.title}
+          ${el.is_required ? '<span class="required-dot"></span>' : ''}
+        </div>
+        <div class="form-element-actions">
+          <button class="el-action-btn" title="Move to new row" onclick="event.stopPropagation();moveToNewRow(${el.panelId},${row.id},${el.id})">
+            <svg viewBox="0 0 24 24"><polyline points="8 6 2 12 8 18"/><line x1="2" y1="12" x2="22" y2="12"/></svg>
+          </button>
+          <button class="el-action-btn del" title="Remove" onclick="event.stopPropagation();removeElement(${el.panelId},${row.id},${el.id})">
+            <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+      </div>
+      ${renderWidget(el)}
+    </div>`;
+}
+
+function renderWidget(el) {
+  switch(el.code) {
+    case 'SORT_ANSWER': return `<div class="fake-input">Short answer text…</div>`;
+    case 'LONG_ANSWER': return `<div class="fake-textarea">Long answer text…</div>`;
+    case 'EMAIL_INPUT': return `<div class="fake-input">email@example.com</div>`;
+    case 'PHONE_INPUT': return `<div class="fake-input">+1 (555) 000-0000</div>`;
+    case 'NUMBERS': case 'CURRENCY': return `<div class="fake-input">0</div>`;
+    case 'PASSWORD': return `<div class="fake-input">••••••••</div>`;
+    case 'URL_INPUT': return `<div class="fake-input">https://</div>`;
+    case 'ADDRESS': return `<div class="fake-textarea">Street, City, Country…</div>`;
+    case 'DATE_PICKER': case 'DATE_TIME': return `<div class="fake-input">MM / DD / YYYY</div>`;
+    case 'TIME_PICKER': return `<div class="fake-input">HH : MM</div>`;
+    case 'DATE_RANGE': return `<div style="display:flex;gap:8px"><div class="fake-input" style="flex:1">From</div><div class="fake-input" style="flex:1">To</div></div>`;
+    case 'DROPDOWN': case 'MULTI_SELECT':
+      return `<div class="fake-select"><span>Select an option…</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></div>`;
+    case 'RADIO_BOX': case 'MULTI_CHOICE':
+      return `<div class="fake-radio-group">${(el.options && el.options.length ? el.options.slice(0,3) : ['Option 1','Option 2','Option 3']).map((o,i) => `<div class="fake-radio"><div class="fake-radio-dot ${i===0?'checked':''}"></div>${o}</div>`).join('')}</div>`;
+    case 'SWITCH':
+      return `<div style="display:flex;align-items:center;gap:8px"><div style="width:36px;height:20px;background:var(--teal-500);border-radius:10px;position:relative;"><div style="position:absolute;right:2px;top:2px;width:16px;height:16px;background:white;border-radius:50%;"></div></div><span style="font-size:12px;color:var(--n-500)">Enabled</span></div>`;
+    case 'STAR_RATING':
+      return `<div class="fake-stars">${[1,2,3,4,5].map((s,i) => `<svg width="18" height="18" viewBox="0 0 24 24" fill="${i<3?'var(--warning-500)':'none'}" stroke="var(--warning-500)" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`).join('')}</div>`;
+    case 'SLIDER':
+      return `<div style="padding:8px 0"><div style="height:4px;background:var(--n-200);border-radius:2px;position:relative;"><div style="position:absolute;left:0;width:40%;height:100%;background:var(--teal-500);border-radius:2px;"></div><div style="position:absolute;left:38%;top:-6px;width:16px;height:16px;background:var(--teal-500);border-radius:50%;border:2px solid white;box-shadow:var(--shadow-sm);"></div></div></div>`;
+    case 'RANKING':
+      return `<div style="display:flex;flex-direction:column;gap:5px">${['First choice','Second choice'].map(o => `<div style="display:flex;align-items:center;gap:8px;padding:6px 10px;border:1px solid var(--n-200);border-radius:var(--r-md);font-size:12px;color:var(--n-600);background:var(--n-50)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="6" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="18" r="1"/><circle cx="15" cy="6" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="18" r="1"/></svg>${o}</div>`).join('')}</div>`;
+    case 'FILE_UPLOAD':
+      return `<div class="fake-file"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>Click to upload or drag and drop</div>`;
+    case 'HEADING': return `<div class="fake-heading">${el.value || 'Section Heading'}</div>`;
+    case 'PARAGRAPH': return `<div style="font-size:12px;color:var(--n-500);line-height:1.6">${el.value || 'Paragraph text goes here…'}</div>`;
+    case 'DIVIDER': return `<div class="fake-divider"></div>`;
+    case 'HTML': return `<div style="font-size:11px;font-family:var(--mono);color:var(--n-500);background:var(--n-100);padding:8px 10px;border-radius:var(--r-md)">&lt;div&gt;HTML content&lt;/div&gt;</div>`;
+    case 'LOCATION': return `<div style="display:flex;gap:8px"><div class="fake-input" style="flex:1">Latitude</div><div class="fake-input" style="flex:1">Longitude</div></div>`;
+    case 'SIGNATURE': return `<div style="height:56px;border:1px solid var(--n-200);border-radius:var(--r-md);background:var(--n-50);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--n-400)">Sign here</div>`;
+    case 'COLOR_PICKER': return `<div style="display:flex;gap:8px;align-items:center"><div style="width:32px;height:32px;background:#3ABAB3;border-radius:var(--r-md);border:1px solid var(--n-200)"></div><div class="fake-input" style="flex:1">#3ABAB3</div></div>`;
+    default: return `<div class="fake-input">Enter value…</div>`;
+  }
+}
+
+/* ═══════════════════════════ DRAG FROM PALETTE ═══════════════════════════ */
+function onPaletteDragStart(event, item) {
+  dragItem = { type: 'palette', item };
+  event.dataTransfer.effectAllowed = 'copy';
+}
+
+/* ═══════════════════════════ DRAG ELEMENT ═══════════════════════════ */
+function onElementDragStart(event, panelId, rowId, elId) {
+  const panel = panels.find(p => p.id === panelId);
+  const row = panel && panel.rows.find(r => r.id === rowId);
+  const el = row && row.elements.find(e => e.id === elId);
+  if (!el) return;
+  dragItem = { type: 'element', el, fromPanelId: panelId, fromRowId: rowId };
+  event.dataTransfer.effectAllowed = 'move';
+  event.stopPropagation();
+}
+function onElementDragEnd() { dragItem = null; dragOver = null; renderPanels(); }
+
+/* ═══════════════════════════ DROP INTO EMPTY PANEL ═══════════════════════════ */
+function onDropEmptyPanel(event, panelId) {
+  event.preventDefault();
+  const panel = panels.find(p => p.id === panelId);
+  if (!panel || !dragItem) return;
+  const newRow = makeRow(panelId);
+  newRow.cols = 1;
+  const newEl = makeElement(panelId, newRow.id);
+  newRow.elements.push(newEl);
+  panel.rows.push(newRow);
+  if (dragItem.type === 'element') removeFromSource();
+  dragItem = null;
+  renderPanels();
+  selectElement(newEl.id);
+}
+
+/* ═══════════════════════════ DROP INTO ROW ═══════════════════════════ */
+function onDropIntoRow(event, panelId, rowId) {
+  event.preventDefault();
+  event.stopPropagation();
+  const panel = panels.find(p => p.id === panelId);
+  const row = panel && panel.rows.find(r => r.id === rowId);
+  if (!row || !dragItem) { dragItem = null; renderPanels(); return; }
+
+  // If dropping element from another row, remove from source first
+  let fromSelf = false;
+  if (dragItem.type === 'element') {
+    fromSelf = dragItem.fromRowId === rowId;
+    if (!fromSelf) removeFromSource();
+  }
+
+  // Figure out drop position within row via pointer
+  const rowElsEl = document.getElementById(`row-els-${rowId}`);
+  let insertIdx = row.elements.length;
+  if (rowElsEl) {
+    const children = [...rowElsEl.querySelectorAll('.form-element')];
+    for (let i = 0; i < children.length; i++) {
+      const rect = children[i].getBoundingClientRect();
+      const mid = rect.left + rect.width / 2;
+      if (event.clientX < mid) { insertIdx = i; break; }
+    }
+  }
+
+  // If dragging from self, remove from old position first
+  if (fromSelf) {
+    const oldIdx = row.elements.findIndex(e => e.id === dragItem.el.id);
+    if (oldIdx >= 0) row.elements.splice(oldIdx, 1);
+    if (insertIdx > oldIdx) insertIdx--;
+  }
+
+  const newEl = makeElement(panelId, rowId);
+  row.elements.splice(insertIdx, 0, newEl);
+  dragItem = null; dragOver = null;
+  renderPanels();
+  selectElement(newEl.id);
+}
+
+/* ═══════════════════════════ DROP ROW GAP (between rows) ═══════════════════════════ */
+function onRowGapOver(event, el) {
+  event.preventDefault();
+  el.classList.add('active');
+}
+function onDropRowGap(event, panelId, refRowId, position) {
+  event.preventDefault();
+  const panel = panels.find(p => p.id === panelId);
+  if (!panel || !dragItem) return;
+  const newRow = makeRow(panelId);
+  newRow.cols = 1;
+  const newEl = makeElement(panelId, newRow.id);
+  newRow.elements.push(newEl);
+  if (dragItem.type === 'element') removeFromSource();
+  const refIdx = panel.rows.findIndex(r => r.id === refRowId);
+  const insertAt = position === 'before' ? refIdx : refIdx + 1;
+  panel.rows.splice(insertAt, 0, newRow);
+  // Clean empty rows
+  panel.rows = panel.rows.filter(r => r.elements.length > 0);
+  dragItem = null; dragOver = null;
+  renderPanels();
+  selectElement(newEl.id);
+}
+
+function onRowElsOver(event, panelId, rowId) { event.preventDefault(); }
+function onRowElsLeave(event, rowId) {}
+
+/* ═══════════════════════════ HELPERS ═══════════════════════════ */
+function makeElement(panelId, rowId) {
+  elementCounter++;
+  const base = dragItem && dragItem.type === 'palette' ? dragItem.item
+    : dragItem && dragItem.type === 'element' ? dragItem.el : {};
+  return {
+    id: elementCounter, panelId, rowId,
+    element_id: base.element_id || base.id || 0,
+    title: base.title || 'Element',
+    label: base.label || base.title || 'Element',
+    code: base.code || 'SORT_ANSWER',
+    category: base.category || 'input_individual',
+    is_required: base.is_required || false,
+    column_size: 12,
+    options: base.options ? [...base.options] : [],
+    value: base.value || null,
+    placeholder: base.placeholder || ''
+  };
+}
+
+function removeFromSource() {
+  if (!dragItem || dragItem.type !== 'element') return;
+  const srcPanel = panels.find(p => p.id === dragItem.fromPanelId);
+  if (!srcPanel) return;
+  const srcRow = srcPanel.rows.find(r => r.id === dragItem.fromRowId);
+  if (!srcRow) return;
+  srcRow.elements = srcRow.elements.filter(e => e.id !== dragItem.el.id);
+  // Remove empty rows
+  srcPanel.rows = srcPanel.rows.filter(r => r.elements.length > 0);
+}
+
+function attachDragListeners() {
+  // no-op — drag listeners set inline in HTML
+}
+
+/* ═══════════════════════════ ROW ACTIONS ═══════════════════════════ */
+function setRowCols(panelId, rowId, cols) {
+  const panel = panels.find(p => p.id === panelId);
+  const row = panel && panel.rows.find(r => r.id === rowId);
+  if (row) { row.cols = cols; renderPanels(); }
+}
+
+function deleteRow(panelId, rowId) {
+  const panel = panels.find(p => p.id === panelId);
+  if (!panel) return;
+  panel.rows = panel.rows.filter(r => r.id !== rowId);
+  renderPanels();
+}
+
+function moveToNewRow(panelId, rowId, elId) {
+  const panel = panels.find(p => p.id === panelId);
+  const srcRow = panel && panel.rows.find(r => r.id === rowId);
+  if (!srcRow) return;
+  const el = srcRow.elements.find(e => e.id === elId);
+  if (!el) return;
+  // Only move if row has >1 element
+  if (srcRow.elements.length <= 1) { showToast('This element is already the only one in its row'); return; }
+  srcRow.elements = srcRow.elements.filter(e => e.id !== elId);
+  const newRow = makeRow(panelId);
+  newRow.cols = 1;
+  el.rowId = newRow.id;
+  newRow.elements.push(el);
+  const rowIdx = panel.rows.findIndex(r => r.id === rowId);
+  panel.rows.splice(rowIdx + 1, 0, newRow);
+  renderPanels();
+  selectElement(elId);
+}
+
+/* ═══════════════════════════ ELEMENT ACTIONS ═══════════════════════════ */
+function selectElement(elId) {
+  selectedElementId = elId;
+  const el = getAllElements().find(e => e.id === elId);
+  if (el) renderConfigPanel(el);
+  // Highlight selected without full re-render
+  document.querySelectorAll('.form-element').forEach(el => el.classList.remove('selected'));
+  const dom = document.getElementById(`el-${elId}`);
+  if (dom) dom.classList.add('selected');
+}
+
+function getAllElements() {
+  return panels.flatMap(p => p.rows.flatMap(r => r.elements));
+}
+
+function removeElement(panelId, rowId, elId) {
+  const panel = panels.find(p => p.id === panelId);
+  const row = panel && panel.rows.find(r => r.id === rowId);
+  if (!row) return;
+  row.elements = row.elements.filter(e => e.id !== elId);
+  panel.rows = panel.rows.filter(r => r.elements.length > 0);
+  if (selectedElementId === elId) { selectedElementId = null; showEmptyConfig(); }
+  renderPanels();
+}
+
+/* ═══════════════════════════ PANEL ACTIONS ═══════════════════════════ */
+function updatePanelTitle(panelId, title) {
+  const panel = panels.find(p => p.id === panelId);
+  if (panel) panel.title = title.trim() || 'Untitled Panel';
+}
+function duplicatePanel(panelId) {
+  const orig = panels.find(p => p.id === panelId);
+  if (!orig) return;
+  panelCounter++;
+  const newPanel = {
+    id: panelCounter, title: orig.title + ' (Copy)',
+    rows: orig.rows.map(row => {
+      rowCounter++;
+      return {
+        id: rowCounter, panelId: panelCounter, cols: row.cols,
+        elements: row.elements.map(el => { elementCounter++; return { ...el, id: elementCounter, panelId: panelCounter, rowId: rowCounter }; })
+      };
+    })
+  };
+  const idx = panels.findIndex(p => p.id === panelId);
+  panels.splice(idx + 1, 0, newPanel);
+  renderPanels();
+}
+function deletePanel(panelId) {
+  panels = panels.filter(p => p.id !== panelId);
+  renderPanels();
+}
+function setPanelColumns() {} // legacy no-op
+
+/* ═══════════════════════════ CONFIG PANEL ═══════════════════════════ */
+function showEmptyConfig() {
+  document.getElementById('config-empty').style.display = 'flex';
+  document.getElementById('config-panel').style.display = 'none';
+}
+
+function renderConfigPanel(el) {
+  document.getElementById('config-empty').style.display = 'none';
+  const cp = document.getElementById('config-panel');
+  cp.style.display = 'flex';
+
+  const isDisplay = el.category === 'display';
+  const isGroup = el.category === 'input_group';
+  const isChoices = ['DROPDOWN','RADIO_BOX','MULTI_CHOICE','MULTI_SELECT','PICTURE_CHOICE','OPTION_SCALE'].includes(el.code);
+
+  cp.innerHTML = `
+    <div class="config-header">
+      <div>
+        <div class="config-title">${el.title || el.label || 'Element'}</div>
+        <div class="config-subtitle">
+          <span class="el-type-badge ${el.category === 'display' ? 'et-display' : el.category === 'input_group' ? 'et-group' : 'et-input'}">${el.category || 'input'}</span>
+        </div>
+      </div>
+      <button class="config-close" onclick="showEmptyConfig()"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="config-body">
+      <div class="config-field">
+        <label class="config-label">Label / Name</label>
+        <input class="config-input" type="text" value="${el.label || el.title || ''}" placeholder="Enter label…"
+          oninput="updateElementProp(${el.id}, 'label', this.value)">
+      </div>
+      ${!isDisplay ? `
+        <div class="config-divider"></div>
+        <div class="toggle-row">
+          <span class="toggle-label">Required field</span>
+          <label class="toggle"><input type="checkbox" ${el.is_required ? 'checked' : ''} onchange="updateElementProp(${el.id}, 'is_required', this.checked)"><span class="toggle-slider"></span></label>
+        </div>
+      ` : ''}
+      ${isDisplay && (el.code === 'HEADING' || el.code === 'PARAGRAPH' || el.code === 'HTML' || el.code === 'BANNER') ? `
+        <div class="config-divider"></div>
+        <div class="config-field">
+          <label class="config-label">Content</label>
+          <textarea class="config-input" style="height:72px;resize:vertical;padding:8px 10px;line-height:1.5;" placeholder="Enter content…"
+            oninput="updateElementProp(${el.id}, 'value', this.value)">${el.value || ''}</textarea>
+        </div>
+      ` : ''}
+      ${!isDisplay ? `
+        <div class="config-divider"></div>
+        <div class="config-field">
+          <label class="config-label">Default value</label>
+          <input class="config-input" type="text" value="${el.value || ''}" placeholder="Optional default…"
+            oninput="updateElementProp(${el.id}, 'value', this.value)">
+        </div>
+        <div class="config-field">
+          <label class="config-label">Placeholder</label>
+          <input class="config-input" type="text" value="${el.placeholder || ''}" placeholder="Placeholder text…"
+            oninput="updateElementProp(${el.id}, 'placeholder', this.value)">
+        </div>
+      ` : ''}
+      ${isChoices ? `
+        <div class="config-divider"></div>
+        <div class="config-field">
+          <label class="config-label">Options</label>
+          <div class="options-list" id="options-list-${el.id}">
+            ${(el.options && el.options.length ? el.options : ['Option 1','Option 2']).map((opt, i) => `
+              <div class="option-item" data-idx="${i}">
+                <span class="option-drag"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="6" r="1.5" fill="currentColor"/><circle cx="9" cy="12" r="1.5" fill="currentColor"/><circle cx="9" cy="18" r="1.5" fill="currentColor"/><circle cx="15" cy="6" r="1.5" fill="currentColor"/><circle cx="15" cy="12" r="1.5" fill="currentColor"/><circle cx="15" cy="18" r="1.5" fill="currentColor"/></svg></span>
+                <input class="option-input" type="text" value="${opt}" placeholder="Option ${i+1}"
+                  onblur="updateOption(${el.id}, ${i}, this.value)">
+                <button class="option-remove" onclick="removeOption(${el.id}, ${i})"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+              </div>
+            `).join('')}
+          </div>
+          <button class="add-option-btn" onclick="addOption(${el.id})" style="margin-top:6px">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add option
+          </button>
+        </div>
+      ` : ''}
+      <div class="config-divider"></div>
+      <div class="config-field">
+        <label class="config-label">Column width</label>
+        <div class="col-stepper">
+          <button class="stepper-btn" onclick="adjustColSize(${el.id}, -1)">−</button>
+          <span class="stepper-value" id="col-val-${el.id}">${el.column_size || 12}</span>
+          <button class="stepper-btn" onclick="adjustColSize(${el.id}, 1)">+</button>
+          <span class="stepper-of">/ 12 columns</span>
+        </div>
+      </div>
+    </div>
+    <div class="config-footer">
+      <button class="btn btn-ghost" onclick="removeElement(${el.panelId},${el.rowId},${el.id})" style="color:var(--danger-500);border-color:var(--danger-500);opacity:.8;font-size:11px">
+        <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+        Remove
+      </button>
+      <button class="btn btn-primary" onclick="applyConfig(${el.id})">
+        Apply
+      </button>
+    </div>
+  `;
+}
+
+function updateElementProp(elId, prop, value) {
+  const el = getAllElements().find(e => e.id === elId);
+  if (el) el[prop] = value;
+}
+
+function adjustColSize(elId, delta) {
+  const el = getAllElements().find(e => e.id === elId);
+  if (!el) return;
+  el.column_size = Math.max(1, Math.min(12, (el.column_size || 12) + delta));
+  const valEl = document.getElementById(`col-val-${elId}`);
+  if (valEl) valEl.textContent = el.column_size;
+  renderPanels();
+  renderConfigPanel(el);
+}
+
+function addOption(elId) {
+  const el = getAllElements().find(e => e.id === elId);
+  if (!el) return;
+  if (!el.options) el.options = [];
+  el.options.push(`Option ${el.options.length + 1}`);
+  renderPanels();
+  renderConfigPanel(el);
+}
+
+function removeOption(elId, idx) {
+  const el = getAllElements().find(e => e.id === elId);
+  if (!el) return;
+  el.options.splice(idx, 1);
+  renderPanels();
+  renderConfigPanel(el);
+}
+
+function updateOption(elId, idx, value) {
+  const el = getAllElements().find(e => e.id === elId);
+  if (el && el.options) el.options[idx] = value;
+  renderPanels();
+}
+
+function applyConfig(elId) {
+  renderPanels();
+  const el = getAllElements().find(e => e.id === elId);
+  if (el) renderConfigPanel(el);
+}
+
+/* ═══════════════════════════ SAVE & MISC ═══════════════════════════ */
+function saveTemplate() {
+  const title = document.getElementById('template-title').innerText;
+  showToast(`Template "${title}" saved`);
+}
+
+function togglePreview() { showToast('Preview mode coming soon'); }
+
+function addStep() { showToast('Step added'); }
+
+function showToast(msg) {
+  const t = document.createElement('div');
+  t.style.cssText = `position:fixed;bottom:20px;right:20px;z-index:999;background:var(--n-900);color:white;padding:10px 16px;border-radius:var(--r-lg);font-size:13px;font-family:var(--font);font-weight:500;box-shadow:var(--shadow-lg);animation:fadeUp .25s var(--ease) both`;
+  t.textContent = msg;
+  const style = document.createElement('style');
+  style.textContent = `@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}`;
+  document.head.appendChild(style);
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 2500);
+}
+
+/* ═══════════════════════════ INIT ═══════════════════════════ */
+renderPalette();
+panelCounter = 1;
+panels = [{ id: 1, title: 'Untitled Panel', rows: [] }];
+renderPanels();
+</script>
+</body>
+</html>

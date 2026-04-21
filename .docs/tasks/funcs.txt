@@ -1,0 +1,88 @@
+def quotation_approval(request):
+def sort_key(item):
+def handle_quotation_approval(request, id):
+def single_quotation_approval(request, id):
+def _parse_email(raw):
+def _parse_id_list(v):
+def quotation_changes(request, id):
+def get_bearer_token(request):
+def redact_token(token: str, left: int = 12, right: int = 8) -> str:
+def quotation_approval_changes(request, id):
+def delete_quotation_approval(id):
+def quotation_approval_send_email(request):
+def entity_check(request, id):
+def _parse_id_list(v):
+def fetch_elements_data(template_id, submission_id=None):
+def _inline_submission_struct_on_risk(risk):
+def _inline_submission_struct_on_risks(risks):
+def approval_risk_details(request, approval_id: int):
+def get_service_providers(request):
+def quotation_chat_messages(request, quotation_id, insurer_id):
+def normalize_email(email_string):
+def quotation_sync_conversations(request, quotation_id):
+def policy_chat_messages(request, policy_id):
+def normalize_email(email_string):
+def policy_sync_conversations(request, policy_id):
+def policy_sync_conversations_new(request, policy_id):
+def get_endorsement_documents(request, endorsement_id):
+def get_risks_by_type_and_customer(request, risk_type_id):
+def fetch_elements_data(template_id, submission_id=None):
+def send_chatmail_message(request):
+def normalize_email_format(email_string):
+def get_chatmail_messages(request):
+def sync_gmail_thread(request):
+def sync_gmail_thread_messages(conversation_id):
+def extract_body_from_payload(payload_obj):
+def find_any_text_content(payload_obj):
+def clean_email_body(content):
+def extract_attachments_from_parts(parts):
+def normalize_email_format(email_string):
+def count_attachments_in_parts(parts):
+def extract_body_from_payload_for_update(payload_obj):
+def find_any_text_content_for_update(payload_obj):
+def clean_email_body_for_update(content):
+def get_chatmail_conversations(request):
+def mark_conversation_seen(request):
+def download_attachment(request):
+def get_attachment_info(request):
+def gmail_push_webhook(request):
+def _send_notifications_for_new_insurer_messages(conversation):
+def normalize_email(email_string):
+def _extract_from_and_body_from_gmail_message(message_details: dict) -> tuple:
+def extract_body(payload_obj):
+def _extract_full_mail_details(message_details: dict) -> dict:
+def header(name):
+def extract_body(payload_obj):
+def _print_new_message_from_gmail(cred, message_id: str, inbox_email: str = "") -> None:
+def _handle_gmail_history(history_id: str, email_address: str) -> None:
+def _broadcast_new_mail_to_stream(conversation) -> None:
+def _process_new_message(thread_id: str) -> None:
+def _run_gmail_history_sync(history_id: str, email_address: str | None) -> None:
+def gmail_webhook(request):
+def _mask(v: str) -> str:
+def _get_conf(name: str, default=None):
+def _parse_scopes(val):
+def auth_google_start(request, mail_address: str):
+def auth_google_callback(request):
+def gmail_status(request):
+def gmail_messages(request):
+def test_oauth_debug(request):
+def send_email(request):
+def email_history(request):
+def _norm_addr(s: Optional[str]) -> str:
+def _fingerprint(msg: dict) -> str:
+def _ms_to_iso(ms_str: Optional[str]) -> Optional[str]:
+def _parse_dt_for_sort(ts: Optional[str]) -> float:
+def _header_get(headers: list, name: str, default: str = "") -> str:
+def _extract_reply_and_time(raw_text: str) -> Tuple[str, Optional[str]]:
+def email_thread_replies(request):
+def _normalize_emails(value):
+def _classify_status(from_val, to_like_val, identity_emails):
+def _extract_clean_body_and_time(md):
+def decode_body_data(data):
+def _redact_token(tok: str) -> str:
+def _get_chat_token(req):
+def _chat_headers(token: str):
+def send_message(request):
+def _norm_str(val):
+def quotation_thread_messages(request, quotation_id):

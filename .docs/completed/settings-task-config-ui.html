@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Settings — Task Config</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --teal-50:#EDF8F7;--teal-100:#C9EDEA;--teal-200:#93DAD5;--teal-400:#3ABAB3;--teal-500:#1A9E96;--teal-600:#0F8078;
+  --n-0:#fff;--n-50:#F4F6F8;--n-100:#EDF0F3;--n-150:#E2E6EB;--n-200:#CDD3DB;--n-300:#B0BAC5;--n-400:#8A96A3;--n-500:#636F7C;--n-600:#4A5563;--n-700:#323D4A;--n-800:#1E2630;--n-900:#0F1520;
+  --danger-50:#FEF2F2;--danger-500:#EF4444;--danger-600:#DC2626;
+  --sh-xs:0 1px 2px rgba(15,21,32,.05);--sh-sm:0 1px 3px rgba(15,21,32,.08),0 1px 2px rgba(15,21,32,.04);--sh-md:0 4px 8px rgba(15,21,32,.08),0 2px 4px rgba(15,21,32,.04);--sh-lg:0 8px 24px rgba(15,21,32,.1),0 4px 8px rgba(15,21,32,.05);
+  --r-sm:6px;--r-md:8px;--r-lg:12px;--r-xl:16px;
+  --f:'Geist',-apple-system,sans-serif;--ease:cubic-bezier(.16,1,.3,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px}
+body{font-family:var(--f);background:var(--n-50);color:var(--n-800);-webkit-font-smoothing:antialiased;min-height:100vh}
+
+/* ── TOPBAR ── */
+.topbar{height:52px;background:var(--n-0);border-bottom:1px solid var(--n-150);display:flex;align-items:center;padding:0 20px;gap:10px;box-shadow:var(--sh-xs);position:sticky;top:0;z-index:40}
+.tb-hamburger{width:32px;height:32px;border-radius:var(--r-md);border:none;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--n-600)}
+.tb-hamburger svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round}
+.breadcrumb{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--n-400);flex:1}
+.breadcrumb svg{width:12px;height:12px;stroke:var(--n-400);fill:none;stroke-width:2;stroke-linecap:round}
+.bc-home{color:var(--n-400);cursor:pointer}
+.bc-active{color:var(--teal-600);font-weight:500}
+.topbar-right{display:flex;align-items:center;gap:8px}
+.tb-icon{width:32px;height:32px;border-radius:50%;border:none;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--n-500);position:relative}
+.tb-icon:hover{background:var(--n-100)}
+.tb-icon svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.notif-dot{position:absolute;top:4px;right:4px;width:8px;height:8px;border-radius:50%;background:#EF4444;border:2px solid var(--n-0)}
+.lang-btn{display:flex;align-items:center;gap:4px;font-size:12px;font-weight:500;color:var(--n-600);padding:0 8px;height:32px;border:1px solid var(--n-200);border-radius:var(--r-md);cursor:pointer;background:var(--n-0)}
+.avatar{width:32px;height:32px;border-radius:50%;background:var(--teal-500);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:white;cursor:pointer}
+
+/* ── PAGE ── */
+.page{max-width:1200px;margin:0 auto;padding:24px 32px}
+.page-back{display:flex;align-items:center;gap:10px;margin-bottom:22px}
+.back-circle{width:32px;height:32px;border-radius:50%;background:var(--teal-500);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:background 120ms}
+.back-circle:hover{background:var(--teal-600)}
+.back-circle svg{width:14px;height:14px;stroke:white;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.page-title{font-size:17px;font-weight:600;color:var(--n-800);letter-spacing:-.02em}
+
+/* ── SETTINGS CARD ── */
+.settings-card{background:var(--n-0);border-radius:var(--r-xl);border:1px solid var(--n-150);box-shadow:var(--sh-sm);overflow:hidden}
+
+/* ── TABS ── */
+.tabs-nav{display:flex;gap:0;border-bottom:1px solid var(--n-150);padding:0 24px;background:var(--n-0)}
+.tab-btn{height:48px;padding:0 18px;font-family:var(--f);font-size:13px;font-weight:500;border:none;background:transparent;cursor:pointer;color:var(--n-500);border-bottom:2.5px solid transparent;transition:all 150ms;margin-bottom:-1px;white-space:nowrap}
+.tab-btn:hover{color:var(--n-700)}
+.tab-btn.active{color:var(--teal-600);border-bottom-color:var(--teal-500);background:var(--teal-50)}
+
+/* ── TAB CONTENT ── */
+.tab-panel{display:none;padding:0}
+.tab-panel.active{display:block}
+
+/* placeholder panels */
+.placeholder-panel{padding:48px 32px;text-align:center;color:var(--n-400);font-size:13px}
+.placeholder-icon{width:48px;height:48px;border-radius:var(--r-xl);background:var(--n-100);margin:0 auto 12px;display:flex;align-items:center;justify-content:center}
+.placeholder-icon svg{width:22px;height:22px;stroke:var(--n-300);fill:none;stroke-width:1.5;stroke-linecap:round}
+
+/* ── TASK CONFIG TAB ── */
+.tc-header{display:flex;align-items:center;justify-content:flex-end;padding:18px 24px 0}
+.btn{display:inline-flex;align-items:center;gap:6px;font-family:var(--f);font-size:12px;font-weight:500;border-radius:var(--r-md);border:1px solid transparent;cursor:pointer;padding:0 14px;height:34px;transition:all 120ms;white-space:nowrap}
+.btn svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.btn-primary{background:var(--teal-500);color:white;border-color:var(--teal-600);box-shadow:0 1px 4px rgba(26,158,150,.3)}
+.btn-primary:hover{background:var(--teal-600)}
+.btn-secondary{background:var(--n-0);color:var(--n-700);border-color:var(--n-200);box-shadow:var(--sh-xs)}
+.btn-secondary:hover{background:var(--n-50);border-color:var(--n-300)}
+.btn-ghost{background:transparent;color:var(--n-500);border-color:transparent}
+.btn-ghost:hover{background:var(--n-100);color:var(--n-700)}
+
+/* toolbar row */
+.tc-toolbar{display:flex;align-items:center;justify-content:space-between;padding:14px 24px 12px}
+.search-wrap{display:flex;align-items:center;border:1px solid var(--n-200);border-radius:var(--r-lg);background:var(--n-0);overflow:hidden;transition:border-color 120ms,box-shadow 120ms;width:240px}
+.search-wrap:focus-within{border-color:var(--teal-400);box-shadow:0 0 0 3px var(--teal-50)}
+.search-icon{width:32px;display:flex;align-items:center;justify-content:center;color:var(--n-400);flex-shrink:0}
+.search-icon svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round}
+.search-inp{flex:1;height:32px;border:none;outline:none;background:transparent;font-family:var(--f);font-size:12px;color:var(--n-700);padding-right:10px}
+.search-inp::placeholder{color:var(--n-400)}
+.toolbar-icons{display:flex;align-items:center;gap:6px}
+.tool-icon{width:32px;height:32px;border-radius:var(--r-md);border:1px solid var(--n-200);background:var(--n-0);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--n-500);transition:all 120ms;box-shadow:var(--sh-xs)}
+.tool-icon:hover{color:var(--n-700);border-color:var(--n-300)}
+.tool-icon svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+/* Table */
+.tc-table-wrap{padding:0 24px}
+.tc-table{width:100%;border-collapse:collapse}
+.tc-table th{padding:10px 14px;font-size:11px;font-weight:600;color:var(--n-500);text-align:left;border-bottom:1.5px solid var(--n-150);letter-spacing:.03em;white-space:nowrap;user-select:none;cursor:pointer}
+.tc-table th:hover{color:var(--n-700)}
+.sort-chevron{display:inline-flex;vertical-align:middle;margin-left:4px}
+.sort-chevron svg{width:10px;height:10px;stroke:var(--n-400);fill:none;stroke-width:2;stroke-linecap:round}
+.tc-table td{padding:12px 14px;font-size:12px;color:var(--n-700);border-bottom:1px solid var(--n-100);vertical-align:middle}
+.tc-table tr:last-child td{border-bottom:none}
+.tc-table tbody tr:hover td{background:var(--n-50)}
+
+/* Stage badge */
+.stage-badge{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;padding:3px 10px;border-radius:99px;border:1px solid;white-space:nowrap}
+.stage-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+
+/* Actions menu */
+.row-actions{display:flex;align-items:center;gap:2px}
+.action-dots{display:flex;align-items:center;gap:2px;cursor:pointer;padding:4px 6px;border-radius:var(--r-sm);transition:background 120ms;color:var(--n-400);border:none;background:transparent}
+.action-dots:hover{background:var(--n-100);color:var(--n-700)}
+.action-dots svg{width:4px;height:4px;fill:currentColor;border-radius:50%}
+
+/* Pagination */
+.tc-pagination{display:flex;align-items:center;justify-content:flex-end;gap:12px;padding:14px 24px;border-top:1px solid var(--n-100);font-size:12px;color:var(--n-500)}
+.rows-per-page{display:flex;align-items:center;gap:6px}
+.rows-select{height:28px;border:1px solid var(--n-200);border-radius:var(--r-sm);font-family:var(--f);font-size:12px;color:var(--n-600);padding:0 4px;outline:none;cursor:pointer;background:var(--n-0)}
+.pag-btn{display:flex;align-items:center;gap:4px;height:28px;padding:0 12px;border:1px solid var(--n-200);border-radius:var(--r-md);background:var(--n-0);font-family:var(--f);font-size:12px;cursor:pointer;color:var(--n-600);transition:all 120ms}
+.pag-btn:hover{border-color:var(--teal-400);color:var(--teal-600)}
+.pag-btn svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.pag-range{font-weight:500;color:var(--n-700)}
+
+/* ── MODAL ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(15,21,32,.4);backdrop-filter:blur(3px);z-index:500;display:none;align-items:center;justify-content:center}
+.modal-overlay.show{display:flex}
+.modal{background:var(--n-0);border-radius:var(--r-xl);box-shadow:var(--sh-lg);width:600px;max-width:95vw;max-height:92vh;display:flex;flex-direction:column;overflow:hidden;animation:modalIn .2s var(--ease)}
+@keyframes modalIn{from{opacity:0;transform:translateY(-8px) scale(.97)}to{opacity:1;transform:none}}
+.modal-header{display:flex;align-items:center;justify-content:space-between;padding:20px 24px 16px;flex-shrink:0}
+.modal-title{font-size:16px;font-weight:600;color:var(--n-800);letter-spacing:-.02em}
+.modal-close{width:30px;height:30px;border-radius:var(--r-md);border:none;background:var(--n-0);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--n-400);transition:all 120ms}
+.modal-close:hover{background:var(--n-100);color:var(--n-700)}
+.modal-close svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round}
+.modal-body{flex:1;overflow-y:auto;padding:0 24px 20px}
+.modal-body::-webkit-scrollbar{width:3px}
+.modal-body::-webkit-scrollbar-thumb{background:var(--n-200);border-radius:10px}
+.modal-footer{padding:16px 24px;border-top:1px solid var(--n-150);display:flex;gap:10px;justify-content:flex-end;flex-shrink:0;background:var(--n-50)}
+
+/* Form */
+.form-field{margin-bottom:18px}
+.form-label{display:block;font-size:12px;font-weight:600;color:var(--n-600);margin-bottom:6px;letter-spacing:.01em}
+.form-label .req{color:var(--danger-500);margin-left:2px}
+.form-textarea{width:100%;min-height:90px;padding:10px 12px;border:1px solid var(--n-200);border-radius:var(--r-md);font-family:var(--f);font-size:13px;color:var(--n-700);outline:none;resize:vertical;transition:border-color 120ms,box-shadow 120ms;line-height:1.5}
+.form-textarea:focus{border-color:var(--teal-400);box-shadow:0 0 0 3px var(--teal-50)}
+.form-textarea::placeholder{color:var(--n-400)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+/* Custom select */
+.custom-select-wrap{position:relative}
+.custom-select{width:100%;height:40px;padding:0 36px 0 12px;border:1px solid var(--n-200);border-radius:var(--r-md);font-family:var(--f);font-size:13px;color:var(--n-700);background:var(--n-0);outline:none;cursor:pointer;appearance:none;-webkit-appearance:none;transition:border-color 120ms,box-shadow 120ms}
+.custom-select:focus{border-color:var(--teal-400);box-shadow:0 0 0 3px var(--teal-50)}
+.custom-select.placeholder{color:var(--n-400)}
+.select-arrow{position:absolute;right:10px;top:50%;transform:translateY(-50%);pointer-events:none;color:var(--n-400)}
+.select-arrow svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round}
+/* Option with dot */
+.form-number{width:100%;height:40px;padding:0 12px;border:1px solid var(--n-200);border-radius:var(--r-md);font-family:var(--f);font-size:13px;color:var(--n-700);background:var(--n-0);outline:none;transition:border-color 120ms,box-shadow 120ms}
+.form-number:focus{border-color:var(--teal-400);box-shadow:0 0 0 3px var(--teal-50)}
+
+/* Context menu */
+.ctx-menu{position:fixed;background:var(--n-0);border:1px solid var(--n-150);border-radius:var(--r-lg);box-shadow:var(--sh-lg);padding:4px;min-width:140px;z-index:1000;display:none}
+.ctx-menu.show{display:block}
+.ctx-item{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:var(--r-md);font-size:12px;font-weight:500;cursor:pointer;color:var(--n-700);transition:all 120ms}
+.ctx-item:hover{background:var(--n-100)}
+.ctx-item.danger{color:var(--danger-600)}
+.ctx-item.danger:hover{background:var(--danger-50)}
+.ctx-item svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+/* Toast */
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.toast{position:fixed;bottom:20px;right:20px;z-index:9999;background:var(--n-900);color:white;padding:10px 16px;border-radius:var(--r-lg);font-size:12px;font-weight:500;box-shadow:var(--sh-lg);animation:fadeUp .2s var(--ease) both;display:flex;align-items:center;gap:8px}
+.toast svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <button class="tb-hamburger"><svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+  <div class="breadcrumb">
+    <span class="bc-home">🏠</span>
+    <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+    <span class="bc-active">Settings</span>
+  </div>
+  <div class="topbar-right">
+    <div class="tb-icon"><svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span class="notif-dot"></span></div>
+    <div class="lang-btn"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> EN</div>
+    <div class="tb-icon"><svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></div>
+    <div class="avatar">JD</div>
+  </div>
+</div>
+
+<!-- PAGE -->
+<div class="page">
+  <div class="page-back">
+    <div class="back-circle" onclick="showToast('Back to previous page')">
+      <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+    </div>
+    <h1 class="page-title">General Settings</h1>
+  </div>
+
+  <div class="settings-card">
+    <!-- Tabs Nav -->
+    <div class="tabs-nav">
+      <button class="tab-btn" onclick="switchTab('customer-portal')">Customer Portal</button>
+      <button class="tab-btn" onclick="switchTab('commission-config')">Commission Config</button>
+      <button class="tab-btn active" id="tab-task-config-btn" onclick="switchTab('task-config')">Task Config</button>
+      <button class="tab-btn" onclick="switchTab('permissions')">Permissions</button>
+    </div>
+
+    <!-- Customer Portal -->
+    <div class="tab-panel" id="tab-customer-portal">
+      <div class="placeholder-panel">
+        <div class="placeholder-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        Customer Portal settings
+      </div>
+    </div>
+
+    <!-- Commission Config -->
+    <div class="tab-panel" id="tab-commission-config">
+      <div class="placeholder-panel">
+        <div class="placeholder-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+        Commission Config settings
+      </div>
+    </div>
+
+    <!-- TASK CONFIG TAB -->
+    <div class="tab-panel active" id="tab-task-config">
+      <!-- Add button -->
+      <div class="tc-header">
+        <button class="btn btn-primary" onclick="openAddModal()">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+          Add New Task Config
+        </button>
+      </div>
+
+      <!-- Search + toolbar -->
+      <div class="tc-toolbar">
+        <div class="search-wrap">
+          <span class="search-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+          <input class="search-inp" type="text" placeholder="Search..." oninput="filterConfigs(this.value)" id="tc-search">
+        </div>
+        <div class="toolbar-icons">
+          <div class="tool-icon" title="Filter"><svg viewBox="0 0 24 24"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg></div>
+          <div class="tool-icon" title="Column visibility"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18M15 3v18"/></svg></div>
+          <div class="tool-icon" title="Fullscreen"><svg viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></div>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div class="tc-table-wrap">
+        <table class="tc-table">
+          <thead>
+            <tr>
+              <th onclick="sortBy('task')">Task <span class="sort-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span></th>
+              <th onclick="sortBy('stage')">Assigned Stage <span class="sort-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span></th>
+              <th onclick="sortBy('type')">Task Type <span class="sort-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span></th>
+              <th onclick="sortBy('expected_days')">Expected Time Period To Complete (Days) <span class="sort-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span></th>
+              <th onclick="sortBy('reminder_days')">Expected Time To Send Reminder (Days) <span class="sort-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span></th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="tc-tbody"></tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      <div class="tc-pagination">
+        <div class="rows-per-page">
+          Rows per page:
+          <select class="rows-select" onchange="changePageSize(this.value)">
+            <option value="10" selected>10</option>
+            <option value="25">25</option>
+            <option value="50">50</option>
+          </select>
+        </div>
+        <span class="pag-range" id="pag-range">1–5 of 5</span>
+        <button class="pag-btn" onclick="prevPage()"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg> Previous</button>
+        <button class="pag-btn" onclick="nextPage()">Next <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button>
+      </div>
+    </div>
+
+    <!-- Permissions -->
+    <div class="tab-panel" id="tab-permissions">
+      <div class="placeholder-panel">
+        <div class="placeholder-icon"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+        Permissions settings
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Context Menu -->
+<div class="ctx-menu" id="ctx-menu">
+  <div class="ctx-item" onclick="ctxEdit()"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Edit</div>
+  <div class="ctx-item danger" onclick="ctxDelete()"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>Delete</div>
+</div>
+
+<!-- Add / Edit Task Config Modal -->
+<div class="modal-overlay" id="tc-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title" id="modal-title-text">Add New Task Details</span>
+      <button class="modal-close" onclick="closeModal()"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <!-- Task (full width textarea) -->
+      <div class="form-field">
+        <label class="form-label">Task <span class="req">*</span></label>
+        <textarea class="form-textarea" id="f-task" placeholder="Enter task description…"></textarea>
+      </div>
+      <!-- Task Type + Assigned Stage -->
+      <div class="form-row">
+        <div class="form-field" style="margin-bottom:0">
+          <label class="form-label">Task Type <span class="req">*</span></label>
+          <div class="custom-select-wrap">
+            <select class="custom-select" id="f-task-type">
+              <option value="" disabled selected hidden>Select...</option>
+            </select>
+            <span class="select-arrow"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span>
+          </div>
+        </div>
+        <div class="form-field" style="margin-bottom:0">
+          <label class="form-label">Assigned Stage <span class="req">*</span></label>
+          <div class="custom-select-wrap">
+            <select class="custom-select" id="f-stage">
+              <option value="" disabled selected hidden>Select...</option>
+            </select>
+            <span class="select-arrow"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span>
+          </div>
+        </div>
+      </div>
+      <!-- Days -->
+      <div class="form-row" style="margin-top:18px">
+        <div class="form-field" style="margin-bottom:0">
+          <label class="form-label">Expected Time Period To Complete (Days)</label>
+          <input class="form-number" type="number" id="f-expected-days" value="1" min="1">
+        </div>
+        <div class="form-field" style="margin-bottom:0">
+          <label class="form-label">Expected Time To Send Reminder (Days)</label>
+          <input class="form-number" type="number" id="f-reminder-days" value="0" min="0">
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" id="modal-submit-btn" onclick="submitConfig()">Create</button>
+      <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ══ SEEDED DATA ══
+   Opportunity stages come from core_statuses WHERE type = 'opportunity'
+   Task types come from crm_task_types (GET /task-types)
+*/
+const OPP_STAGES = [
+  {id:1, name:'LEAD',      code:'opp_lead',      color:'#344054', bg:'#F1F3F6'},
+  {id:2, name:'PROSPECT',  code:'opp_prospect',  color:'#175CD3', bg:'#DBEAFE'},
+  {id:3, name:'QUALIFIED', code:'opp_qualified',  color:'#0E7090', bg:'#CFFAFE'},
+  {id:4, name:'WON',       code:'opp_won',        color:'#067647', bg:'#D1FAE5'},
+  {id:5, name:'LOSS',      code:'opp_loss',       color:'#B42318', bg:'#FEE2E2'},
+];
+
+let TASK_TYPES = [
+  {id:1, name:'Test Task Type'},
+  {id:2, name:'check_sorting'},
+  {id:3, name:'Call'},
+  {id:4, name:'Meeting'},
+];
+
+let CONFIGS = [
+  {id:1, task:'Test Task Config', stage_id:1, task_type_id:1, expected_days:1, reminder_days:0},
+  {id:2, task:'saas',             stage_id:1, task_type_id:1, expected_days:1, reminder_days:0},
+  {id:3, task:'as',               stage_id:2, task_type_id:1, expected_days:1, reminder_days:0},
+  {id:4, task:'Nihil sed ipsum quis', stage_id:1, task_type_id:2, expected_days:2, reminder_days:0},
+  {id:5, task:'Veritatis cum aspern', stage_id:1, task_type_id:2, expected_days:19, reminder_days:0},
+];
+
+let editingId = null;
+let ctxId = null;
+let searchVal = '';
+
+/* ── Helpers ── */
+function getStage(id){ return OPP_STAGES.find(s=>s.id===id)||{name:'—',color:'#8A96A3',bg:'#F1F3F6'}; }
+function getType(id){ return TASK_TYPES.find(t=>t.id===id)||{name:'—'}; }
+
+/* ── Tabs ── */
+function switchTab(tab) {
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+tab).classList.add('active');
+  const btns = document.querySelectorAll('.tab-btn');
+  const labels = ['customer-portal','commission-config','task-config','permissions'];
+  btns[labels.indexOf(tab)]?.classList.add('active');
+}
+
+/* ── Render table ── */
+function renderTable() {
+  const lv = searchVal.toLowerCase();
+  const data = CONFIGS.filter(c => {
+    if(!lv) return true;
+    return c.task.toLowerCase().includes(lv) ||
+           getStage(c.stage_id).name.toLowerCase().includes(lv) ||
+           getType(c.task_type_id).name.toLowerCase().includes(lv);
+  });
+  const tbody = document.getElementById('tc-tbody');
+  tbody.innerHTML = data.length ? data.map(c => {
+    const stage = getStage(c.stage_id);
+    const type  = getType(c.task_type_id);
+    return `<tr>
+      <td style="font-size:13px;color:var(--n-800)">${c.task}</td>
+      <td>
+        <span class="stage-badge" style="background:${stage.bg};color:${stage.color};border-color:${stage.color}30">
+          <span class="stage-dot" style="background:${stage.color}"></span>${stage.name}
+        </span>
+      </td>
+      <td style="color:var(--n-600)">${type.name}</td>
+      <td style="text-align:right;padding-right:40px;font-weight:500">${c.expected_days}</td>
+      <td style="text-align:right;padding-right:80px;font-weight:500">${c.reminder_days}</td>
+      <td>
+        <button class="action-dots" onclick="openCtx(event,${c.id})" title="Actions">
+          <svg viewBox="0 0 24 24" width="4" height="4" fill="currentColor"><circle cx="5" cy="12" r="2"/></svg>
+          <svg viewBox="0 0 24 24" width="4" height="4" fill="currentColor"><circle cx="5" cy="12" r="2"/></svg>
+          <svg viewBox="0 0 24 24" width="4" height="4" fill="currentColor"><circle cx="5" cy="12" r="2"/></svg>
+        </button>
+      </td>
+    </tr>`;
+  }).join('') : `<tr><td colspan="6" style="text-align:center;padding:32px;color:var(--n-400);font-size:12px">No task configs found</td></tr>`;
+  document.getElementById('pag-range').textContent = `1–${data.length} of ${data.length}`;
+}
+
+/* ── Search ── */
+function filterConfigs(v){ searchVal = v; renderTable(); }
+function sortBy(col){ showToast('Sorted by '+col); }
+function changePageSize(v){ showToast('Page size: '+v); }
+function prevPage(){ showToast('Previous page'); }
+function nextPage(){ showToast('Next page'); }
+
+/* ── Populate dropdowns ── */
+function populateDropdowns() {
+  const typeSelect = document.getElementById('f-task-type');
+  const stageSelect = document.getElementById('f-stage');
+  // Task Types from GET /task-types
+  typeSelect.innerHTML = `<option value="" disabled selected hidden>Select...</option>` +
+    TASK_TYPES.map(t => `<option value="${t.id}">${t.name}</option>`).join('');
+  // Opportunity stages from core_statuses WHERE type = 'opportunity'
+  stageSelect.innerHTML = `<option value="" disabled selected hidden>Select...</option>` +
+    OPP_STAGES.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
+}
+
+/* ── Modal ── */
+function openAddModal() {
+  editingId = null;
+  document.getElementById('modal-title-text').textContent = 'Add New Task Details';
+  document.getElementById('modal-submit-btn').textContent = 'Create';
+  document.getElementById('f-task').value = '';
+  document.getElementById('f-task-type').value = '';
+  document.getElementById('f-stage').value = '';
+  document.getElementById('f-expected-days').value = 1;
+  document.getElementById('f-reminder-days').value = 0;
+  document.getElementById('tc-modal').classList.add('show');
+}
+function openEditModal(id) {
+  const c = CONFIGS.find(c=>c.id===id);
+  if(!c) return;
+  editingId = id;
+  document.getElementById('modal-title-text').textContent = 'Edit Task Details';
+  document.getElementById('modal-submit-btn').textContent = 'Update';
+  document.getElementById('f-task').value = c.task;
+  document.getElementById('f-task-type').value = c.task_type_id;
+  document.getElementById('f-stage').value = c.stage_id;
+  document.getElementById('f-expected-days').value = c.expected_days;
+  document.getElementById('f-reminder-days').value = c.reminder_days;
+  document.getElementById('tc-modal').classList.add('show');
+}
+function closeModal() {
+  document.getElementById('tc-modal').classList.remove('show');
+  editingId = null;
+}
+function submitConfig() {
+  const task = document.getElementById('f-task').value.trim();
+  const task_type_id = parseInt(document.getElementById('f-task-type').value);
+  const stage_id = parseInt(document.getElementById('f-stage').value);
+  const expected_days = parseInt(document.getElementById('f-expected-days').value) || 1;
+  const reminder_days = parseInt(document.getElementById('f-reminder-days').value) || 0;
+  if(!task){ showToast('Task is required','error'); return; }
+  if(!task_type_id){ showToast('Task Type is required','error'); return; }
+  if(!stage_id){ showToast('Assigned Stage is required','error'); return; }
+  if(editingId) {
+    const c = CONFIGS.find(c=>c.id===editingId);
+    Object.assign(c, {task,task_type_id,stage_id,expected_days,reminder_days});
+    showToast('Task config updated');
+  } else {
+    CONFIGS.push({id:Date.now(),task,task_type_id,stage_id,expected_days,reminder_days});
+    showToast('Task config created');
+  }
+  closeModal();
+  renderTable();
+}
+function deleteConfig(id) {
+  if(!confirm('Delete this task config?')) return;
+  CONFIGS = CONFIGS.filter(c=>c.id!==id);
+  renderTable();
+  showToast('Task config deleted');
+}
+
+/* ── Context menu ── */
+function openCtx(e, id) {
+  ctxId = id;
+  const m = document.getElementById('ctx-menu');
+  m.style.left = Math.min(e.clientX, window.innerWidth-160)+'px';
+  m.style.top  = Math.min(e.clientY, window.innerHeight-100)+'px';
+  m.classList.add('show');
+  e.stopPropagation();
+}
+function ctxEdit(){ document.getElementById('ctx-menu').classList.remove('show'); openEditModal(ctxId); }
+function ctxDelete(){ document.getElementById('ctx-menu').classList.remove('show'); deleteConfig(ctxId); }
+document.addEventListener('click', ()=>document.getElementById('ctx-menu').classList.remove('show'));
+
+/* ── Toast ── */
+function showToast(msg, type='success') {
+  const icons={success:`<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>`,error:`<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>`};
+  const t=document.createElement('div');
+  t.className='toast';
+  t.style.background=type==='error'?'var(--danger-600)':'var(--n-900)';
+  t.innerHTML=`${icons[type]||icons.success}${msg}`;
+  document.body.appendChild(t);
+  setTimeout(()=>t.remove(),2800);
+}
+
+/* ── Init ── */
+populateDropdowns();
+renderTable();
+</script>
+</body>
+</html>

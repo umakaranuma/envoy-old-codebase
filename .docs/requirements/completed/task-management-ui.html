@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Task Management — CRM</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --teal-50:#EDF8F7;--teal-100:#C9EDEA;--teal-200:#93DAD5;--teal-400:#3ABAB3;--teal-500:#1A9E96;--teal-600:#0F8078;
+  --n-0:#fff;--n-50:#F4F6F8;--n-100:#EDF0F3;--n-150:#E2E6EB;--n-200:#CDD3DB;--n-300:#B0BAC5;--n-400:#8A96A3;--n-500:#636F7C;--n-600:#4A5563;--n-700:#323D4A;--n-800:#1E2630;--n-900:#0F1520;
+  --amber-100:#FEF3C7;--amber-600:#D97706;--amber-700:#B45309;
+  --blue-100:#DBEAFE;--blue-600:#2563EB;--blue-700:#1D4ED8;
+  --slate-100:#F1F5F9;--slate-500:#64748B;--slate-700:#334155;
+  --danger-50:#FEF2F2;--danger-500:#EF4444;--danger-600:#DC2626;
+  --success-50:#F0FDF4;--success-600:#16A34A;
+  --sh-xs:0 1px 2px rgba(15,21,32,.05);
+  --sh-sm:0 1px 3px rgba(15,21,32,.08),0 1px 2px rgba(15,21,32,.04);
+  --sh-md:0 4px 8px rgba(15,21,32,.08),0 2px 4px rgba(15,21,32,.04);
+  --sh-lg:0 8px 24px rgba(15,21,32,.1),0 4px 8px rgba(15,21,32,.05);
+  --r-sm:6px;--r-md:8px;--r-lg:12px;--r-xl:16px;
+  --f:'Geist',-apple-system,sans-serif;
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px}
+body{font-family:var(--f);background:var(--n-50);color:var(--n-800);-webkit-font-smoothing:antialiased;height:100vh;overflow:hidden;display:flex;flex-direction:column}
+
+/* ── NAV / TOPBAR ── */
+.topbar{height:54px;background:var(--n-0);border-bottom:1px solid var(--n-150);display:flex;align-items:center;padding:0 20px;gap:12px;flex-shrink:0;box-shadow:var(--sh-xs);z-index:30}
+.logo{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:var(--n-800);letter-spacing:-.02em}
+.logo-icon{width:28px;height:28px;background:var(--teal-500);border-radius:8px;display:flex;align-items:center;justify-content:center}
+.logo-icon svg{width:16px;height:16px;stroke:white;fill:none;stroke-width:2;stroke-linecap:round}
+.breadcrumb{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--n-400);flex:1;margin-left:16px}
+.breadcrumb-sep{color:var(--n-300)}
+.breadcrumb-active{color:var(--teal-600);font-weight:500}
+.topbar-icons{display:flex;align-items:center;gap:8px}
+.tb-icon-btn{width:32px;height:32px;border-radius:50%;border:none;background:var(--n-100);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--n-500);transition:all 120ms}
+.tb-icon-btn:hover{background:var(--n-150)}
+.tb-icon-btn svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.tb-avatar{width:32px;height:32px;border-radius:50%;background:var(--teal-500);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:white;cursor:pointer}
+
+/* ── SHELL ── */
+.shell{display:flex;flex:1;overflow:hidden}
+
+/* ── SIDEBAR ── */
+.sidebar{width:220px;flex-shrink:0;background:var(--n-0);border-right:1px solid var(--n-150);display:flex;flex-direction:column;overflow-y:auto;padding:12px 0}
+.sidebar::-webkit-scrollbar{width:0}
+.sidebar-section{padding:4px 10px 2px}
+.sidebar-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--n-400);padding:4px 6px}
+.sidebar-item{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:var(--r-md);font-size:12px;font-weight:500;color:var(--n-600);cursor:pointer;transition:all 120ms;margin:1px 0;user-select:none}
+.sidebar-item:hover{background:var(--n-100);color:var(--n-800)}
+.sidebar-item.active{background:var(--teal-50);color:var(--teal-600)}
+.sidebar-item svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+.sidebar-group{margin-bottom:8px}
+.sidebar-group-header{display:flex;align-items:center;justify-content:space-between;padding:6px 10px;cursor:pointer;font-size:12px;font-weight:600;color:var(--n-700)}
+.sidebar-group-header svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:transform 180ms}
+.sidebar-group.open .sidebar-group-header svg{transform:rotate(180deg)}
+.sidebar-children{padding-left:10px}
+.sidebar-divider{height:1px;background:var(--n-100);margin:8px 10px}
+
+/* ── MAIN AREA ── */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.page-header{padding:16px 24px 12px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;background:var(--n-50)}
+.page-title{font-size:18px;font-weight:600;color:var(--n-800);letter-spacing:-.02em}
+.page-actions{display:flex;gap:8px;align-items:center}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;gap:6px;font-family:var(--f);font-size:12px;font-weight:500;border-radius:var(--r-md);border:1px solid transparent;cursor:pointer;padding:0 14px;height:32px;transition:all 120ms;white-space:nowrap}
+.btn svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.btn-primary{background:var(--teal-500);color:white;border-color:var(--teal-600)}
+.btn-primary:hover{background:var(--teal-600)}
+.btn-secondary{background:var(--n-0);color:var(--n-700);border-color:var(--n-200);box-shadow:var(--sh-xs)}
+.btn-secondary:hover{background:var(--n-50);border-color:var(--n-300)}
+.btn-ghost{background:transparent;color:var(--n-500);border-color:transparent}
+.btn-ghost:hover{background:var(--n-100);color:var(--n-700)}
+.btn-danger{background:var(--danger-50);color:var(--danger-600);border-color:var(--danger-500)}
+.btn-danger:hover{background:#FEE2E2}
+
+/* ── TASK BOARD LAYOUT ── */
+.board-shell{display:flex;flex:1;overflow:hidden;gap:0}
+.users-panel{width:250px;flex-shrink:0;border-right:1px solid var(--n-150);background:var(--n-0);display:flex;flex-direction:column;overflow:hidden}
+.users-panel-title{padding:14px 16px 10px;font-size:12px;font-weight:600;color:var(--n-700);border-bottom:1px solid var(--n-100);letter-spacing:.01em}
+.users-list{flex:1;overflow-y:auto;padding:8px}
+.users-list::-webkit-scrollbar{width:3px}
+.users-list::-webkit-scrollbar-thumb{background:var(--n-200);border-radius:10px}
+.user-card{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:var(--r-lg);cursor:pointer;transition:all 150ms;border:1.5px solid transparent}
+.user-card:hover{background:var(--n-50)}
+.user-card.selected{background:var(--teal-50);border-color:var(--teal-400)}
+.user-avatar{width:34px;height:34px;border-radius:50%;background:var(--teal-200);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:var(--teal-700);flex-shrink:0;overflow:hidden;position:relative}
+.user-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.user-info{flex:1;min-width:0}
+.user-name{font-size:12px;font-weight:500;color:var(--n-700);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.user-email{font-size:10px;color:var(--n-400);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.users-pagination{padding:10px 16px;border-top:1px solid var(--n-100);display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--n-500)}
+.users-pagination button{display:flex;align-items:center;gap:3px;background:none;border:none;cursor:pointer;font-size:11px;color:var(--n-500);transition:color 120ms;font-family:var(--f);padding:2px}
+.users-pagination button:hover{color:var(--teal-600)}
+.users-pagination button svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+/* ── KANBAN ── */
+.kanban-area{flex:1;overflow-x:auto;overflow-y:hidden;display:flex;padding:14px 16px;gap:14px}
+.kanban-area::-webkit-scrollbar{height:5px}
+.kanban-area::-webkit-scrollbar-thumb{background:var(--n-200);border-radius:10px}
+.kanban-col{width:300px;flex-shrink:0;display:flex;flex-direction:column;background:var(--n-100);border-radius:var(--r-xl);overflow:hidden}
+.kanban-col-header{display:flex;align-items:center;justify-content:space-between;padding:12px 14px 10px}
+.kanban-col-title{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;color:var(--n-700);text-transform:uppercase;letter-spacing:.04em}
+.kanban-col-underline{height:2.5px;border-radius:2px;margin:0 14px 10px}
+.count-badge{display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:20px;padding:0 6px;border-radius:99px;font-size:10px;font-weight:700;letter-spacing:.02em}
+.kanban-cards{flex:1;overflow-y:auto;padding:0 8px 8px;display:flex;flex-direction:column;gap:8px}
+.kanban-cards::-webkit-scrollbar{width:3px}
+.kanban-cards::-webkit-scrollbar-thumb{background:var(--n-200);border-radius:10px}
+
+/* Task card */
+.task-card{background:var(--n-0);border-radius:var(--r-lg);padding:11px 12px;box-shadow:var(--sh-xs);border:1px solid var(--n-150);cursor:pointer;transition:all 150ms;position:relative}
+.task-card:hover{box-shadow:var(--sh-md);border-color:var(--n-200);transform:translateY(-1px)}
+.task-card-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px}
+.task-code{display:inline-flex;align-items:center;font-size:10px;font-weight:600;color:var(--amber-700);background:var(--amber-100);padding:2px 7px;border-radius:99px}
+.task-card-badges{display:flex;align-items:center;gap:5px}
+.stage-badge{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:600;padding:2px 7px;border-radius:99px}
+.stage-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.task-card-menu{width:22px;height:22px;border-radius:4px;border:none;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--n-400);transition:all 120ms}
+.task-card-menu:hover{background:var(--n-100);color:var(--n-700)}
+.task-card-menu svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round}
+.task-title{font-size:13px;font-weight:500;color:var(--n-800);margin-bottom:9px;line-height:1.35;letter-spacing:-.01em}
+.task-card-assignee{display:flex;align-items:center;gap:6px;margin-bottom:10px}
+.assignee-av{width:20px;height:20px;border-radius:50%;background:var(--teal-100);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:600;color:var(--teal-700);flex-shrink:0}
+.assignee-name{font-size:11px;color:var(--n-500);font-weight:400}
+.task-dates{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.task-date-block{}
+.task-date-label{font-size:10px;color:var(--n-400);margin-bottom:2px;font-weight:400}
+.task-date-val{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--n-600);font-weight:500}
+.task-date-val svg{width:12px;height:12px;stroke:var(--n-400);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+
+/* ── LIST VIEW ── */
+.list-area{flex:1;overflow:hidden;display:flex;flex-direction:column;padding:0 24px 16px}
+.list-toolbar{display:flex;align-items:center;gap:10px;padding:12px 0;flex-shrink:0}
+.search-wrap{display:flex;align-items:center;gap:0;border:1px solid var(--n-200);border-radius:var(--r-lg);background:var(--n-0);overflow:hidden;transition:border-color 120ms,box-shadow 120ms;flex:1;max-width:300px}
+.search-wrap:focus-within{border-color:var(--teal-400);box-shadow:0 0 0 3px var(--teal-50)}
+.search-icon{width:32px;display:flex;align-items:center;justify-content:center;color:var(--n-400)}
+.search-icon svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round}
+.search-inp{flex:1;height:32px;border:none;outline:none;background:transparent;font-family:var(--f);font-size:12px;color:var(--n-700);padding-right:10px}
+.search-inp::placeholder{color:var(--n-400)}
+.filter-select{height:32px;border:1px solid var(--n-200);border-radius:var(--r-md);background:var(--n-0);font-family:var(--f);font-size:12px;color:var(--n-600);padding:0 10px;outline:none;cursor:pointer;transition:border-color 120ms;box-shadow:var(--sh-xs)}
+.filter-select:focus{border-color:var(--teal-400)}
+.list-table-wrap{flex:1;overflow-y:auto;background:var(--n-0);border-radius:var(--r-xl);border:1px solid var(--n-150);box-shadow:var(--sh-sm)}
+.list-table-wrap::-webkit-scrollbar{width:4px}
+.list-table-wrap::-webkit-scrollbar-thumb{background:var(--n-200);border-radius:10px}
+.list-table{width:100%;border-collapse:collapse}
+.list-table th{padding:10px 14px;font-size:11px;font-weight:600;color:var(--n-500);text-align:left;border-bottom:1px solid var(--n-150);background:var(--n-50);letter-spacing:.02em;white-space:nowrap}
+.list-table th:first-child{border-radius:var(--r-xl) 0 0 0}
+.list-table th:last-child{border-radius:0 var(--r-xl) 0 0}
+.list-table td{padding:10px 14px;font-size:12px;color:var(--n-700);border-bottom:1px solid var(--n-100);vertical-align:middle}
+.list-table tr:last-child td{border-bottom:none}
+.list-table tr:hover td{background:var(--n-50)}
+.list-table tr{cursor:pointer}
+.task-code-sm{font-size:10px;font-weight:600;color:var(--amber-700);background:var(--amber-100);padding:2px 7px;border-radius:99px;font-family:inherit;white-space:nowrap}
+.status-pill{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:600;padding:2px 8px;border-radius:99px;border:1px solid;white-space:nowrap}
+.list-actions{display:flex;gap:4px;align-items:center}
+.icon-btn{width:26px;height:26px;border-radius:var(--r-sm);border:none;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--n-400);transition:all 120ms}
+.icon-btn:hover{background:var(--n-100);color:var(--n-700)}
+.icon-btn.del:hover{background:var(--danger-50);color:var(--danger-600)}
+.icon-btn svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.list-pagination{display:flex;align-items:center;justify-content:flex-end;gap:10px;padding:10px 0 0;font-size:11px;color:var(--n-500);flex-shrink:0}
+.list-pagination .pag-btn{height:26px;padding:0 10px;border:1px solid var(--n-200);border-radius:var(--r-md);background:var(--n-0);font-family:var(--f);font-size:11px;cursor:pointer;color:var(--n-600);transition:all 120ms;display:flex;align-items:center;gap:4px}
+.list-pagination .pag-btn:hover{border-color:var(--teal-400);color:var(--teal-600)}
+.list-pagination .pag-btn svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+/* ── SINGLE VIEW ── */
+.single-view{flex:1;overflow-y:auto;padding:20px 24px}
+.single-view::-webkit-scrollbar{width:4px}
+.single-view::-webkit-scrollbar-thumb{background:var(--n-200);border-radius:10px}
+.sv-back{display:inline-flex;align-items:center;gap:8px;margin-bottom:16px;font-size:12px;font-weight:500;color:var(--n-500);cursor:pointer;transition:color 120ms}
+.sv-back:hover{color:var(--teal-600)}
+.sv-back-btn{width:30px;height:30px;border-radius:50%;background:var(--teal-500);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background 120ms}
+.sv-back:hover .sv-back-btn{background:var(--teal-600)}
+.sv-back-btn svg{width:14px;height:14px;stroke:white;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.sv-title{font-size:16px;font-weight:600;color:var(--n-800);letter-spacing:-.02em}
+.detail-card{background:var(--n-0);border-radius:var(--r-xl);border:1px solid var(--n-150);padding:20px 24px;margin-bottom:16px;box-shadow:var(--sh-sm);position:relative}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px 24px}
+.detail-field{}
+.detail-label{font-size:11px;color:var(--n-400);margin-bottom:4px;font-weight:400}
+.detail-value{font-size:13px;color:var(--n-700);font-weight:500}
+.detail-value.link{color:var(--teal-500);cursor:pointer}
+.detail-value.link:hover{color:var(--teal-700);text-decoration:underline}
+.detail-value.dash{color:var(--n-400);font-weight:400}
+.sv-edit-btn{position:absolute;right:20px;bottom:20px}
+
+/* Tabs */
+.tabs-bar{display:flex;gap:0;border-bottom:1px solid var(--n-150);margin-bottom:0;background:var(--n-0);border-radius:var(--r-xl) var(--r-xl) 0 0;padding:0 20px}
+.tab-btn{height:40px;padding:0 14px;font-family:var(--f);font-size:12px;font-weight:500;border:none;background:transparent;cursor:pointer;color:var(--n-500);border-bottom:2px solid transparent;transition:all 150ms;margin-bottom:-1px}
+.tab-btn:hover{color:var(--n-700)}
+.tab-btn.active{color:var(--teal-600);border-bottom-color:var(--teal-500)}
+.tabs-content{background:var(--n-0);border-radius:0 0 var(--r-xl) var(--r-xl);border:1px solid var(--n-150);border-top:none;overflow:hidden}
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+
+/* History table */
+.hist-table{width:100%;border-collapse:collapse}
+.hist-table th{padding:10px 16px;font-size:11px;font-weight:600;color:var(--n-500);text-align:left;background:var(--n-50);border-bottom:1px solid var(--n-150);letter-spacing:.02em}
+.hist-table th .sort-icon{display:inline-flex;vertical-align:middle;margin-left:4px}
+.hist-table th .sort-icon svg{width:10px;height:10px;stroke:var(--n-400);fill:none;stroke-width:2;stroke-linecap:round}
+.hist-table td{padding:11px 16px;font-size:12px;color:var(--n-700);border-bottom:1px solid var(--n-100)}
+.hist-table tr:last-child td{border-bottom:none}
+.hist-footer{display:flex;align-items:center;justify-content:flex-end;gap:10px;padding:10px 16px;border-top:1px solid var(--n-100);font-size:11px;color:var(--n-500)}
+.rows-select{height:26px;border:1px solid var(--n-200);border-radius:var(--r-sm);font-family:var(--f);font-size:11px;color:var(--n-600);padding:0 6px;outline:none;cursor:pointer;background:var(--n-0)}
+.pag-nav{display:flex;align-items:center;gap:4px}
+.pag-nav button{display:flex;align-items:center;gap:3px;height:24px;padding:0 8px;border:1px solid var(--n-200);border-radius:var(--r-sm);background:var(--n-0);font-family:var(--f);font-size:11px;cursor:pointer;color:var(--n-600);transition:all 120ms}
+.pag-nav button:hover{border-color:var(--teal-400);color:var(--teal-600)}
+.pag-nav button svg{width:10px;height:10px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round}
+
+/* ── DROPDOWN MENU ── */
+.ctx-menu{position:fixed;background:var(--n-0);border:1px solid var(--n-150);border-radius:var(--r-lg);box-shadow:var(--sh-lg);padding:4px;min-width:140px;z-index:1000;display:none}
+.ctx-menu.show{display:block}
+.ctx-item{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:var(--r-md);font-size:12px;font-weight:500;cursor:pointer;color:var(--n-700);transition:all 120ms}
+.ctx-item:hover{background:var(--n-100)}
+.ctx-item.danger{color:var(--danger-600)}
+.ctx-item.danger:hover{background:var(--danger-50)}
+.ctx-item svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+/* ── MODAL ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(15,21,32,.35);backdrop-filter:blur(2px);z-index:500;display:none;align-items:center;justify-content:center}
+.modal-overlay.show{display:flex}
+.modal{background:var(--n-0);border-radius:var(--r-xl);box-shadow:var(--sh-lg);width:520px;max-width:95vw;max-height:90vh;display:flex;flex-direction:column;overflow:hidden;animation:modalIn .2s var(--ease)}
+@keyframes modalIn{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:none}}
+.modal-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--n-150);flex-shrink:0}
+.modal-title{font-size:15px;font-weight:600;color:var(--n-800);letter-spacing:-.02em}
+.modal-close{width:28px;height:28px;border-radius:var(--r-md);border:none;background:var(--n-100);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--n-500);transition:all 120ms}
+.modal-close:hover{background:var(--n-200)}
+.modal-close svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round}
+.modal-body{flex:1;overflow-y:auto;padding:20px}
+.modal-body::-webkit-scrollbar{width:3px}
+.modal-body::-webkit-scrollbar-thumb{background:var(--n-200);border-radius:10px}
+.modal-footer{padding:14px 20px;border-top:1px solid var(--n-150);display:flex;gap:8px;justify-content:flex-end;flex-shrink:0}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.form-row.full{grid-template-columns:1fr}
+.form-field{display:flex;flex-direction:column;gap:5px;margin-bottom:14px}
+.form-label{font-size:11px;font-weight:600;color:var(--n-600);letter-spacing:.02em}
+.form-label .req{color:var(--danger-500)}
+.form-input{height:34px;padding:0 10px;border:1px solid var(--n-200);border-radius:var(--r-md);font-family:var(--f);font-size:12px;color:var(--n-700);background:var(--n-0);outline:none;transition:border-color 120ms,box-shadow 120ms}
+.form-input:focus{border-color:var(--teal-400);box-shadow:0 0 0 3px var(--teal-50)}
+.form-input::placeholder{color:var(--n-400)}
+.form-textarea{resize:vertical;height:72px;padding:8px 10px;line-height:1.5}
+.form-select{height:34px;padding:0 10px;border:1px solid var(--n-200);border-radius:var(--r-md);font-family:var(--f);font-size:12px;color:var(--n-700);background:var(--n-0);outline:none;cursor:pointer;transition:border-color 120ms}
+.form-select:focus{border-color:var(--teal-400);box-shadow:0 0 0 3px var(--teal-50)}
+
+/* ── TOAST ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.toast{position:fixed;bottom:20px;right:20px;z-index:9999;background:var(--n-900);color:white;padding:10px 16px;border-radius:var(--r-lg);font-size:12px;font-weight:500;box-shadow:var(--sh-lg);animation:fadeUp .2s var(--ease) both;display:flex;align-items:center;gap:8px}
+.toast svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round}
+
+/* Status color map */
+.s-todo{background:#F1F3F6;color:#344054;border-color:#CDD3DB}
+.s-inprogress{background:#DBEAFE;color:#1D4ED8;border-color:#93C5FD}
+.s-done{background:#D1FAE5;color:#065F46;border-color:#6EE7B7}
+
+/* Kanban column colors */
+.kc-todo .kanban-col-underline{background:#344054}
+.kc-todo .count-badge{background:#F1F3F6;color:#344054}
+.kc-inprogress .kanban-col-underline{background:#175CD3}
+.kc-inprogress .count-badge{background:#DBEAFE;color:#1D4ED8}
+.kc-done .kanban-col-underline{background:#0E7090}
+.kc-done .count-badge{background:#CFFAFE;color:#0E7090}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="logo">
+    <div class="logo-icon"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div>
+    VANGUARD X
+  </div>
+  <div class="breadcrumb">
+    <span>🏠</span><span class="breadcrumb-sep">›</span>
+    <span>CRM</span><span class="breadcrumb-sep">›</span>
+    <span class="breadcrumb-active" id="bc-active">Tasks</span>
+  </div>
+  <div class="topbar-icons">
+    <button class="tb-icon-btn"><svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></button>
+    <button class="tb-icon-btn"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/></svg></button>
+    <div class="tb-avatar">JD</div>
+  </div>
+</div>
+
+<div class="shell">
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-group">
+      <div class="sidebar-item" onclick="nav('dashboard')">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Dashboard
+      </div>
+    </div>
+    <div class="sidebar-group">
+      <div class="sidebar-item" onclick="nav('core')">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+        Core
+        <svg viewBox="0 0 24 24" style="margin-left:auto;width:10px;height:10px"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+    </div>
+    <div class="sidebar-group open">
+      <div class="sidebar-group-header">
+        <span style="display:flex;align-items:center;gap:8px">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          CRM
+        </span>
+        <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="sidebar-children">
+        <div class="sidebar-item active" id="nav-tasks" onclick="showView('kanban')">
+          <svg viewBox="0 0 24 24"><rect x="2" y="3" width="6" height="18" rx="1"/><rect x="9" y="3" width="6" height="18" rx="1"/><rect x="16" y="3" width="6" height="18" rx="1"/></svg>
+          Tasks
+        </div>
+        <div class="sidebar-item" onclick="showToast('Sales Management')">
+          <svg viewBox="0 0 24 24"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>
+          Sales Management
+        </div>
+        <div class="sidebar-item" id="nav-tasktypes" onclick="showView('tasktypes')">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          Task Types
+        </div>
+        <div class="sidebar-item" onclick="showToast('Quotations')">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          Quotations
+        </div>
+      </div>
+    </div>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-item" onclick="nav('policy')">
+      <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Policy
+      <svg viewBox="0 0 24 24" style="margin-left:auto;width:10px;height:10px"><polyline points="9 18 15 12 9 6"/></svg>
+    </div>
+    <div class="sidebar-item" onclick="nav('finance')">
+      <svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      Finance
+      <svg viewBox="0 0 24 24" style="margin-left:auto;width:10px;height:10px"><polyline points="9 18 15 12 9 6"/></svg>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <!-- ===== KANBAN VIEW ===== -->
+    <div id="view-kanban" style="display:flex;flex-direction:column;flex:1;overflow:hidden">
+      <div class="page-header">
+        <div class="page-title">Task Management</div>
+        <div class="page-actions">
+          <button class="btn btn-secondary" onclick="showView('list')">
+            <svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+            List View
+          </button>
+          <button class="btn btn-primary" onclick="openAddModal()">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add Task
+          </button>
+          <button class="btn btn-secondary" style="gap:4px">
+            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="6" height="18" rx="1"/><rect x="9" y="3" width="6" height="18" rx="1"/><rect x="16" y="3" width="6" height="18" rx="1"/></svg>
+            Kanban View
+            <svg viewBox="0 0 24 24" style="width:10px;height:10px"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="board-shell">
+        <!-- Users panel -->
+        <div class="users-panel">
+          <div class="users-panel-title">Users</div>
+          <div class="users-list" id="users-list"></div>
+          <div class="users-pagination">
+            <span id="user-page-info">1–3 of 3</span>
+            <div style="display:flex;gap:4px">
+              <button onclick="prevUserPage()"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg> Previous</button>
+              <button onclick="nextUserPage()">Next <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button>
+            </div>
+          </div>
+        </div>
+        <!-- Kanban columns -->
+        <div class="kanban-area" id="kanban-area"></div>
+      </div>
+    </div>
+
+    <!-- ===== LIST VIEW ===== -->
+    <div id="view-list" style="display:none;flex-direction:column;flex:1;overflow:hidden">
+      <div class="page-header">
+        <div class="page-title">Task Management</div>
+        <div class="page-actions">
+          <button class="btn btn-secondary" onclick="showView('kanban')">
+            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="6" height="18" rx="1"/><rect x="9" y="3" width="6" height="18" rx="1"/><rect x="16" y="3" width="6" height="18" rx="1"/></svg>
+            Kanban View
+          </button>
+          <button class="btn btn-primary" onclick="openAddModal()">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add Task
+          </button>
+          <button class="btn btn-secondary" style="gap:4px">
+            <svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+            List View
+            <svg viewBox="0 0 24 24" style="width:10px;height:10px"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="list-area">
+        <div class="list-toolbar">
+          <div class="search-wrap">
+            <span class="search-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+            <input class="search-inp" type="text" placeholder="Search tasks…" oninput="filterList(this.value)">
+          </div>
+          <select class="filter-select" onchange="filterListByStatus(this.value)">
+            <option value="">All Statuses</option>
+            <option value="TODO">TODO</option>
+            <option value="INPROGRESS">IN PROGRESS</option>
+            <option value="DONE">DONE</option>
+          </select>
+        </div>
+        <div class="list-table-wrap">
+          <table class="list-table">
+            <thead>
+              <tr>
+                <th>Code</th>
+                <th>Task</th>
+                <th>Status</th>
+                <th>Stage</th>
+                <th>Assigned To</th>
+                <th>Assigned Date</th>
+                <th>Due Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="list-tbody"></tbody>
+          </table>
+        </div>
+        <div class="list-pagination">
+          <span id="list-page-info">Showing 1–8 of 8</span>
+          <button class="pag-btn"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg> Previous</button>
+          <button class="pag-btn">Next <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== SINGLE VIEW ===== -->
+    <div id="view-single" style="display:none;flex-direction:column;flex:1;overflow:hidden">
+      <div class="page-header" style="padding-bottom:8px">
+        <div style="display:flex;align-items:center;gap:10px">
+          <div class="sv-back" onclick="showView('kanban')">
+            <div class="sv-back-btn"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></div>
+          </div>
+          <div class="sv-title">Task Management</div>
+        </div>
+      </div>
+      <div class="single-view" id="single-view-content"></div>
+    </div>
+
+    <!-- ===== TASK TYPES VIEW ===== -->
+    <div id="view-tasktypes" style="display:none;flex-direction:column;flex:1;overflow:hidden">
+      <div class="page-header">
+        <div class="page-title">Task Types</div>
+        <div class="page-actions">
+          <button class="btn btn-primary" onclick="openTaskTypeModal()">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add Task Type
+          </button>
+        </div>
+      </div>
+      <div class="list-area">
+        <div class="list-toolbar">
+          <div class="search-wrap">
+            <span class="search-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+            <input class="search-inp" type="text" placeholder="Search task types…" oninput="filterTaskTypes(this.value)">
+          </div>
+        </div>
+        <div class="list-table-wrap">
+          <table class="list-table">
+            <thead><tr><th>Name</th><th>Description</th><th>Actions</th></tr></thead>
+            <tbody id="tasktypes-tbody"></tbody>
+          </table>
+        </div>
+        <div class="list-pagination">
+          <span>Showing 1–4 of 4</span>
+          <button class="pag-btn"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg> Previous</button>
+          <button class="pag-btn">Next <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /main -->
+</div><!-- /shell -->
+
+<!-- Context Menu -->
+<div class="ctx-menu" id="ctx-menu">
+  <div class="ctx-item" onclick="ctxView()"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>View</div>
+  <div class="ctx-item" onclick="ctxEdit()"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Edit</div>
+  <div class="ctx-item danger" id="ctx-delete" onclick="ctxDelete()"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>Delete</div>
+</div>
+
+<!-- Add Task Modal -->
+<div class="modal-overlay" id="add-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title" id="modal-title-text">Add Task</span>
+      <button class="modal-close" onclick="closeModal('add-modal')"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-field">
+          <label class="form-label">Task Name <span class="req">*</span></label>
+          <input class="form-input" type="text" placeholder="Enter task name…" id="f-task">
+        </div>
+        <div class="form-field">
+          <label class="form-label">Opportunity / Lead <span class="req">*</span></label>
+          <select class="form-select form-input" id="f-opportunity">
+            <option value="">Select opportunity…</option>
+            <option value="14">ORD-000014 — new for customer</option>
+            <option value="15">ORD-000015 — enterprise deal</option>
+            <option value="16">ORD-000016 — renewal Q2</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-field form-row full">
+        <div class="form-field" style="margin-bottom:0">
+          <label class="form-label">Description</label>
+          <textarea class="form-input form-textarea" placeholder="Optional description…" id="f-desc"></textarea>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-field">
+          <label class="form-label">Status <span class="req">*</span></label>
+          <select class="form-select form-input" id="f-status">
+            <option value="1">TODO</option>
+            <option value="2">IN PROGRESS</option>
+            <option value="3">DONE</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label class="form-label">Assigned To</label>
+          <select class="form-select form-input" id="f-assigned">
+            <option value="">Select user…</option>
+            <option value="1">Mr. UmakaranKK umak</option>
+            <option value="2">Test Customer</option>
+            <option value="3">new suthu</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-field">
+          <label class="form-label">Assigned Date</label>
+          <input class="form-input" type="date" id="f-assigned-date">
+        </div>
+        <div class="form-field">
+          <label class="form-label">Start Date</label>
+          <input class="form-input" type="date" id="f-start-date">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-field">
+          <label class="form-label">Due Date</label>
+          <input class="form-input" type="date" id="f-due-date">
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('add-modal')">Cancel</button>
+      <button class="btn btn-primary" onclick="submitTask()">Save Task</button>
+    </div>
+  </div>
+</div>
+
+<!-- Task Type Modal -->
+<div class="modal-overlay" id="tasktype-modal">
+  <div class="modal" style="width:400px">
+    <div class="modal-header">
+      <span class="modal-title">Add Task Type</span>
+      <button class="modal-close" onclick="closeModal('tasktype-modal')"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-field">
+        <label class="form-label">Name <span class="req">*</span></label>
+        <input class="form-input" type="text" placeholder="e.g. Call, Meeting, Email…" id="tt-name">
+      </div>
+      <div class="form-field">
+        <label class="form-label">Description</label>
+        <input class="form-input" type="text" placeholder="Optional description…" id="tt-desc">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('tasktype-modal')">Cancel</button>
+      <button class="btn btn-primary" onclick="submitTaskType()">Save</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ══════ DATA ══════ */
+const STATUSES = [
+  {id:1,name:'TODO',code:'task_todo',color:'#344054'},
+  {id:2,name:'IN PROGRESS',code:'task_inprogress',color:'#175CD3'},
+  {id:3,name:'DONE',code:'task_done',color:'#0E7090'},
+];
+const STAGE_COLORS = {
+  'LEAD':'#344054','QUALIFIED':'#0E7090','PROSPECT':'#175CD3','WON':'#067647','LOSS':'#B42318'
+};
+const STAGE_BG = {
+  'LEAD':'#F1F3F6','QUALIFIED':'#EDF8F7','PROSPECT':'#DBEAFE','WON':'#D1FAE5','LOSS':'#FEE2E2'
+};
+const USERS = [
+  {id:1,name:'Mr. UmakaranKK umak',email:'relepor245@binafex.com',initials:'MU',color:'#1A9E96'},
+  {id:2,name:'Test Customer',email:'reyeka2386@hadvar.com',initials:'TC',color:'#8A96A3'},
+  {id:3,name:'new suthu',email:'sutharsan2@gmail.com',initials:'NS',color:'#B45309'},
+];
+let TASKS = [
+  {id:7,code:'000007',task:'Test Task Config',desc:'',status_id:1,status:'TODO',stage:'QUALIFIED',assignee:'Mr. UmakaranKK umak',assigned_date:'2025-07-25',due_date:null,opp_code:'ORD-000014',opp_title:'new for customer',opp_stage:'QUALIFIED'},
+  {id:8,code:'000008',task:'Test Task Config',desc:'',status_id:1,status:'TODO',stage:'QUALIFIED',assignee:'Mr. UmakaranKK umak',assigned_date:'2025-07-25',due_date:null,opp_code:'ORD-000014',opp_title:'new for customer',opp_stage:'QUALIFIED'},
+  {id:9,code:'000009',task:'Test Task Config',desc:'',status_id:1,status:'TODO',stage:'QUALIFIED',assignee:'Mr. UmakaranKK umak',assigned_date:'2025-07-25',due_date:null,opp_code:'ORD-000014',opp_title:'new for customer',opp_stage:'QUALIFIED'},
+  {id:670548,code:'670548',task:'Test Task',desc:'Discovery call',status_id:2,status:'IN PROGRESS',stage:'LEAD',assignee:'Mr. UmakaranKK umak',assigned_date:'2025-07-10',due_date:'2025-07-30',opp_code:'ORD-000015',opp_title:'enterprise deal',opp_stage:'LEAD'},
+  {id:243,code:'000243',task:'Veritatis cum aspern',desc:'',status_id:2,status:'IN PROGRESS',stage:'LEAD',assignee:'Mr. UmakaranKK umak',assigned_date:'2025-09-01',due_date:null,opp_code:'ORD-000015',opp_title:'enterprise deal',opp_stage:'LEAD'},
+  {id:791,code:'000791',task:'Veritatis cum aspern',desc:'',status_id:2,status:'IN PROGRESS',stage:'LEAD',assignee:'Mr. UmakaranKK umak',assigned_date:null,due_date:null,opp_code:'ORD-000016',opp_title:'renewal Q2',opp_stage:'LEAD'},
+  {id:506,code:'000506',task:'Veritatis cum aspern',desc:'',status_id:3,status:'DONE',stage:'LEAD',assignee:'Mr. UmakaranKK umak',assigned_date:'2025-09-26',due_date:null,opp_code:'ORD-000016',opp_title:'renewal Q2',opp_stage:'LEAD'},
+  {id:539,code:'000539',task:'Test Task Config',desc:'',status_id:3,status:'DONE',stage:'LEAD',assignee:'Mr. UmakaranKK umak',assigned_date:'2025-10-03',due_date:null,opp_code:'ORD-000016',opp_title:'renewal Q2',opp_stage:'LEAD'},
+  {id:540,code:'000540',task:'saas',desc:'',status_id:3,status:'DONE',stage:'LEAD',assignee:'Mr. UmakaranKK umak',assigned_date:null,due_date:null,opp_code:'ORD-000016',opp_title:'renewal Q2',opp_stage:'LEAD'},
+];
+let TASK_TYPES = [
+  {id:1,name:'Call',description:'Phone call with client'},
+  {id:2,name:'Meeting',description:'In-person or virtual meeting'},
+  {id:3,name:'Email',description:'Email correspondence'},
+  {id:4,name:'Follow-up',description:'Follow-up action after contact'},
+];
+const STATUS_HIST = [
+  {status:'TODO',date:'2025-11-18',by:'Mr. UmakaranKK umak',remark:'Task status changed from TODO to TODO'},
+  {status:'TODO',date:'2026-03-25',by:'Mr. UmakaranKK umak',remark:'Task status changed from TODO to TODO'},
+];
+let selectedUser = null;
+let ctxTaskId = null;
+let currentView = 'kanban';
+
+/* ══════ VIEWS ══════ */
+function showView(v) {
+  currentView = v;
+  ['kanban','list','single','tasktypes'].forEach(id => {
+    const el = document.getElementById('view-'+id);
+    if(el) el.style.display = (id===v)?'flex':'none';
+  });
+  // Sidebar active
+  ['nav-tasks','nav-tasktypes'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el) el.classList.remove('active');
+  });
+  if(v==='kanban'||v==='list') { document.getElementById('nav-tasks').classList.add('active'); }
+  if(v==='tasktypes') { document.getElementById('nav-tasktypes').classList.add('active'); }
+  // Breadcrumb
+  const labels={kanban:'Tasks',list:'Tasks',single:'Tasks › View',tasktypes:'Task Types'};
+  document.getElementById('bc-active').textContent = labels[v]||v;
+  if(v==='kanban') renderKanban();
+  if(v==='list') renderList();
+  if(v==='tasktypes') renderTaskTypes();
+}
+function nav(n){ showToast(n+' coming soon'); }
+
+/* ══════ USERS PANEL ══════ */
+function renderUsers() {
+  const ul = document.getElementById('users-list');
+  ul.innerHTML = USERS.map(u => `
+    <div class="user-card ${selectedUser===u.id?'selected':''}" onclick="selectUser(${u.id})">
+      <div class="user-avatar" style="background:${u.color}20;color:${u.color}">${u.initials}</div>
+      <div class="user-info">
+        <div class="user-name">${u.name}</div>
+        <div class="user-email">${u.email}</div>
+      </div>
+    </div>`).join('');
+  document.getElementById('user-page-info').textContent = `1–${USERS.length} of ${USERS.length}`;
+}
+function selectUser(id) {
+  selectedUser = selectedUser===id ? null : id;
+  renderUsers();
+  renderKanban();
+}
+function prevUserPage(){ showToast('Previous page'); }
+function nextUserPage(){ showToast('Next page'); }
+
+/* ══════ KANBAN ══════ */
+function filteredTasks() {
+  return selectedUser ? TASKS.filter(t => {
+    const u = USERS.find(u=>u.id===selectedUser);
+    return u && t.assignee === u.name;
+  }) : TASKS;
+}
+
+const KC_CLASS = {1:'kc-todo',2:'kc-inprogress',3:'kc-done'};
+const KC_STATUS_CLASS = {1:'s-todo',2:'s-inprogress',3:'s-done'};
+
+function renderKanban() {
+  const area = document.getElementById('kanban-area');
+  const tasks = filteredTasks();
+  area.innerHTML = STATUSES.map(st => {
+    const stTasks = tasks.filter(t=>t.status_id===st.id);
+    const kcClass = KC_CLASS[st.id]||'';
+    return `
+    <div class="kanban-col ${kcClass}">
+      <div class="kanban-col-header">
+        <div class="kanban-col-title">
+          ${st.name}
+          <span class="count-badge">${stTasks.length}</span>
+        </div>
+      </div>
+      <div class="kanban-col-underline"></div>
+      <div class="kanban-cards">
+        ${stTasks.map(t => renderTaskCard(t)).join('')}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderTaskCard(t) {
+  const stageColor = STAGE_COLORS[t.stage]||'#636F7C';
+  const stageBg = STAGE_BG[t.stage]||'#F1F3F6';
+  const canDelete = t.status_id === 1;
+  return `
+    <div class="task-card" onclick="viewTask(${t.id})">
+      <div class="task-card-top">
+        <span class="task-code">Task #${t.code}</span>
+        <div class="task-card-badges">
+          <span class="stage-badge" style="background:${stageBg};color:${stageColor}">
+            <span class="stage-dot" style="background:${stageColor}"></span>${t.stage}
+          </span>
+          <button class="task-card-menu" onclick="event.stopPropagation();openCtxMenu(event,${t.id},${canDelete})">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="task-title">${t.task}</div>
+      <div class="task-card-assignee">
+        <div class="assignee-av">${t.assignee?t.assignee[0].toUpperCase():''}</div>
+        <span class="assignee-name">${t.assignee||'—'}</span>
+      </div>
+      <div class="task-dates">
+        <div class="task-date-block">
+          <div class="task-date-label">Assigned Date</div>
+          <div class="task-date-val">
+            ${t.assigned_date ? `<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>${t.assigned_date}` : '—'}
+          </div>
+        </div>
+        <div class="task-date-block">
+          <div class="task-date-label">Due Date</div>
+          <div class="task-date-val">
+            ${t.due_date ? `<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>${t.due_date}` : '—'}
+          </div>
+        </div>
+      </div>
+    </div>`;
+}
+
+/* ══════ LIST VIEW ══════ */
+let listSearch = '';
+let listStatusFilter = '';
+
+function renderList() {
+  let data = TASKS.filter(t => {
+    const s = listSearch.toLowerCase();
+    const match = !s || t.task.toLowerCase().includes(s) || t.code.includes(s) || t.assignee.toLowerCase().includes(s);
+    const sf = !listStatusFilter || t.status === listStatusFilter;
+    return match && sf;
+  });
+  const tbody = document.getElementById('list-tbody');
+  tbody.innerHTML = data.map(t => {
+    const sc = KC_STATUS_CLASS[t.status_id]||'';
+    const stageColor = STAGE_COLORS[t.stage]||'#636F7C';
+    const stageBg = STAGE_BG[t.stage]||'#F1F3F6';
+    const canDelete = t.status_id === 1;
+    return `<tr onclick="viewTask(${t.id})">
+      <td><span class="task-code-sm">#${t.code}</span></td>
+      <td style="font-weight:500;color:var(--n-800)">${t.task}</td>
+      <td><span class="status-pill ${sc}">${t.status}</span></td>
+      <td><span class="stage-badge" style="background:${stageBg};color:${stageColor}">${t.stage}</span></td>
+      <td><div style="display:flex;align-items:center;gap:6px"><div class="assignee-av" style="width:22px;height:22px;font-size:9px">${t.assignee?t.assignee[0]:''}</div>${t.assignee||'—'}</div></td>
+      <td>${t.assigned_date||'—'}</td>
+      <td>${t.due_date||'—'}</td>
+      <td onclick="event.stopPropagation()"><div class="list-actions">
+        <button class="icon-btn" title="View" onclick="viewTask(${t.id})"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+        <button class="icon-btn" title="Edit" onclick="openEditModal(${t.id})"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+        ${canDelete ? `<button class="icon-btn del" title="Delete" onclick="deleteTask(${t.id})"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>` : ''}
+      </div></td>
+    </tr>`;
+  }).join('');
+  document.getElementById('list-page-info').textContent = `Showing 1–${data.length} of ${data.length}`;
+}
+function filterList(v){ listSearch=v; renderList(); }
+function filterListByStatus(v){ listStatusFilter=v; renderList(); }
+
+/* ══════ SINGLE VIEW ══════ */
+function viewTask(id) {
+  const t = TASKS.find(t=>t.id===id);
+  if(!t) return;
+  const sc = KC_STATUS_CLASS[t.status_id]||'';
+  const content = document.getElementById('single-view-content');
+  content.innerHTML = `
+    <div class="detail-card">
+      <div class="detail-grid">
+        <div class="detail-field">
+          <div class="detail-label">Lead Code</div>
+          <div class="detail-value link">${t.opp_code||'—'}</div>
+        </div>
+        <div class="detail-field">
+          <div class="detail-label">Lead Name</div>
+          <div class="detail-value">${t.opp_title||'—'}</div>
+        </div>
+        <div class="detail-field">
+          <div class="detail-label">Lead Stage</div>
+          <div class="detail-value">
+            <span class="stage-badge" style="background:${STAGE_BG[t.opp_stage]||'#F1F3F6'};color:${STAGE_COLORS[t.opp_stage]||'#636F7C'}">${t.opp_stage||'—'}</span>
+          </div>
+        </div>
+        <div class="detail-field">
+          <div class="detail-label">Task</div>
+          <div class="detail-value">${t.task}</div>
+        </div>
+        <div class="detail-field">
+          <div class="detail-label">Description</div>
+          <div class="detail-value ${!t.desc?'dash':''}">${t.desc||'—'}</div>
+        </div>
+        <div class="detail-field">
+          <div class="detail-label">Assigned Date</div>
+          <div class="detail-value ${!t.assigned_date?'dash':''}">${t.assigned_date||'—'}</div>
+        </div>
+        <div class="detail-field">
+          <div class="detail-label">Start Date</div>
+          <div class="detail-value dash">—</div>
+        </div>
+        <div class="detail-field">
+          <div class="detail-label">Due Date</div>
+          <div class="detail-value ${!t.due_date?'dash':''}">${t.due_date||'—'}</div>
+        </div>
+        <div class="detail-field">
+          <div class="detail-label">Current Status</div>
+          <div class="detail-value"><span class="status-pill ${sc}" style="font-size:11px">${t.status}</span></div>
+        </div>
+      </div>
+      <div class="sv-edit-btn">
+        <button class="btn btn-primary" onclick="openEditModal(${t.id})">
+          <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          Edit
+        </button>
+      </div>
+    </div>
+    <!-- Tabs -->
+    <div class="tabs-bar">
+      <button class="tab-btn" onclick="switchTab('tab-interaction')">Interaction</button>
+      <button class="tab-btn active" onclick="switchTab('tab-status')">Status Change</button>
+      <button class="tab-btn" onclick="switchTab('tab-reassign')">Reassignment</button>
+    </div>
+    <div class="tabs-content">
+      <div class="tab-panel" id="tab-interaction">
+        <table class="hist-table">
+          <thead><tr><th>Channel</th><th>Contact</th><th>Date</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr><td colspan="4" style="text-align:center;color:var(--n-400);padding:24px;font-size:12px">No interactions yet</td></tr>
+          </tbody>
+        </table>
+        <div class="hist-footer">
+          <button class="btn btn-primary" style="height:28px;font-size:11px" onclick="showToast('Add Interaction')">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add Interaction
+          </button>
+        </div>
+      </div>
+      <div class="tab-panel active" id="tab-status">
+        <table class="hist-table">
+          <thead>
+            <tr>
+              <th>Status <span class="sort-icon"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span></th>
+              <th>Changed Date <span class="sort-icon"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span></th>
+              <th>Changed By <span class="sort-icon"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span></th>
+              <th>Remarks <span class="sort-icon"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span></th>
+            </tr>
+          </thead>
+          <tbody>
+            ${STATUS_HIST.map(h => `
+            <tr>
+              <td><span class="status-pill s-todo">${h.status}</span></td>
+              <td>${h.date}</td>
+              <td>${h.by}</td>
+              <td style="color:var(--n-500)">${h.remark}</td>
+            </tr>`).join('')}
+          </tbody>
+        </table>
+        <div class="hist-footer">
+          <span>Rows per page:</span>
+          <select class="rows-select"><option>10</option><option>25</option><option>50</option></select>
+          <span>1–2 of 2</span>
+          <div class="pag-nav">
+            <button><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg> Previous</button>
+            <button>Next <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button>
+          </div>
+        </div>
+      </div>
+      <div class="tab-panel" id="tab-reassign">
+        <table class="hist-table">
+          <thead><tr><th>Changed By</th><th>From</th><th>To</th><th>Date</th><th>Remark</th></tr></thead>
+          <tbody>
+            <tr><td colspan="5" style="text-align:center;color:var(--n-400);padding:24px;font-size:12px">No reassignment history</td></tr>
+          </tbody>
+        </table>
+        <div class="hist-footer">
+          <span>1–0 of 0</span>
+        </div>
+      </div>
+    </div>
+  `;
+  showView('single');
+}
+
+function switchTab(tid) {
+  document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',['tab-interaction','tab-status','tab-reassign'][i]===tid));
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.toggle('active',p.id===tid));
+}
+
+/* ══════ TASK TYPES ══════ */
+function renderTaskTypes() {
+  const tbody = document.getElementById('tasktypes-tbody');
+  tbody.innerHTML = TASK_TYPES.map(tt => `
+    <tr>
+      <td style="font-weight:500">${tt.name}</td>
+      <td style="color:var(--n-500)">${tt.description||'—'}</td>
+      <td onclick="event.stopPropagation()"><div class="list-actions">
+        <button class="icon-btn" onclick="openEditTaskType(${tt.id})"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+        <button class="icon-btn del" onclick="deleteTaskType(${tt.id})"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>
+      </div></td>
+    </tr>`).join('');
+}
+function filterTaskTypes(v) {
+  const lv = v.toLowerCase();
+  document.querySelectorAll('#tasktypes-tbody tr').forEach(tr => {
+    tr.style.display = tr.textContent.toLowerCase().includes(lv) ? '' : 'none';
+  });
+}
+function openTaskTypeModal() { document.getElementById('tasktype-modal').classList.add('show'); }
+function openEditTaskType(id) {
+  const tt = TASK_TYPES.find(t=>t.id===id);
+  if(!tt) return;
+  document.getElementById('tt-name').value = tt.name;
+  document.getElementById('tt-desc').value = tt.description||'';
+  document.getElementById('tasktype-modal').classList.add('show');
+}
+function submitTaskType() {
+  const name = document.getElementById('tt-name').value.trim();
+  if(!name) { showToast('Name is required','error'); return; }
+  TASK_TYPES.push({id:Date.now(),name,description:document.getElementById('tt-desc').value});
+  closeModal('tasktype-modal');
+  renderTaskTypes();
+  showToast('Task type saved');
+}
+function deleteTaskType(id) {
+  TASK_TYPES = TASK_TYPES.filter(t=>t.id!==id);
+  renderTaskTypes();
+  showToast('Task type deleted');
+}
+
+/* ══════ CONTEXT MENU ══════ */
+function openCtxMenu(e, id, canDelete) {
+  ctxTaskId = id;
+  const m = document.getElementById('ctx-menu');
+  const del = document.getElementById('ctx-delete');
+  del.style.display = canDelete ? 'flex' : 'none';
+  m.style.left = Math.min(e.clientX, window.innerWidth-160)+'px';
+  m.style.top = Math.min(e.clientY, window.innerHeight-120)+'px';
+  m.classList.add('show');
+  e.stopPropagation();
+}
+function ctxView(){ document.getElementById('ctx-menu').classList.remove('show'); viewTask(ctxTaskId); }
+function ctxEdit(){ document.getElementById('ctx-menu').classList.remove('show'); openEditModal(ctxTaskId); }
+function ctxDelete(){ document.getElementById('ctx-menu').classList.remove('show'); deleteTask(ctxTaskId); }
+document.addEventListener('click', ()=>document.getElementById('ctx-menu').classList.remove('show'));
+
+/* ══════ MODAL ══════ */
+function openAddModal() {
+  document.getElementById('modal-title-text').textContent = 'Add Task';
+  ['f-task','f-desc','f-assigned-date','f-start-date','f-due-date'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
+  document.getElementById('f-status').value='1';
+  document.getElementById('f-assigned').value='';
+  document.getElementById('f-opportunity').value='';
+  document.getElementById('add-modal').classList.add('show');
+}
+function openEditModal(id) {
+  const t = TASKS.find(t=>t.id===id);
+  if(!t) return;
+  document.getElementById('modal-title-text').textContent = 'Edit Task';
+  document.getElementById('f-task').value = t.task;
+  document.getElementById('f-desc').value = t.desc||'';
+  document.getElementById('f-status').value = t.status_id;
+  document.getElementById('f-assigned-date').value = t.assigned_date||'';
+  document.getElementById('f-due-date').value = t.due_date||'';
+  document.getElementById('add-modal').classList.add('show');
+}
+function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+function submitTask() {
+  const task = document.getElementById('f-task').value.trim();
+  if(!task) { showToast('Task name is required','error'); return; }
+  const sid = parseInt(document.getElementById('f-status').value);
+  const st = STATUSES.find(s=>s.id===sid);
+  const newId = Math.floor(Math.random()*900000+100000);
+  TASKS.push({
+    id:newId, code:String(newId),
+    task, desc:document.getElementById('f-desc').value,
+    status_id:sid, status:st?st.name:'TODO',
+    stage:'LEAD', assignee:'Mr. UmakaranKK umak',
+    assigned_date:document.getElementById('f-assigned-date').value||null,
+    due_date:document.getElementById('f-due-date').value||null,
+    opp_code:'ORD-000014',opp_title:'new for customer',opp_stage:'QUALIFIED'
+  });
+  closeModal('add-modal');
+  showToast('Task created successfully');
+  renderKanban(); renderList();
+}
+function deleteTask(id) {
+  const t = TASKS.find(t=>t.id===id);
+  if(!t) return;
+  if(t.status_id !== 1) { showToast('Cannot delete: task is In Progress or Done','error'); return; }
+  if(!confirm(`Delete task "${t.task}"?`)) return;
+  TASKS = TASKS.filter(t=>t.id!==id);
+  showToast('Task deleted');
+  renderKanban(); renderList();
+  if(currentView==='single') showView('kanban');
+}
+
+/* ══════ TOAST ══════ */
+function showToast(msg, type='success') {
+  const icons = {success:`<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>`,error:`<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>`};
+  const t=document.createElement('div');
+  t.className='toast';
+  t.style.background = type==='error'?'var(--danger-600)':'var(--n-900)';
+  t.innerHTML=`${icons[type]||icons.success}${msg}`;
+  document.body.appendChild(t);
+  setTimeout(()=>t.remove(),2800);
+}
+
+/* ══════ INIT ══════ */
+renderUsers();
+showView('kanban');
+</script>
+</body>
+</html>
